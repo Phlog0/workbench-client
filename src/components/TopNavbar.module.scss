@@ -1,0 +1,21 @@
+.header{
+    background-color: rgb(255, 255, 255);
+    padding: 2rem;
+    display: flex;
+    gap: 1rem;
+    grid-column: 1/-1;
+    // grid-column: span 2;
+    border: 1px solid gray;
+}
+.addBtn{
+    background-color: rgb(97, 194, 97);
+    padding: 1rem;
+    cursor: pointer;
+
+}
+
+.changeStepBtn{
+    background-color: rgb(97, 136, 194);
+    padding: 1rem;
+    cursor: pointer;
+}

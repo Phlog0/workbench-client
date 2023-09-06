@@ -1,0 +1,23 @@
+.shkafTop,.shkafMiddle,.shkafBottom{
+    display: flex;
+}
+:is(.shkafTop,.shkafMiddle,.shkafBottom) > *{
+
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+   
+}
+
+.shkafTop > * {
+    background-color: red;
+}
+.shkafMiddle > * {
+    background-color: green;
+}
+.shkafBottom > * {
+    background-color: blue;
+}
+
+
+
