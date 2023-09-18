@@ -16,25 +16,21 @@ import ReactFlow, {
   NodeResizeControl,
 } from "reactflow";
 
-import styles from "./CustomNode.module.scss";
-const CustomNode = ({ data, isConnectable }) => {
+import styles from "./Tire.module.scss";
+
+const Tire = ({ data, isConnectable }) => {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
 
   return (
-    <div className={styles.customNode}>
+    <div className={styles.tire}>
       <NodeResizeControl minWidth={100} minHeight={50}></NodeResizeControl>
-      <Handle
-        type="target"
-        position={Position.Top}
-        isConnectable={isConnectable}
-      />
-      <div>{data.label}</div>
+
       <Handle
         type="source"
         position={Position.Bottom}
-       
+        style={{ marginLeft: "15px" }}
         id="a"
         isConnectable={isConnectable}
       />
@@ -42,4 +38,4 @@ const CustomNode = ({ data, isConnectable }) => {
   );
 };
 
-export default CustomNode;
+export default Tire;

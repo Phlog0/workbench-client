@@ -6,7 +6,7 @@
 .app{
  display: grid;
  grid-template-columns: 1fr 10rem;
- grid-template-rows: 2rem calc(100dvh-2rem);
+ grid-template-rows: auto 200%;
 }
 
 .redCircle{

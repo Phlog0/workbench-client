@@ -26,8 +26,37 @@ type TNode = {
   prop3: number;
 };
 
+type TCurrentNodeId = {
+  id: string;
+};
+type TCurrentIndex = {
+  index: number;
+};
+
 const initialState = {
   nodes: [
+    {
+      id: "group1",
+      data: { label: "Group A" },
+      position: { x: 220, y: 200 },
+      // className: "light",
+      style: {
+        // backgroundColor: "rgba(255, 0, 0, 0.2)",
+        width: 200,
+        height: 200,
+      },
+    },
+    {
+      id: "tire1",
+      data: { label: "tire" },
+      type: 'TireNodeType',
+      position: { x: 0, y: 0 },
+      // className: "light",
+      parentNode: "group1",
+      extent: "parent",
+      style: { width: 100, height: 10 },
+    },
+
     {
       id: "1",
       type: "CustomNodeType",
@@ -55,6 +84,13 @@ const initialState = {
     //   prop3: 1,
     // },
   ],
+  currentNode: {
+    id: "1",
+  },
+  snapGrid: ["10", "50", "100"],
+  currentGrid: {
+    index: 0,
+  },
 };
 
 const nodeSlice = createSlice({
@@ -72,16 +108,30 @@ const nodeSlice = createSlice({
       const node = state.nodes.find((item) => item.id === action.payload.id);
 
       node[action.payload.key] = action.payload.value;
+      //as keyof
     },
     updateCoordinats(state, action: PayloadAction<TUpdateNodeCoords>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
       4;
       if (node != undefined) node.position = action.payload.position;
     },
+
+    changeCurrentNode(state, action: PayloadAction<TCurrentNodeId>) {
+      state.currentNode.id = action.payload.id;
+    },
+    changeCurrentGrid(state, action: PayloadAction<TCurrentIndex>) {
+      console.log(action.payload);
+      state.currentGrid.index = action.payload.index;
+    },
   },
 });
 
-export const { updateProperties, updateCoordinats, addNode } =
-  nodeSlice.actions;
+export const {
+  updateProperties,
+  updateCoordinats,
+  addNode,
+  changeCurrentNode,
+  changeCurrentGrid,
+} = nodeSlice.actions;
 
 export default nodeSlice.reducer;

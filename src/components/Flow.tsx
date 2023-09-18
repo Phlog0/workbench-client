@@ -3,6 +3,7 @@ import styles from "./Flow.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { updateProperties } from "../store/rightSidebarSlice";
 import RightSidebar from "./RightSidebar";
+import { changeCurrentNode } from "../store/nodesSlice";
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -14,27 +15,26 @@ import ReactFlow, {
   Panel,
   applyEdgeChanges,
   applyNodeChanges,
+  NodeResizer,
+  NodeResizeControl,
+  useReactFlow,
 } from "reactflow";
+
 import "reactflow/dist/style.css";
 import Shkaf from "./Shkaf";
 import { TArrivalSidebarProps } from "../types/types";
 import { Dispatch } from "@reduxjs/toolkit";
 import { updateCoordinats } from "../store/nodesSlice";
 import CustomNode from "./CustomNode";
+import Tire from "./Tire";
 
 const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
 
-type FlowProps = {
-  currentProps: TArrivalSidebarProps;
-  setCurrentProps?: Dispatch<SetStateAction<TArrivalSidebarProps>> | null;
-  reactFlowGridGap : number[]
-  setReactFlowGridGap:Dispatch<SetStateAction<number[]>>;
-};
-const nodeTypes = { CustomNodeType: CustomNode };
+const nodeTypes = { CustomNodeType: CustomNode, TireNodeType: Tire };
 
 // =====================НАЧАЛО КОМПОНЕНТА=========================
 
-const Flow: FC<FlowProps> = ({ currentProps, setCurrentProps, reactFlowGridGap }) => {
+const Flow: FC = () => {
   const reduxNodes = useAppSelector((state) => state.nodes.nodes);
   const renderNodes = reduxNodes.map((node) => ({
     ...node,
@@ -43,13 +43,24 @@ const Flow: FC<FlowProps> = ({ currentProps, setCurrentProps, reactFlowGridGap }
     },
   }));
   const dispatch = useAppDispatch();
-  console.log("REDUX STATE>>>>>>>>>>>>", renderNodes);
-  const [nodes, setNodes, onNodesChange] = useNodesState(renderNodes);
+  // console.log("REDUX STATE>>>>>>>>>>>>", renderNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(renderNodes); //НОВЫЕ НОДЫ
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  //  console.log(reduxNodes[1]);
+
+  const { getIntersectingNodes } = useReactFlow();
+
+  const currentGrid = useAppSelector((state) => state.nodes.currentGrid.index);
+  const snapGrid = useAppSelector((state) =>
+    state.nodes.snapGrid.find((item, index) => index === currentGrid)
+  );
+
+  // console.log(snapGrid)
 
   useEffect(() => {
     setNodes(renderNodes);
@@ -61,20 +72,23 @@ const Flow: FC<FlowProps> = ({ currentProps, setCurrentProps, reactFlowGridGap }
   };
 
   const onNodeClick = (event, node) => {
-    console.log(node);
-    // setNodes(renderNodes);
-    if (node !== null)
-      setCurrentProps({
-        id: node.id,
-        prop1: +node.prop1,
-        prop2: +node.prop2,
-        prop3: +node.prop3,
-      });
+    if (node !== null) dispatch(changeCurrentNode({ id: node.id }));
   };
+
+  const onNodeDrag = useCallback((_: MouseEvent, node: Node) => {
+    const intersections = getIntersectingNodes(node).map((n) => n.id);
+    console.log(intersections);
+    setNodes((ns) =>
+      ns.map((n) => ({
+        ...n,
+        className: intersections.includes(n.id) ? styles.highlight : "",
+      }))
+    );
+  }, []);
+
 
   const handleCoords = (event, node) => {
     event.preventDefault();
-    event.stopPropagation();
     // ❗❗❗❗❗❗❗❗ЧИЧАС Я БЕРУ ОТНОСИТЕЛЬНУЮ ПОЗИЦИЮ(А ЕСТЬ АБСОЛЮТНАЯ)
     // console.log(node.position);
     dispatch(updateCoordinats({ id: node.id, position: node.position }));
@@ -90,12 +104,15 @@ const Flow: FC<FlowProps> = ({ currentProps, setCurrentProps, reactFlowGridGap }
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         snapToGrid={true}
-        snapGrid={[...reactFlowGridGap]}
+        snapGrid={[+snapGrid, +snapGrid]}
         onNodeClick={onNodeClick}
         className={styles.reactFlow}
         nodeTypes={nodeTypes}
         onNodeDragStop={handleCoords}
+        onNodeDrag={onNodeDrag}
+        
       >
+    
         <Background
           id="1"
           gap={10}
@@ -109,9 +126,11 @@ const Flow: FC<FlowProps> = ({ currentProps, setCurrentProps, reactFlowGridGap }
           color="#ccc"
           variant={BackgroundVariant.Lines}
         />
+        <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Panel position="top-right">
           <button onClick={onSave}>save</button>
         </Panel>
+        <Controls />
       </ReactFlow>
     </div>
   );

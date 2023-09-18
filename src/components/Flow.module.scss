@@ -1,16 +1,11 @@
-.mainFlow{
-    // background: red;
-    display: flex;
-    // justify-content: space-between;
-    height: 100vh;
-    width: 100%;
-
+.mainFlow {
+ 
+  
+  // width: 100%;
 }
 
-.mainFlow > * {
-    flex:1;
-}
 
-.reactFlow{
-    flex: 5;
+
+.reactFlow .highlight {
+  outline:3px dashed #000;
 }

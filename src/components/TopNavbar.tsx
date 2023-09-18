@@ -1,36 +1,23 @@
 import React, { FC, useState, SyntheticEvent } from "react";
 import styles from "./TopNavbar.module.scss";
-import { useAppDispatch } from "../hook";
+//  ===============================REDUX===============================
+import { useAppDispatch, useAppSelector } from "../hook";
+import { changeCurrentGrid } from "../store/nodesSlice";
 import { addNode } from "../store/nodesSlice";
-import ReactFlow, {
-  MiniMap,
-  Controls,
-  Background,
-  BackgroundVariant,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Panel,
-  applyEdgeChanges,
-  applyNodeChanges,
-} from "reactflow";
-import "reactflow/dist/style.css";
 
+// =============================COMPONENT============================
+const TopNavbar: FC = () => {
 
-type TopNavbarProps = {
-
-  reactFlowGridGap : number[]
-  setReactFlowGridGap:Dispatch<SetStateAction<number[]>>;
-};
-const TopNavbar: FC<TopNavbarProps> = ({reactFlowGridGap, setReactFlowGridGap}) => {
+  const snapGrids = useAppSelector(state => state.nodes.snapGrid); // ❗❗❗❗❗❗❗Научиться типизировать массив объектов
+  const currentGrid = useAppSelector(state => state.nodes.currentGrid.index);
 
 
   const dispatch = useAppDispatch()
 
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
+    console.log(event.target);
     const gap = event.target.value
-    setReactFlowGridGap([+gap, +gap])
+    dispatch(changeCurrentGrid({index: +gap}))
   };
 
   const addFigure = (): void => {
@@ -55,9 +42,7 @@ const TopNavbar: FC<TopNavbarProps> = ({reactFlowGridGap, setReactFlowGridGap}) 
       <div className={styles.navbarStep}>
         <label htmlFor="select-step">Шаг:(сетка)</label>
         <select name="select-step" id="select-step" onChange={selectChange}>
-          <option value="1">1</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          {snapGrids.map((gridItem, index) => (<option value={index} key={index} selected={index === currentGrid ? true : false}>{gridItem}</option>))}
         </select>
       </div>
     </header>
