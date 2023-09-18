@@ -1,38 +1,69 @@
 import React, { FC, useState, useMemo } from "react";
 import styles from "./RightSidebar.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
-import { updateProperties } from "../store/nodesSlice";
-
-
+import { updateCellType, updateCommutationType } from "../store/nodesSlice";
 
 const RightSidebar: FC = () => {
+  const currentItemId: string = useAppSelector(
+    (state) => state.nodes.currentNode.id
+  );
+  const currentItemProperties = useAppSelector((state) =>
+    state.nodes.nodes.find((node) => node.id === currentItemId)
+  );
 
-  const currentItemId:string = useAppSelector(state => state.nodes.currentNode.id);
-  const currentItemProperties = useAppSelector(state=>state.nodes.nodes.find(node => node.id === currentItemId));
+  const currentCellType = currentItemProperties?.currentCellType;
+
   // console.log(currentItemProperties.prop1, currentItemProperties.prop2,currentItemProperties.prop3)
-
-
 
   const dispatch = useAppDispatch();
   const selectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const select = event.target;
+    const option = Array.from(event.target.options).find(
+      (item) => select.selectedIndex === +item.dataset.key
+    );
 
-    console.log(event.target.id)
-    const key = event.target.id;
-    const value = +event.target.value;
-    dispatch(updateProperties({id:currentItemId, key, value}));
+    console.log(option);
+    const value = select.value;
+
+    // const key = event.target.key;
+    // console.log(key, value);
+    if (select.id === "cellType")
+      dispatch(
+        updateCellType({ id: currentItemId, key: option?.dataset.key, value })
+      );
+
+    if (select.id === "commutationType")
+      dispatch(
+        updateCommutationType({
+          id: currentItemId,
+          key: option?.dataset.key,
+          value,
+        })
+      );
   };
-
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.selectItem}>
-        <label htmlFor="prop1">Счётчики</label>
-        <select
-          name=""
-          id="prop1"
-          onChange={(e) => selectChange(e)}
-        >
-          {Array(3)
+        <label htmlFor="cellType">Тип ячейки</label>
+        <select name="cellType" id="cellType" onChange={(e) => selectChange(e)}>
+          {Object.entries(currentItemProperties?.cellType).map(
+            (item, index) => {
+              return (
+                <option
+                  key={index + 1}
+                  value={item[1]}
+                  data-key={index}
+                  selected={
+                    `prop${index + 1}` === currentCellType ? true : false
+                  }
+                >
+                  {item[1]}
+                </option>
+              );
+            }
+          )}
+          {/* {Array(3)
             .fill("")
             .map((item, index) => {
               return (
@@ -41,33 +72,40 @@ const RightSidebar: FC = () => {
                   value={index + 1}
                   selected={index + 1 === currentItemProperties?.prop1 ? true : false}
                 >
-                  {index + 1}
+
                 </option>
               );
-            })}
+            })} */}
         </select>
       </div>
       <div className={styles.selectItem}>
-        <label htmlFor="prop2">Предохранители</label>
-        <select name="" id="prop2"  onChange={(e) => selectChange(e)}>
-          {Array(3)
-            .fill("")
-            .map((item, index) => {
+        <label htmlFor="commutationType">Тип коммутационного аппарата</label>
+        <select
+          name="commutationType"
+          id="commutationType"
+          onChange={(e) => selectChange(e)}
+        >
+          {Object.entries(currentItemProperties?.commutationType).map(
+            (item, index) => {
               return (
                 <option
                   key={index + 1}
-                  value={index + 1}
-                  selected={index + 1 === currentItemProperties?.prop2 ? true : false}
+                  value={item[1]}
+                  data-key={index}
+                  selected={
+                    `prop${index + 1}` === currentCellType ? true : false
+                  }
                 >
-                  {index + 1}
+                  {item[1]}
                 </option>
               );
-            })}
+            }
+          )}
         </select>
       </div>
       <div className={styles.selectItem}>
         <label htmlFor="prop3">Транзисторы</label>
-        <select name="" id="prop3"  onChange={(e) => selectChange(e)}>
+        <select name="" id="prop3" onChange={(e) => selectChange(e)}>
           {Array(3)
             .fill("")
             .map((item, index) => {
@@ -75,7 +113,9 @@ const RightSidebar: FC = () => {
                 <option
                   key={index + 1}
                   value={index + 1}
-                  selected={index + 1 === currentItemProperties?.prop3 ? true : false}
+                  selected={
+                    index + 1 === currentItemProperties?.prop3 ? true : false
+                  }
                 >
                   {index + 1}
                 </option>

@@ -51,7 +51,7 @@ const Flow: FC = () => {
     [setEdges]
   );
 
-  //  console.log(reduxNodes[1]);
+   console.log(reduxNodes);
 
   const { getIntersectingNodes } = useReactFlow();
 

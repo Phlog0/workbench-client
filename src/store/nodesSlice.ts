@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 type TUpdateNodeProps = {
   id: string;
   key: string;
-  value: number;
+  value: string;
 };
 
 type TCoords = {
@@ -49,7 +49,7 @@ const initialState = {
     {
       id: "tire1",
       data: { label: "tire" },
-      type: 'TireNodeType',
+      type: "TireNodeType",
       position: { x: 0, y: 0 },
       // className: "light",
       parentNode: "group1",
@@ -62,17 +62,54 @@ const initialState = {
       type: "CustomNodeType",
       position: { x: 0, y: 0 },
 
-      prop1: 1,
-      prop2: 2,
-      prop3: 3,
+      cellType: {
+        prop1: "ТСН",
+        prop2: "Шинный мост",
+        prop3: "СВ",
+        prop4: "СР",
+        prop5: "Шинный переход",
+        prop6: "Ввод",
+        prop7: "Отходящая линия",
+        prop8: "УКРМ",
+        prop9: "ТН",
+      },
+      currentCellType: "prop1",
+
+      commutationType :{
+        prop1: "ВВ",
+        prop2: "ВР",
+        prop3: "ВНВР",
+      },
+      currentCommutationType: "prop1",
+
+
     },
+
     {
       id: "2",
       type: "CustomNodeType",
       position: { x: 0, y: 100 },
-      prop1: 3,
-      prop2: 2,
-      prop3: 1,
+      // prop1: 3,
+      // prop2: 2,
+      // prop3: 1,
+      cellType: {
+        prop1: "ТСН",
+        prop2: "Шинный мост",
+        prop3: "СВ",
+        prop4: "СР",
+        prop5: "Шинный переход",
+        prop6: "Ввод",
+        prop7: "Отходящая линия",
+        prop8: "УКРМ",
+        prop9: "ТН",
+      },
+      currentCellType: "prop1",
+      commutationType :{
+        prop1: "ВВ",
+        prop2: "ВР",
+        prop3: "ВНВР",
+      },
+      currentCommutationType: "prop1",
     },
 
     // {
@@ -104,15 +141,23 @@ const nodeSlice = createSlice({
       state.nodes.push(action.payload);
     },
 
-    updateProperties(state, action: PayloadAction<TUpdateNodeProps>) {
+    updateCellType(state, action: PayloadAction<TUpdateNodeProps>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
+      console.log(action.payload);
 
-      node[action.payload.key] = action.payload.value;
-      //as keyof
+      const newCurrentKey = `prop${+action.payload.key + 1}`;
+      node.currentCellType = newCurrentKey;
+    },
+    updateCommutationType(state, action: PayloadAction<TUpdateNodeProps>) {
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      console.log(action.payload);
+
+      const newCurrentKey = `prop${+action.payload.key + 1}`;
+      node.currentCommutationType = newCurrentKey;
     },
     updateCoordinats(state, action: PayloadAction<TUpdateNodeCoords>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
-      4;
+
       if (node != undefined) node.position = action.payload.position;
     },
 
@@ -127,7 +172,8 @@ const nodeSlice = createSlice({
 });
 
 export const {
-  updateProperties,
+  updateCellType,
+  updateCommutationType,
   updateCoordinats,
   addNode,
   changeCurrentNode,
