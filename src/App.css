@@ -5,8 +5,8 @@
 
 .app{
  display: grid;
- grid-template-columns: 1fr 10rem;
- grid-template-rows: auto 200%;
+ grid-template-columns: 1fr 30rem;
+ grid-template-rows: auto 100dvh;
 }
 
 .redCircle{

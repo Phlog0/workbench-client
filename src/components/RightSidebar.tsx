@@ -1,9 +1,15 @@
 import React, { FC, useState, useMemo } from "react";
 import styles from "./RightSidebar.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
-import { updateCellType, updateCommutationType } from "../store/nodesSlice";
+import {
+  updateCellType,
+  updateCommutationType,
+  updateTransformatorType,
+} from "../store/nodesSlice";
+import SwitchingDevice from "./RightSidebar/SwitchingDevice";
 
 const RightSidebar: FC = () => {
+
   const currentItemId: string = useAppSelector(
     (state) => state.nodes.currentNode.id
   );
@@ -11,33 +17,42 @@ const RightSidebar: FC = () => {
     state.nodes.nodes.find((node) => node.id === currentItemId)
   );
 
-  const currentCellType = currentItemProperties?.currentCellType;
 
-  // console.log(currentItemProperties.prop1, currentItemProperties.prop2,currentItemProperties.prop3)
+
+  const cellOptions = currentItemProperties?.cellOptions;
+  const currentCellOption = currentItemProperties?.currentCellOption;
+  const commutationOptions = currentItemProperties?.commutationOptions;
+  const currentCommutationOption = currentItemProperties?.currentCommutationOption;
+  const transformerOptions = currentItemProperties?.transformatorOptions;
+  const currentTransformatorOption = currentItemProperties?.currentTransformatorOption;
+
+
+
 
   const dispatch = useAppDispatch();
   const selectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const select = event.target;
-    const option = Array.from(event.target.options).find(
-      (item) => select.selectedIndex === +item.dataset.key
-    );
 
-    console.log(option);
-    const value = select.value;
-
-    // const key = event.target.key;
-    // console.log(key, value);
     if (select.id === "cellType")
       dispatch(
-        updateCellType({ id: currentItemId, key: option?.dataset.key, value })
+        updateCellType({
+          id: currentItemId,
+          index: select.selectedIndex,
+        })
       );
 
     if (select.id === "commutationType")
       dispatch(
         updateCommutationType({
           id: currentItemId,
-          key: option?.dataset.key,
-          value,
+          index: select.selectedIndex,
+        })
+      );
+    if (select.id === "transformatorType")
+      dispatch(
+        updateTransformatorType({
+          id: currentItemId,
+          index: select.selectedIndex,
         })
       );
   };
@@ -47,37 +62,22 @@ const RightSidebar: FC = () => {
       <div className={styles.selectItem}>
         <label htmlFor="cellType">Тип ячейки</label>
         <select name="cellType" id="cellType" onChange={(e) => selectChange(e)}>
-          {Object.entries(currentItemProperties?.cellType).map(
-            (item, index) => {
-              return (
-                <option
-                  key={index + 1}
-                  value={item[1]}
-                  data-key={index}
-                  selected={
-                    `prop${index + 1}` === currentCellType ? true : false
-                  }
-                >
-                  {item[1]}
-                </option>
-              );
-            }
-          )}
-          {/* {Array(3)
-            .fill("")
-            .map((item, index) => {
-              return (
-                <option
-                  key={index + 1}
-                  value={index + 1}
-                  selected={index + 1 === currentItemProperties?.prop1 ? true : false}
-                >
-
-                </option>
-              );
-            })} */}
+          {cellOptions && cellOptions.map((item, index) => {
+            return (
+              <option
+                key={index}
+                value={item}
+                data-key={index}
+                selected={index === currentCellOption ? true : false}
+              >
+                {item}
+              </option>
+            );
+          })}
         </select>
       </div>
+
+      
       <div className={styles.selectItem}>
         <label htmlFor="commutationType">Тип коммутационного аппарата</label>
         <select
@@ -85,39 +85,38 @@ const RightSidebar: FC = () => {
           id="commutationType"
           onChange={(e) => selectChange(e)}
         >
-          {Object.entries(currentItemProperties?.commutationType).map(
-            (item, index) => {
-              return (
-                <option
-                  key={index + 1}
-                  value={item[1]}
-                  data-key={index}
-                  selected={
-                    `prop${index + 1}` === currentCellType ? true : false
-                  }
-                >
-                  {item[1]}
-                </option>
-              );
-            }
-          )}
+          {commutationOptions && commutationOptions.map((item, index) => {
+            return (
+              <option
+                key={index}
+                value={item}
+                data-key={index}
+                selected={index === currentCommutationOption ? true : false}
+              >
+                {item}
+              </option>
+            );
+          })}
         </select>
+        <SwitchingDevice id={currentItemId} />
       </div>
+
+
       <div className={styles.selectItem}>
-        <label htmlFor="prop3">Транзисторы</label>
-        <select name="" id="prop3" onChange={(e) => selectChange(e)}>
-          {Array(3)
-            .fill("")
-            .map((item, index) => {
+        <label htmlFor="transformatorType">Трансформаторы тока</label>
+        <select
+          name="transformatorType"
+          id="transformatorType"
+          onChange={(e) => selectChange(e)}
+        >
+          {transformerOptions?.length &&
+            transformerOptions.map((item, index) => {
               return (
                 <option
-                  key={index + 1}
-                  value={index + 1}
-                  selected={
-                    index + 1 === currentItemProperties?.prop3 ? true : false
-                  }
+                  key={index}
+                  selected={index === currentTransformatorOption ? true : false}
                 >
-                  {index + 1}
+                  {item}
                 </option>
               );
             })}

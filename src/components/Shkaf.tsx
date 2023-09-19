@@ -2,88 +2,62 @@ import React, { FC, useEffect, useState } from "react";
 import styles from "./Skkaf.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
 import tire from "../SvgModels/SERGO_tire.svg";
+import PowerSwitch from "./shkafElements/PowerSwitch";
 interface IShkafProps {
   id: string;
 }
-import PowerSwitch from "../SvgModels/PowerSwitch.svg";
-import CurrentMeasuringTransformer_2 from "../SvgModels/CurrentMeasuringTransformer_2.svg";
 
-// MIDDLE OPTIONS
-import Ammeter from "../SvgModels/Ammeter.svg";
-import Drawout from "../SvgModels/Drawout.svg";
-import ExcessVoltageSuppressor from "../SvgModels/ExcessVoltageSuppressor.svg";
-import Fuse from "../SvgModels/Fuse.svg";
-import GroundKnife from "../SvgModels/GroundKnife.svg";
-import VoltageMeasuringTransformer from "../SvgModels/VoltageMeasuringTransformer.svg";
+import mainSkelet from "../SvgModels/1.svg";
+import TT_2_A_B_C from "../SvgModels/ТТ_2_А-В-С.svg";
+import TT_2_A_C from "../SvgModels/ТТ_2_А-С.svg";
+
+import TT_3_A_B_C from "../SvgModels/ТТ_3_А-В-С.svg";
+import TT_3_A_C from "../SvgModels/ТТ_3_А-С.svg";
+
+import TT_4_A_B_C from "../SvgModels/ТТ_4_А-В-С.svg";
+import TT_4_A_C from "../SvgModels/ТТ_4_А-С.svg";
+
+import TT_5_A_B_C from "../SvgModels/ТТ_5_А-В-С.svg";
+import TT_5_A_C from "../SvgModels/ТТ_5_А-С.svg";
+
+import TT_6_A_B_C from "../SvgModels/ТТ_6_А-В-С.svg";
+import TT_6_A_C from "../SvgModels/ТТ_6_А-С.svg";
+
+const hash = [
+  "",
+  TT_2_A_C,
+  TT_3_A_C,
+  TT_4_A_C,
+  TT_5_A_C,
+  TT_6_A_C,
+  TT_2_A_B_C,
+  TT_3_A_B_C,
+  TT_4_A_B_C,
+  TT_5_A_B_C,
+  TT_6_A_B_C,
+];
 
 const Shkaf: FC<IShkafProps> = ({ id }) => {
-  // const values = useAppSelector((state) =>
-  //   state.nodes.nodes.find((item) => item.id === id)
-  // );
   const values = useAppSelector((state) => state.nodes.nodes);
 
   const item = values.find((item) => item.id === id);
-  // console.log(item);
 
-  // console.log('SHKAF>>>',topItemsCount, middleItemsCount,bottomItemsCount);
+  const currentTransformatorOption = item?.currentTransformatorOption;
   return (
     <div className={styles.shkaf}>
-      <div className={styles.shkafTop}>
-        {/* {item?.prop1 &&
-          Array(item?.prop1)
-            .fill("")
-            .map((i) => {
-              return (
-                <div onClick={() => console.log("hello")} key={Math.random()}>
-                </div>
-              );
-            })} */}
-        <img src={tire} alt="#" className={styles.topTire} />
+      <img src={mainSkelet} alt="" className={styles.mainSkelet} />
+      <div className={styles.shkafPowerSwitch}>
+        <PowerSwitch id={id} />
       </div>
       <div className={styles.shkafMiddle}>
-        {/* {item?.prop2 &&
-          Array(item?.prop2)
-            .fill(" ")
-            .map<JSX.Element>((i) => {
-              return <div key={Math.random()}></div>;
-            })} */}
-        <img src={tire} alt="#" className={styles.middleTopTire} />
-        <div className={styles.middlePowerSwitch}>
-          <img src={PowerSwitch} alt="#" />
-        </div>
-        <div className={styles.middleTransformers}>
-          <img src={CurrentMeasuringTransformer_2} alt="#" />
-          <img src={CurrentMeasuringTransformer_2} alt="#" />
-          <img src={CurrentMeasuringTransformer_2} alt="#" />
+        {/*========================= COMPONENT TRANSFORMATOR========================= */}
+        <div className={styles.transformators}>
+          <img src={hash[currentTransformatorOption]} alt="" />
         </div>
 
-        {/* САМЫЙ ОБЪЁМНЫЙ БЛОК */}
-
-        <div className={styles.middleVoltage}>
-          <img src={tire} alt=""  className={styles.middleLine}/>
-          <div className={styles.middleVoltageLeft}>
-            <img src={Drawout} alt="#" />
-            <img src={Ammeter} alt="#" />
-            <img src={GroundKnife} alt="#" />
-          </div>
-          <div className={styles.middleVoltageLine}>
-            <img src={tire} alt="#" />
-          </div>
-          <div className={styles.middleVoltageRight}>
-            <div className={styles.middleVoltageRightTop}><img src={VoltageMeasuringTransformer} alt="" /></div>
-            <div className={styles.middleVoltageRightMiddle}><img src={Fuse} alt="" /></div>
-            <div className={styles.middleVoltageRightBottom}><img src={ExcessVoltageSuppressor} alt="" /></div>
-          </div>
-        </div>
+        {/*========================= COMPONENT TRANSFORMATOR========================= */}
       </div>
-      <div className={styles.shkafBottom}>
-        {/* {item?.prop3 &&
-          Array(item?.prop3)
-            .fill("")
-            .map((i) => {
-              return <div key={Math.random()}></div>;
-            })} */}
-      </div>
+      <div className={styles.shkafBottom}></div>
     </div>
   );
 };

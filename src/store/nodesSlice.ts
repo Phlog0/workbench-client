@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TArrivalSidebarProps } from "../types/types";
 import { act } from "react-dom/test-utils";
+import { curryGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware";
 
 type TUpdateNodeProps = {
   id: string;
-  key: string;
-  value: string;
+  index: number;
 };
 
 type TCoords = {
@@ -33,56 +33,70 @@ type TCurrentIndex = {
   index: number;
 };
 
+type TTransformator = {
+  id: string;
+  index: number;
+};
+
 const initialState = {
   nodes: [
-    {
-      id: "group1",
-      data: { label: "Group A" },
-      position: { x: 220, y: 200 },
-      // className: "light",
-      style: {
-        // backgroundColor: "rgba(255, 0, 0, 0.2)",
-        width: 200,
-        height: 200,
-      },
-    },
-    {
-      id: "tire1",
-      data: { label: "tire" },
-      type: "TireNodeType",
-      position: { x: 0, y: 0 },
-      // className: "light",
-      parentNode: "group1",
-      extent: "parent",
-      style: { width: 100, height: 10 },
-    },
+    // {
+    //   id: "group1",
+    //   data: { label: "Group A" },
+    //   position: { x: 220, y: 200 },
+    //   // className: "light",
+    //   style: {
+    //     // backgroundColor: "rgba(255, 0, 0, 0.2)",
+    //     width: 200,
+    //     height: 200,
+    //   },
+    // },
+    // {
+    //   id: "tire1",
+    //   data: { label: "tire" },
+    //   type: "TireNodeType",
+    //   position: { x: 0, y: 0 },
+    //   // className: "light",
+    //   parentNode: "group1",
+    //   extent: "parent",
+    //   style: { width: 100, height: 10 },
+    // },
 
     {
       id: "1",
       type: "CustomNodeType",
       position: { x: 0, y: 0 },
 
-      cellType: {
-        prop1: "ТСН",
-        prop2: "Шинный мост",
-        prop3: "СВ",
-        prop4: "СР",
-        prop5: "Шинный переход",
-        prop6: "Ввод",
-        prop7: "Отходящая линия",
-        prop8: "УКРМ",
-        prop9: "ТН",
-      },
-      currentCellType: "prop1",
+      cellOptions: [
+        "ТСН",
+        "Шинный мост",
+        "СВ",
+        "СР",
+        "Шинный переход",
+        "Ввод",
+        "Отходящая линия",
+        "УКРМ",
+        "ТН",
+      ],
+      currentCellOption: 0,
 
-      commutationType :{
-        prop1: "ВВ",
-        prop2: "ВР",
-        prop3: "ВНВР",
-      },
-      currentCommutationType: "prop1",
+      commutationOptions: ["нет", "ВВ", "ВР", "ВНВР"],
+      currentCommutationOption: 0,
 
-
+      transformatorOptions: [
+        "нет",
+        "2 трансформатора тока 2 обмотки",
+        "2 трансформатора тока 3 обмотки",
+        "2 трансформатора тока 4 обмотки",
+        "2 трансформатора тока 5 обмотки",
+        "2 трансформатора тока 6 обмотки",
+        "3 трансформатора тока 2 обмотки",
+        "3 трансформатора тока 3 обмотки",
+        "3 трансформатора тока 4 обмотки",
+        "3 трансформатора тока 5 обмотки",
+        "3 трансформатора тока 6 обмотки",
+      ],
+      currentTransformatorOption: 1,
     },
 
     {
@@ -92,34 +106,37 @@ const initialState = {
       // prop1: 3,
       // prop2: 2,
       // prop3: 1,
-      cellType: {
-        prop1: "ТСН",
-        prop2: "Шинный мост",
-        prop3: "СВ",
-        prop4: "СР",
-        prop5: "Шинный переход",
-        prop6: "Ввод",
-        prop7: "Отходящая линия",
-        prop8: "УКРМ",
-        prop9: "ТН",
-      },
-      currentCellType: "prop1",
-      commutationType :{
-        prop1: "ВВ",
-        prop2: "ВР",
-        prop3: "ВНВР",
-      },
-      currentCommutationType: "prop1",
-    },
+      cellOptions: [
+        "ТСН",
+        "Шинный мост",
+        "СВ",
+        "СР",
+        "Шинный переход",
+        "Ввод",
+        "Отходящая линия",
+        "УКРМ",
+        "ТН",
+      ],
+      currentCellType: 2,
 
-    // {
-    //   id: "1693935908222",
-    //   type: "CustomNodeType",
-    //   position: { x: 0, y: 100 },
-    //   prop1: 1,
-    //   prop2: 1,
-    //   prop3: 1,
-    // },
+      commutationOptions: ["нет", "ВВ", "ВР", "ВНВР"],
+      currentCommutationOption: 1,
+
+      transformatorOptions: [
+        "нет",
+        "2 трансформатора тока 2 обмотки",
+        "2 трансформатора тока 3 обмотки",
+        "2 трансформатора тока 4 обмотки",
+        "2 трансформатора тока 5 обмотки",
+        "2 трансформатора тока 6 обмотки",
+        "3 трансформатора тока 2 обмотки",
+        "3 трансформатора тока 3 обмотки",
+        "3 трансформатора тока 4 обмотки",
+        "3 трансформатора тока 5 обмотки",
+        "3 трансформатора тока 6 обмотки",
+      ],
+      currentTransformatorOption: 9,
+    },
   ],
   currentNode: {
     id: "1",
@@ -143,17 +160,15 @@ const nodeSlice = createSlice({
 
     updateCellType(state, action: PayloadAction<TUpdateNodeProps>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
-      console.log(action.payload);
-
-      const newCurrentKey = `prop${+action.payload.key + 1}`;
-      node.currentCellType = newCurrentKey;
+      node.currentCellOption = action.payload.index;
     },
     updateCommutationType(state, action: PayloadAction<TUpdateNodeProps>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
-      console.log(action.payload);
-
-      const newCurrentKey = `prop${+action.payload.key + 1}`;
-      node.currentCommutationType = newCurrentKey;
+      node.currentCommutationOption = action.payload.index;
+    },
+    updateTransformatorType(state, action: PayloadAction<TTransformator>) {
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      node.currentTransformatorOption = action.payload.index;
     },
     updateCoordinats(state, action: PayloadAction<TUpdateNodeCoords>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
@@ -174,6 +189,7 @@ const nodeSlice = createSlice({
 export const {
   updateCellType,
   updateCommutationType,
+  updateTransformatorType,
   updateCoordinats,
   addNode,
   changeCurrentNode,

@@ -51,7 +51,7 @@ const Flow: FC = () => {
     [setEdges]
   );
 
-   console.log(reduxNodes);
+  //  console.log(reduxNodes);
 
   const { getIntersectingNodes } = useReactFlow();
 
@@ -75,9 +75,11 @@ const Flow: FC = () => {
     if (node !== null) dispatch(changeCurrentNode({ id: node.id }));
   };
 
+
+  
+
   const onNodeDrag = useCallback((_: MouseEvent, node: Node) => {
     const intersections = getIntersectingNodes(node).map((n) => n.id);
-    console.log(intersections);
     setNodes((ns) =>
       ns.map((n) => ({
         ...n,
@@ -85,6 +87,8 @@ const Flow: FC = () => {
       }))
     );
   }, []);
+
+
 
 
   const handleCoords = (event, node) => {

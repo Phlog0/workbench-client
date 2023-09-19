@@ -1,9 +1,9 @@
 .shkaf {
   min-height: 500px;
   min-width: 300px;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   overflow: hidden;
   // & > *{
@@ -11,96 +11,23 @@
   // }
 }
 
-.topTire {
-  // background: red;
+.mainSkelet{
   position: absolute;
-  top: -25%;
-  // right: 0;
-  // background-color: red;
-}
-
-.middleTopTire {
-  rotate: 90deg;
-  max-width: 100px;
-  position: absolute;
+  top: 0;
   left: 50%;
-  translate: -50% 1.6rem;
+  transform: translateX(-50%);
 }
 
-.middlePowerSwitch {
-  max-width: 100px;
-  margin-top: 7.5rem;
-  margin-left: -14px;
-  // background-color: red;
-  img {
-    width: 100%;
-  }
-}
 
-.middleTransformers {
-  max-width: 100px;
+
+.transformators{
+  max-width: 10rem;
+  max-height: 10rem;
   display: flex;
   justify-content: center;
-  // background: red;
-  img {
-    width: 50%;
+  margin-top: 1rem;
+  margin-left: .1rem;
+  img{
+    width: 100%;
   }
-}
-
-.shkafTop,
-.shkafMiddle,
-.shkafBottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.middleVoltage {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  width: 100%;
-}
-
-.middleVoltageLeft {
-  max-width: 50px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 3.6rem;
-}
-
-.middleVoltageLine {
-  position: absolute;
-  // background-color: red;
-  left: 50%;
-  transform: translate(-50%,-5rem);
-  height: 50px;
-  width: 70%;
-}
-
-.middleVoltageRight {
-  max-width: 100px;
-  //   max-height: 100px;
-  //   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-
-
-  img {
-    width: 80%;
-    margin-top: -1rem;
-
-  }
-}
-
-.middleVoltageRightTop{
-    margin-left: 0.9rem;
-    margin-bottom: .5rem;
-}
-
-.middleLine{
-    rotate: 90deg;
-    position: absolute;
-    top: -5rem;
 }
