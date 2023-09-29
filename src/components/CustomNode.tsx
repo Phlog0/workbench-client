@@ -24,20 +24,12 @@ const CustomNode = ({ data, isConnectable }) => {
 
   return (
     <div className={styles.customNode}>
-      <NodeResizeControl minWidth={100} minHeight={50}></NodeResizeControl>
-      <Handle
+      {/* <Handle
         type="target"
         position={Position.Top}
         isConnectable={isConnectable}
-      />
+      /> */}
       <div>{data.label}</div>
-      <Handle
-        type="source"
-        position={Position.Bottom}
-       
-        id="a"
-        isConnectable={isConnectable}
-      />
     </div>
   );
 };

@@ -38,9 +38,9 @@ const hash = [
 ];
 
 const Shkaf: FC<IShkafProps> = ({ id }) => {
-  const values = useAppSelector((state) => state.nodes.nodes);
+  const item = useAppSelector((state) => state.nodes.nodes).find((item) => item.id === id);
 
-  const item = values.find((item) => item.id === id);
+  // const item = values.find((item) => item.id === id);
 
   const currentTransformatorOption = item?.currentTransformatorOption;
   return (

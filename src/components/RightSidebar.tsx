@@ -7,9 +7,9 @@ import {
   updateTransformatorType,
 } from "../store/nodesSlice";
 import SwitchingDevice from "./RightSidebar/SwitchingDevice";
+import SwitchingTransformator from "./RightSidebar/SwitchingTransformator";
 
 const RightSidebar: FC = () => {
-
   const currentItemId: string = useAppSelector(
     (state) => state.nodes.currentNode.id
   );
@@ -17,17 +17,16 @@ const RightSidebar: FC = () => {
     state.nodes.nodes.find((node) => node.id === currentItemId)
   );
 
+  const selectProperties = useAppSelector((state) => state.nodes.properties);
 
-
-  const cellOptions = currentItemProperties?.cellOptions;
+  const cellOptions = selectProperties?.cellOptions;
   const currentCellOption = currentItemProperties?.currentCellOption;
-  const commutationOptions = currentItemProperties?.commutationOptions;
-  const currentCommutationOption = currentItemProperties?.currentCommutationOption;
-  const transformerOptions = currentItemProperties?.transformatorOptions;
-  const currentTransformatorOption = currentItemProperties?.currentTransformatorOption;
-
-
-
+  const commutationOptions = selectProperties?.commutationOptions;
+  const currentCommutationOption =
+    currentItemProperties?.currentCommutationOption;
+  const transformerOptions = selectProperties?.transformatorOptions;
+  const currentTransformatorOption =
+    currentItemProperties?.currentTransformatorOption;
 
   const dispatch = useAppDispatch();
   const selectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -62,22 +61,22 @@ const RightSidebar: FC = () => {
       <div className={styles.selectItem}>
         <label htmlFor="cellType">Тип ячейки</label>
         <select name="cellType" id="cellType" onChange={(e) => selectChange(e)}>
-          {cellOptions && cellOptions.map((item, index) => {
-            return (
-              <option
-                key={index}
-                value={item}
-                data-key={index}
-                selected={index === currentCellOption ? true : false}
-              >
-                {item}
-              </option>
-            );
-          })}
+          {cellOptions &&
+            cellOptions.map((item, index) => {
+              return (
+                <option
+                  key={index}
+                  value={item}
+                  data-key={index}
+                  selected={index === currentCellOption ? true : false}
+                >
+                  {item}
+                </option>
+              );
+            })}
         </select>
       </div>
 
-      
       <div className={styles.selectItem}>
         <label htmlFor="commutationType">Тип коммутационного аппарата</label>
         <select
@@ -85,22 +84,22 @@ const RightSidebar: FC = () => {
           id="commutationType"
           onChange={(e) => selectChange(e)}
         >
-          {commutationOptions && commutationOptions.map((item, index) => {
-            return (
-              <option
-                key={index}
-                value={item}
-                data-key={index}
-                selected={index === currentCommutationOption ? true : false}
-              >
-                {item}
-              </option>
-            );
-          })}
+          {commutationOptions &&
+            commutationOptions.map((item, index) => {
+              return (
+                <option
+                  key={index}
+                  value={item}
+                  data-key={index}
+                  selected={index === currentCommutationOption ? true : false}
+                >
+                  {item}
+                </option>
+              );
+            })}
         </select>
         <SwitchingDevice id={currentItemId} />
       </div>
-
 
       <div className={styles.selectItem}>
         <label htmlFor="transformatorType">Трансформаторы тока</label>
@@ -121,6 +120,7 @@ const RightSidebar: FC = () => {
               );
             })}
         </select>
+        <SwitchingTransformator id={currentItemId} />
       </div>
     </div>
   );

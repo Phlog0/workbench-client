@@ -1,0 +1,30 @@
+
+.menu{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.SwitchingTransformatorTitle{
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+
+}
+
+.typeItem{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.openMenu{
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+}
+
+
+.closed {
+    display: none;
+}

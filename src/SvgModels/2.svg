@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg  
-   preserveAspectRatio='none'
-
-xmlns="http://www.w3.org/2000/svg" width="800.000" height="600.000" viewBox="0.0 0.0 800.000 600.000" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" width="800.000" height="600.000" viewBox="0.0 0.0 800.000 600.000" version="1.1">
   <title>Produce by Acme CAD Converter</title>
   <desc>Produce by Acme CAD Converter</desc>
-<path d="M400 1.7L400 598.3"
-fill="none" stroke="black" stroke-width="1"/>
+<path d="M390.41 1.7L409.59 1.7 409.59 598.3 390.41 598.3 390.41 1.7Z"
+fill-rule="evenodd" fill="black"/>
 </svg>
