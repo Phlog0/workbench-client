@@ -1,46 +1,46 @@
-.container{
-    display: flex;
-    justify-content: center;
+.container {
+  display: flex;
+  justify-content: center;
 }
 
-.mySwitchContainer{
-    margin-top: 3.1rem;
-    padding-right: 1.45rem;
-    max-width: 11rem;
-    position: relative;
+.mySwitchContainer {
+  margin-top: 2rem;
+  padding-right: 1.39rem;
+  max-width: 11rem;
+  position: relative;
+  height: 10rem;
 }
 
-.mySwitch{
-width: 100%;
+.mySwitch {
+  width: 100%;
 }
 
-
-.DrawoutDown, .DrawoutUp{
-position: absolute;
-max-width: 4rem;
-
+.DrawoutDown,
+.DrawoutUp {
+  position: absolute;
+  max-width: 4rem;
 }
 
-.DrawoutUp{
-    top: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
+.DrawoutUp {
+  top: -1rem;
+  left: 50.4%;
+  transform: translateX(-50%);
 }
 
-.DrawoutDown{
-    bottom: -1rem;
-left: 50%;
-transform:  translateX(-50%) rotate(180deg);
+.DrawoutDown {
+  bottom: -1rem;
+  left: 50.4%;
+  transform: translateX(-50%) rotate(180deg);
 }
 
-.noSwitchContainer{
-    margin-top: 2rem;
-    max-width: 10rem;
-    max-height: 10rem;
-display: flex;
-justify-content: center;
+.noSwitchContainer {
+  margin-top: 2rem;
+  max-width: 10rem;
+  max-height: 10rem;
+  display: flex;
+  justify-content: center;
 }
 
-.noSwitch{
-    min-height: 100%;
+.noSwitch {
+  min-height: 100%;
 }

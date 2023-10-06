@@ -1,16 +1,17 @@
 .header{
-    background-color: rgb(255, 255, 255);
-    padding: 2rem;
+    // background-color: rgb(255, 255, 255);
+    padding: 1rem;
     display: flex;
     gap: 1rem;
     grid-column: 1/-1;
-    // grid-column: span 2;
     border: 1px solid gray;
 }
 .addBtn{
     background-color: rgb(97, 194, 97);
     padding: 1rem;
     cursor: pointer;
+    display: grid;
+    place-content: center;
 
 }
 
@@ -18,4 +19,26 @@
     background-color: rgb(97, 136, 194);
     padding: 1rem;
     cursor: pointer;
+}
+
+.importJsonLabel{
+    background-color: rgb(93, 148, 12);
+    color: aliceblue;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    & > input[type=file]{
+        display: none;
+    }
+    &:hover{
+        background-color: rgb(162, 226, 67);
+    }
+}
+
+.navbarStep{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }

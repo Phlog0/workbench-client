@@ -1,76 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="800.000"
-   height="600.000"
-   viewBox="0.0 0.0 800.000 600.000"
-   version="1.1"
-   id="svg16"
-   sodipodi:docname="PowerSwitch.svg"
-   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   preserveAspectRatio='none'
-   >
-  <defs
-     id="defs20" />
-  <sodipodi:namedview
-     id="namedview18"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     showgrid="false"
-     inkscape:zoom="1.685"
-     inkscape:cx="400.29674"
-     inkscape:cy="299.70326"
-     inkscape:window-width="2560"
-     inkscape:window-height="1369"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg16" />
-  <title
-     id="title2">Produce by Acme CAD Converter</title>
-  <desc
-     id="desc4">Produce by Acme CAD Converter</desc>
-  <path
-     d="M482.39 207.68L428.39 153.68"
-     fill="none"
-     stroke="black"
-     stroke-width="0.5"
-     id="path6"
-     style="stroke-width:4;stroke-dasharray:none" />
-  <path
-     d="M482.39 153.68L428.39 207.68"
-     fill="none"
-     stroke="black"
-     stroke-width="0.5"
-     id="path8"
-     style="stroke-width:4;stroke-dasharray:none" />
-  <path
-     d="M455.39 180.68L455.39 1.7"
-     fill="none"
-     stroke="black"
-     stroke-width="0.5"
-     id="path10"
-     style="stroke-width:4;stroke-dasharray:none" />
-  <path
-     d="M455.39 419.32L455.39 598.3"
-     fill="none"
-     stroke="black"
-     stroke-width="0.5"
-     id="path12"
-     style="stroke-width:4;stroke-dasharray:none" />
-  <path
-     d="M455.39 419.32L317.61 180.68"
-     fill="none"
-     stroke="black"
-     stroke-width="0.5"
-     id="path14"
-     style="stroke-width:4;stroke-dasharray:none" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800.000" height="600.000" viewBox="0.0 0.0 800.000 600.000" version="1.1">
+  <title>Produce by Acme CAD Converter</title>
+  <desc>Produce by Acme CAD Converter</desc>
+<path d="M488.27 202.39L477.7 212.96 423.7 158.97 434.27 148.39 488.27 202.39Z"
+fill-rule="evenodd" fill="black"/>
+<path d="M477.7 148.39L488.27 158.97 434.27 212.96 423.7 202.39 477.7 148.39Z"
+fill-rule="evenodd" fill="black"/>
+<path d="M463.46 180.68L448.51 180.68 448.51 1.7 463.46 1.7 463.46 180.68Z"
+fill-rule="evenodd" fill="black"/>
+<path d="M448.51 419.32L463.46 419.32 463.46 598.3 448.51 598.3 448.51 419.32Z"
+fill-rule="evenodd" fill="black"/>
+<path d="M462.46 415.58L449.51 423.06 311.73 184.42 324.68 176.94 462.46 415.58Z"
+fill-rule="evenodd" fill="black"/>
 </svg>

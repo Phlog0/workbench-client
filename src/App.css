@@ -1,17 +1,12 @@
 *{
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .app{
  display: grid;
  grid-template-columns: 1fr 30rem;
- grid-template-rows: auto 100dvh;
+ grid-template-rows: 10dvh 90dvh;
 }
 
-.redCircle{
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: red;
-}

@@ -9,3 +9,20 @@
 .reactFlow .highlight {
   outline:3px dashed #000;
 }
+
+.downloadJSON{
+  background-color: rgba($color: #0bab3b, $alpha: 0.5);
+  color: #FFF;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.currentNode{
+  box-shadow: 0 0 0 1px blue;
+  background-color: rgba($color: #42f6ff, $alpha: 0.3);
+}
+
+.stepsContainer{
+  display: flex;
+  gap: 1rem;
+}

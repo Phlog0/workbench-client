@@ -1,11 +1,15 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import { Provider } from 'react-redux'
-import store from './store/index.ts'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import { Provider } from "react-redux";
+import store from "./store/index.ts";
+import { ChakraProvider } from "@chakra-ui/react";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <App />
-  </Provider>,
-)
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+    ,
+  </Provider>
+);
