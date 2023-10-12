@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, useEffect } from "react";
+import React, { FC, useCallback, useState, useEffect, useRef } from "react";
 import styles from "./Flow.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { updateProperties } from "../store/rightSidebarSlice";
@@ -30,6 +30,9 @@ import TireNode from "./TireNode";
 import axios from "axios";
 import { Button } from "@chakra-ui/react";
 
+import pdfMake from "pdfmake/build/pdfmake";
+import DownloadButton from "./utils/DownLoadButton";
+
 // const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
 
 const nodeTypes = { CustomNodeType: CustomNode, TireNodeType: TireNode };
@@ -53,6 +56,8 @@ const Flow: FC = () => {
       },
     };
   });
+
+  const flowRef = useRef();
   const dispatch = useAppDispatch();
   // console.log("REDUX STATE>>>>>>>>>>>>", renderNodes);
   const [nodes, setNodes, onNodesChange] = useNodesState(renderNodes); //НОВЫЕ НОДЫ
@@ -61,8 +66,6 @@ const Flow: FC = () => {
   //   (params) => setEdges((eds) => addEdge(params, eds)),
   //   [setEdges]
   // );
-  const [steps, setSteps] = useState([]);
-  const [stepsCounter, setStepsCounter] = useState(0);
 
   const { getIntersectingNodes } = useReactFlow();
 
@@ -75,8 +78,6 @@ const Flow: FC = () => {
 
   useEffect(() => {
     setNodes(renderNodes);
-    setSteps((prev) => [...prev, renderNodes]);
-    setStepsCounter((prev) => prev + 1);
   }, [reduxNodes]);
 
   const onSave = (event) => {
@@ -118,32 +119,14 @@ const Flow: FC = () => {
     }
   };
 
-  const prevStep = () => {
-    if (stepsCounter === 0) {
-      console.log("stepCounter=0");
-      return;
-    }
-
-    setStepsCounter((prev) => prev - 1);
-    setNodes(steps[stepsCounter]);
-  };
-  const nextStep = () => {
-    const { length } = steps;
-    console.log(length);
-
-    setNodes(steps[length - 1]);
-  };
-  console.log(reduxNodes);
-
   const handleContext = (event) => {
     event.preventDefault();
     console.log("right-click");
   };
 
-
   return (
     <div className={styles.mainFlow}>
-      <ReactFlow
+      <ReactFlow ref={flowRef}
         style={{ width: "100%", height: "100vh" }}
         nodes={nodes}
         // edges={edges}
@@ -174,7 +157,8 @@ const Flow: FC = () => {
         />
         <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Panel position="top-right">
-          <a
+          <Button colorScheme='green' p='0'>
+          <a 
             download={`${Date.now()}.json`}
             href="#"
             onClick={onSave}
@@ -182,17 +166,10 @@ const Flow: FC = () => {
           >
             Скачать JSON
           </a>
+          </Button>
+    
         </Panel>
-        <Panel position="top-left">
-          <div className={styles.stepsContainer}>
-            <Button colorScheme="green" onClick={prevStep}>
-              Шаг назад
-            </Button>
-            <Button colorScheme="green" onClick={nextStep}>
-              Шаг вперёд
-            </Button>
-          </div>
-        </Panel>
+          <DownloadButton myRef = {flowRef}/>
         <Controls />
       </ReactFlow>
     </div>

@@ -24,11 +24,6 @@ const CustomNode = ({ data, isConnectable }) => {
 
   return (
     <div className={styles.customNode}>
-      {/* <Handle
-        type="target"
-        position={Position.Top}
-        isConnectable={isConnectable}
-      /> */}
       <div>{data.label}</div>
     </div>
   );
