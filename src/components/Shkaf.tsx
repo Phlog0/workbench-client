@@ -24,7 +24,8 @@ import TT_6_A_B_C from "../SvgModels/ТТ_6_А-В-С.svg";
 import TT_6_A_C from "../SvgModels/ТТ_6_А-С.svg";
 
 const hash = [
-  "",
+  mainSkelet, 
+  // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
   TT_2_A_C,
   TT_3_A_C,
   TT_4_A_C,
@@ -52,7 +53,7 @@ const Shkaf: FC<IShkafProps> = ({ id }) => {
       <div className={styles.shkafMiddle}>
         {/*========================= COMPONENT TRANSFORMATOR========================= */}
         <div className={styles.transformators}>
-          <img src={hash[currentTransformatorOption]} alt="" />
+          <img src={hash[currentTransformatorOption]} alt="#" />
         </div>
 
         {/*========================= COMPONENT TRANSFORMATOR========================= */}

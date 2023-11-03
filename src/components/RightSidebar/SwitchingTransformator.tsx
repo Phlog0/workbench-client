@@ -108,7 +108,10 @@ const SwitchingTransformator: FC<{ id: string }> = ({ id }) => {
                                 </Box>
                               </AccordionButton>
                             </h2>
-                            <AccordionPanel pb={4} className={styles.AccordionPanel}>
+                            <AccordionPanel
+                              pb={4}
+                              className={styles.AccordionPanel}
+                            >
                               <div className={styles.AccordionPanelItem}>
                                 <label htmlFor="primaryCurrent">
                                   Первичный ток
@@ -157,12 +160,18 @@ const SwitchingTransformator: FC<{ id: string }> = ({ id }) => {
                                 </Box>
                               </AccordionButton>
                             </h2>
-                            <AccordionPanel pb={4} className={styles.AccordionPanel}>
+                            <AccordionPanel
+                              pb={4}
+                              className={styles.AccordionPanel}
+                            >
                               {Array(4)
                                 .fill("")
                                 .map((item, index) => {
                                   return (
-                                    <div className={styles.AccordionPanelItem}>
+                                    <div
+                                      className={styles.AccordionPanelItem}
+                                      key={index}
+                                    >
                                       {`обмотка ${index + 1}`}
                                       <Select>
                                         <option>0.25</option>

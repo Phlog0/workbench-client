@@ -32,6 +32,8 @@ import { Button } from "@chakra-ui/react";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import DownloadButton from "./utils/DownLoadButton";
+import PDFScheme from "./utils/PDFScheme";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 // const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
 
@@ -87,6 +89,7 @@ const Flow: FC = () => {
   };
 
   const onNodeClick = (event, node) => {
+    console.log(node.id);
     setNodes((ns) =>
       ns.map((n) => ({
         ...n,
@@ -126,7 +129,8 @@ const Flow: FC = () => {
 
   return (
     <div className={styles.mainFlow}>
-      <ReactFlow ref={flowRef}
+      <ReactFlow
+        ref={flowRef}
         style={{ width: "100%", height: "100vh" }}
         nodes={nodes}
         // edges={edges}
@@ -157,19 +161,29 @@ const Flow: FC = () => {
         />
         <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Panel position="top-right">
-          <Button colorScheme='green' p='0'>
-          <a 
-            download={`${Date.now()}.json`}
-            href="#"
-            onClick={onSave}
-            className={styles.downloadJSON}
-          >
-            Скачать JSON
-          </a>
+          <Button colorScheme="green" p="0">
+            <a
+              download={`${Date.now()}.json`}
+              href="#"
+              onClick={onSave}
+              className={styles.downloadJSON}
+            >
+              Скачать JSON
+            </a>
           </Button>
-    
         </Panel>
-          <DownloadButton myRef = {flowRef}/>
+        <DownloadButton myRef = {flowRef}/>
+        <Panel position="top-left">
+          {/* <PDFDownloadLink
+            document={<PDFScheme myRef={flowRef} />}
+            fileName="Scheme"
+          >
+            {({ loading }) =>
+              loading ? <button>Loading...</button> : <button>Download</button>
+            }
+          </PDFDownloadLink> */}
+       
+        </Panel>
         <Controls />
       </ReactFlow>
     </div>

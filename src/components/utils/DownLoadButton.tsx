@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Panel,
   useReactFlow,
@@ -6,73 +6,174 @@ import {
   getTransformForBounds,
 } from "reactflow";
 import { toJpeg, toPng, toSvg } from "html-to-image";
-import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { Button } from "@chakra-ui/react";
 import downloadjs from "downloadjs";
 import download from "downloadjs";
 import { Canvg } from "canvg";
+import { jsPDF } from "jspdf";
 import "svg2pdf.js";
-const imageWidth = 1024;
-const imageHeight = 768;
+import PDFDocument from "svg-to-pdfkit";
+import { Document, Page, Text } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
+import { pdf } from '@react-pdf/renderer'
+
+import Html from "react-pdf-html";
+import PDFScheme from "./PDFScheme";
+
+// import "svg2pdf.js";
+const imageWidth = 2000;
+const imageHeight = 2000;
+
+function downloadImage(dataUrl) {
+  const a = document.createElement("a");
+  let encodedValue = btoa(dataUrl);
+
+  // saveAs(dataUrl, "flow.png");
+  console.log(dataUrl);
+
+  // const image = new Image();
+
+  // image.src = dataUrl;
+  // document.body.append(image);
+
+  // const doc = new jsPDF({
+  //   unit: "px",
+  //   format: [2000, 2000],
+  // });
+  // doc.addImage(image, "png", 0, 0, 2000, 2000);
+
+  // doc.save("myPDF.pdf");
+
+
+  const handleDownload = async () => {
+    const blob = await pdf(<PDFScheme image={dataUrl} />).toBlob()
+    saveAs(blob, 'untitled.pdf')
+  }
+  handleDownload();
+  // doc.svg(image, { x: 0, y: 0, width: 100, height: 2000 })
+  // .then(() => {
+  // save the created pdf
+
+  // });
+
+  // const image = new Image();
+  // image.src = dataUrl;
+
+  // console.log(encodedValue);
+
+  // const linkSource = "data:application/pdf;base64," + encodedValue;
+  // console.log(linkSource);
+  // const downloadLink = document.createElement("a");
+  // const fileName = "abc.pdf";
+  // downloadLink.href = linkSource;
+  // downloadLink.download = fileName;
+  // downloadLink.click();
+
+  //     var obj = document.createElement('object');
+  // obj.style.width = '2000px';
+  // obj.style.height = '2000px';
+  // obj.type = 'application/pdf';
+  // obj.data = 'data:application/pdf;base64,' + encodedValue;
+  // document.body.appendChild(obj);
+
+  // const doc = new jsPDF();
+  // doc.svg(image).then(() => {
+  //   // save the created pdf
+  //   doc.save("myPDF.pdf");
+  // });
+
+  // const blob = new Blob([dataUrl], {
+  //   type: "text/plain",
+  // });
+  // console.log(dataUrl);
+  //   saveAs(dataUrl, 'flow.svg')
+  // a.setAttribute("download", "reactflow.svg");
+  // a.setAttribute("href", dataUrl);
+  // a.click();
+  // a.remove();
+  // const linkSource = `data:application/pdf;base64,${dataUrl.slice(
+  //       22,
+  //       -1
+  //     )}`;
+
+  // a.setAttribute("download", "reactflow.pdf");
+  // a.setAttribute("href", dataUrl);
+  // a.click();
+  // a.remove();
+
+  // const reader = new FileReader();
+  // reader.readAsDataURL(blob);
+
+  // reader.onload = function () {
+  //
+  //   const linkSource = reader.result;
+  //   console.log(linkSource);
+  //   const downloadLink = document.createElement("a");
+  //   const fileName = "abc.pdf";
+  //   downloadLink.href = linkSource;
+  //   downloadLink.download = fileName;
+  //   downloadLink.click();
+  // };
+}
 
 function DownloadButton({ myRef }) {
+  const [viewport, setViewport] = useState(false);
+
   const { getNodes } = useReactFlow();
-  const onClick = async (event) => {
-    const input = myRef.current.querySelector(".react-flow__viewport");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/svg");
-      console.log(ImageData);
-      const pdf = new jsPDF({
-        orientation: "p",
-        unit: "px",
-        format: "a3",
-        putOnlyUsedFonts: true,
-        precision: 20,
-      });
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 30;
-      console.log({
-        pdfWidth,
-        pdfHeight,
-        imgWidth,
-        imgHeight,
-        ratio,
-        imgX,
-        imgY,
-      });
-      pdf.addImage(
-        imgData,
-        'PNG',
-        imgX,
-        imgY,
-        imgWidth * ratio,
-        imgHeight * ratio
-      );
-      pdf.save("scheme.pdf");
-    });
+  const onClick = (event) => {
+    console.log(event.target);
+    const nodesBounds = getRectOfNodes(getNodes());
+    console.log(nodesBounds, getNodes());
+    const transform = getTransformForBounds(
+      nodesBounds,
+      imageWidth,
+      imageHeight,
+      0.5,
+      2
+    );
+    const flow = document.querySelector(
+      ".react-flow__viewport"
+    ) as HTMLDivElement;
 
-
-    // const pdf = new jsPDF("p", "mm", "a1", true);
-    // toSvg(document.querySelector(".react-flow__viewport")).then((imgData) => {
-    // download(imgData, "my-image.svg");
-    // const img = new Image();
-    // img.src = imgData;
-    // pdf.svg(img).then(() => {
-    //   (img, 'hello.pdf');
-    // });
-
-    // pdf.svg(imgData, "SVG");
-
-    // pdf.save("scheme.pdf");
-    // });
+    if (flow) {
+      console.log(flow);
+      toPng(flow, {
+        backgroundColor: "#fff",
+        width: imageWidth,
+        height: imageHeight,
+        style: {
+          width: `${imageWidth}`,
+          height: `${imageHeight}`,
+          transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
+        },
+      })
+        .then(downloadImage)
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
+  //
+  // const pdf = new jsPDF("p", "mm", "a1", true);
+  // toSvg(document.querySelector(".react-flow__viewport")).then((imgData) => {
+  // download(imgData, "my-image.svg");
+  // const img = new Image();
+  // img.src = imgData;
+  // pdf.svg(img).then(() => {
+  //   (img, 'hello.pdf');
+  // });
+
+  // pdf.svg(imgData, "SVG");
+
+  // pdf.save("scheme.pdf");
+  // });
+
+  // PDFDocument.prototype.addSVG = function(svg, x, y, options) {
+  //   return SVGtoPDF(this, svg, x, y, options), this;
+  // };
+  // doc.addSVG(svg, x, y, options);
 
   return (
     <Panel position="top-left">

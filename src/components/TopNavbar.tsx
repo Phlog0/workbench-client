@@ -80,12 +80,12 @@ const TopNavbar: FC = () => {
       </label>
       <div className={styles.navbarStep}>
         <label htmlFor="select-step">Шаг:</label>
-        <Select name="select-step" id="select-step" onChange={selectChange}>
+        <Select name="select-step" id="select-step" onChange={selectChange} value={currentGrid}>
           {snapGrids.map((gridItem, index) => (
             <option
               value={index}
               key={index}
-              selected={index === currentGrid ? true : false}
+              // selected={index === currentGrid ? true : false}
             >
               {gridItem}
             </option>

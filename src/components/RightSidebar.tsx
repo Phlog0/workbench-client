@@ -61,7 +61,12 @@ const RightSidebar: FC = () => {
     <div className={styles.wrapper}>
       <div className={styles.selectItem}>
         <label htmlFor="cellType">Тип ячейки</label>
-        <Select name="cellType" id="cellType" onChange={(e) => selectChange(e)}>
+        <Select
+          name="cellType"
+          id="cellType"
+          onChange={(e) => selectChange(e)}
+          // value={currentCellOption}
+        >
           {cellOptions &&
             cellOptions.map((item, index) => {
               return (
@@ -84,6 +89,7 @@ const RightSidebar: FC = () => {
           name="commutationType"
           id="commutationType"
           onChange={(e) => selectChange(e)}
+          // value={currentCommutationOption}
         >
           {commutationOptions &&
             commutationOptions.map((item, index) => {
