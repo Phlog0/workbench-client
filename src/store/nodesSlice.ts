@@ -119,6 +119,11 @@ const initialState = {
   currentGrid: {
     index: 0,
   },
+
+  // 🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥
+  currentOPN: {
+    id: 4,
+  },
 };
 
 const nodeSlice = createSlice({
@@ -131,14 +136,15 @@ const nodeSlice = createSlice({
       console.log(action.payload);
       state.nodes.push(action.payload);
     },
-    deleteNode(state,  action: PayloadAction<TCurrentNodeId>) {
-      if (action.payload.id === 'group1') return
-      const filteredNodes = state.nodes.filter(node => node.id !== action.payload.id);
+    deleteNode(state, action: PayloadAction<TCurrentNodeId>) {
+      if (action.payload.id === "group1") return;
+      const filteredNodes = state.nodes.filter(
+        (node) => node.id !== action.payload.id
+      );
       // const filteredChildren = filteredNodes.filter()
       const tire = state.nodes.find((item) => item.id === "group1");
 
-      state.nodes = orderItems(filteredNodes, tire)
-   
+      state.nodes = orderItems(filteredNodes, tire);
     },
 
     updateCellType(state, action: PayloadAction<TUpdateNodeProps>) {

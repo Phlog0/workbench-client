@@ -24,10 +24,10 @@ import {
 
 import styles from "./MyModal.module.scss";
 
-import { useFetchAllOPNQuery } from "../../services/dictService";
-import TableRow from "./TableRow";
+import { useFetchAllOPNQuery } from "../services/dictService";
+import MyTable from "../shared/ModalTable/MyTable";
 const MyModal = ({ isOpen, onOpen, onClose, btnRef }) => {
-  const { data, error, isLoading } = useFetchAllOPNQuery("bulbasaur");
+  // const { data, error, isLoading } = useFetchAllOPNQuery();
 
   return (
     <>
@@ -40,10 +40,10 @@ const MyModal = ({ isOpen, onOpen, onClose, btnRef }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>ОПН</ModalHeader>
+          <ModalHeader>ОПН🟥</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <TableContainer className={styles.scrollBlock}>
+            {/* <TableContainer className={styles.scrollBlock}>
               <Table variant="simple">
                 <Tbody>
                   {data &&
@@ -52,7 +52,9 @@ const MyModal = ({ isOpen, onOpen, onClose, btnRef }) => {
                     })}
                 </Tbody>
               </Table>
-            </TableContainer>
+            </TableContainer> */}
+            {/* {isLoading && <h1>LOADING......</h1>} */}
+            <MyTable  />
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose} colorScheme="red">

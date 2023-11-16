@@ -6,31 +6,19 @@ import {
   getTransformForBounds,
 } from "reactflow";
 import { toJpeg, toPng, toSvg } from "html-to-image";
-import html2canvas from "html2canvas";
-import { Button } from "@chakra-ui/react";
-import downloadjs from "downloadjs";
-import download from "downloadjs";
-import { Canvg } from "canvg";
-import { jsPDF } from "jspdf";
-import "svg2pdf.js";
-import PDFDocument from "svg-to-pdfkit";
-import { Document, Page, Text } from "@react-pdf/renderer";
+
 import { saveAs } from "file-saver";
 import { pdf } from '@react-pdf/renderer'
 
-import Html from "react-pdf-html";
+// import Html from "react-pdf-html";
 import PDFScheme from "./PDFScheme";
 
-// import "svg2pdf.js";
 const imageWidth = 2000;
 const imageHeight = 2000;
 
 function downloadImage(dataUrl) {
   const a = document.createElement("a");
-  let encodedValue = btoa(dataUrl);
-
-  // saveAs(dataUrl, "flow.png");
-  console.log(dataUrl);
+ 
 
   // const image = new Image();
 

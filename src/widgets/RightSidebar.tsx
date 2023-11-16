@@ -6,10 +6,11 @@ import {
   updateCommutationType,
   updateTransformatorType,
 } from "../store/nodesSlice";
-import SwitchingDevice from "./RightSidebar/SwitchingDevice";
-import SwitchingTransformator from "./RightSidebar/SwitchingTransformator";
+import SwitchingDevice from "../features/SwitchingDevice";
+import SwitchingTransformator from "../features/SwitchingTransformator";
 import { Select } from "@chakra-ui/react";
-import SwitchOPN from "./RightSidebar/SwitchOPN";
+import SwitchOPN from "../features/SwitchOPN";
+import MySelect from "../shared/MySelect";
 
 const RightSidebar: FC = () => {
   const currentItemId: string = useAppSelector(
@@ -61,73 +62,35 @@ const RightSidebar: FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.selectItem}>
-        <label htmlFor="cellType">Тип ячейки</label>
-        <Select
-          name="cellType"
-          id="cellType"
-          onChange={(e) => selectChange(e)}
-          // value={currentCellOption}
-        >
-          {cellOptions &&
-            cellOptions.map((item, index) => {
-              return (
-                <option
-                  key={index}
-                  value={item}
-                  data-key={index}
-                  selected={index === currentCellOption ? true : false}
-                >
-                  {item}
-                </option>
-              );
-            })}
-        </Select>
+        <MySelect
+          tag={"cellType"}
+          label={"тип ячейки"}
+          options={cellOptions}
+          id={currentItemId}
+          current={currentCellOption}
+        />
       </div>
-
       <div className={styles.selectItem}>
-        <label htmlFor="commutationType">Тип коммутационного аппарата</label>
-        <Select
-          name="commutationType"
-          id="commutationType"
-          onChange={(e) => selectChange(e)}
-          // value={currentCommutationOption}
-        >
-          {commutationOptions &&
-            commutationOptions.map((item, index) => {
-              return (
-                <option
-                  key={index}
-                  value={item}
-                  data-key={index}
-                  selected={index === currentCommutationOption ? true : false}
-                >
-                  {item}
-                </option>
-              );
-            })}
-        </Select>
+        <MySelect
+          tag={"commutationType"}
+          label={"Тип коммутационного аппарата"}
+          options={commutationOptions}
+          id={currentItemId}
+          current={currentCommutationOption}
+        />
+
         <SwitchingDevice id={currentItemId} />
       </div>
 
       <div className={styles.selectItem}>
-        <label htmlFor="transformatorType">Трансформаторы тока</label>
-        <Select
-          name="transformatorType"
-          id="transformatorType"
-          onChange={(e) => selectChange(e)}
-        >
-          {transformerOptions?.length &&
-            transformerOptions.map((item, index) => {
-              return (
-                <option
-                  key={index}
-                  selected={index === currentTransformatorOption ? true : false}
-                >
-                  {item}
-                </option>
-              );
-            })}
-        </Select>
+        <MySelect
+          tag={"transformatorType"}
+          label={"Трансформаторы тока"}
+          options={transformerOptions}
+          id={currentItemId}
+          current={currentTransformatorOption}
+        />
+
         <SwitchingTransformator id={currentItemId} />
         <SwitchOPN id={currentItemId} />
       </div>

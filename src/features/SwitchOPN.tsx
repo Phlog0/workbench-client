@@ -26,7 +26,8 @@ import {
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import styles from "./SwitchOPN.module.scss";
-import MyModal from "../modalMenu/MyModal";
+import MyModal from "../widgets/MyModal";
+import MyInput from "../shared/MyInput";
 
 interface ISwitchOPNProps {
   id: string;
@@ -34,11 +35,8 @@ interface ISwitchOPNProps {
 
 const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [scrollBehavior, setScrollBehavior] = useState("inside");
 
   const btnRef = useRef(null);
-
-  const openModal = () => {};
 
   return (
     <>
@@ -59,8 +57,11 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                 <div
                   className={`${styles.AccordionPanelItem} ${styles.openModalInput}`}
                 >
-                  <label htmlFor="SwitchOPNType">Тип</label>
-                  <Input type="text" name="SwitchOPNType" id="SwitchOPNType" />
+                  <MyInput
+                    tag={"SwitchOPNType"}
+                    label={"Тип"}
+                    inputType={"text"}
+                  />
                   <span
                     className={styles.OpenMenuDots}
                     ref={btnRef}
@@ -76,55 +77,49 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
-                  <label htmlFor="SwitchOPNName">Наименование</label>
-                  <Input type="text" name="SwitchOPNName" id="SwitchOPNName" />
-                </div>
-                <div className={styles.AccordionPanelItem}>
-                  <label htmlFor="SwitchOPNManufacturer">Производитель</label>
-                  <Input
-                    type="text"
-                    name="SwitchOPNManufacturer"
-                    id="SwitchOPNManufacturer"
+                  <MyInput
+                    tag={"SwitchOPNName"}
+                    label={"Наименование"}
+                    inputType={"text"}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
-                  <label htmlFor="SwitchOPNRatedOperatingVoltage">
-                    Номинальное рабочее напряжение
-                  </label>
-                  <Input
-                    type="text"
-                    name="SwitchOPNRatedOperatingVoltage"
-                    id="SwitchOPNRatedOperatingVoltage"
+                  <MyInput
+                    tag={"SwitchOPNManufacturer"}
+                    label={"Производитель"}
+                    inputType={"text"}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
-                  <label htmlFor="SwitchOPNThroughput">
-                    Пропускная способность, А
-                  </label>
-                  <Input
-                    type="text"
-                    name="SwitchOPNThroughput"
-                    id="SwitchOPNThroughput"
+                  <MyInput
+                    tag={"SwitchOPNRatedOperatingVoltage"}
+                    label={"Номинальное рабочее напряжение"}
+                    inputType={"text"}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
-                  <label htmlFor="SwitchOPNRatedDischargeCurrent">
-                    Номинальный разрядный ток, А
-                  </label>
-                  <Input
-                    type="text"
-                    name="SwitchOPNRatedDischargeCurrent"
-                    id="SwitchOPNRatedDischargeCurrent"
+                  <MyInput
+                    tag={"SwitchOPNThroughput"}
+                    label={"Пропускная способность, А"}
+                    inputType={"text"}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
-                  <label htmlFor="SwitchOPNMaximumContinuousPermissibleOperatingVoltage">
-                    Наибольшее длительно допустимое рабочее напряжение, кВ
-                  </label>
-                  <Input
-                    type="text"
-                    name="SwitchOPNMaximumContinuousPermissibleOperatingVoltage"
-                    id="SwitchOPNMaximumContinuousPermissibleOperatingVoltage"
+                  <MyInput
+                    tag={"SwitchOPNRatedDischargeCurrent"}
+                    label={"Номинальный разрядный ток, А"}
+                    inputType={"text"}
+                  />
+                </div>
+                <div className={styles.AccordionPanelItem}>
+                  <MyInput
+                    tag={
+                      "SwitchOPNMaximumContinuousPermissibleOperatingVoltage"
+                    }
+                    label={
+                      "Наибольшее длительно допустимое рабочее напряжение, кВ"
+                    }
+                    inputType={"text"}
                   />
                 </div>
               </AccordionPanel>

@@ -1,9 +1,9 @@
 import React, { useState, FC } from "react";
-import noSwitch from "../../SvgModels/2.svg";
-import mySwitch from "../../SvgModels/PowerSwitch.svg";
+import noSwitch from "../SvgModels/2.svg";
+import mySwitch from "../SvgModels/PowerSwitch.svg";
 import styles from "./PowerSwitch.module.scss";
-import { useAppSelector } from "../../hook";
-import Drawout from "../../SvgModels/Drawout.svg";
+import { useAppSelector } from "../hook";
+import Drawout from "../SvgModels/Drawout.svg";
 interface IPowerSwitchProps {
   id: string;
 }

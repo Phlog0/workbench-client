@@ -1,6 +1,6 @@
 import React, { useState, FC } from "react";
 import styles from "./SwitchingDevice.module.scss";
-import { useAppSelector } from "../../hook";
+import { useAppSelector } from "../hook";
 import {
   Accordion,
   AccordionButton,
@@ -14,17 +14,14 @@ import {
 } from "@chakra-ui/react";
 
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
+import MyInput from "../shared/MyInput";
 
 const SwitchingDevice: FC<{ id: string }> = ({ id }) => {
-
-
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
   );
   const currentCommutationOption =
     currentItemProperties?.currentCommutationOption;
-
-
 
   return (
     <div>
@@ -35,7 +32,7 @@ const SwitchingDevice: FC<{ id: string }> = ({ id }) => {
               <>
                 <h2>
                   <AccordionButton>
-                    {isExpanded ?<BsChevronDown />  :<BsChevronRight /> }
+                    {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
                     <Box as="span" flex="1" textAlign="left">
                       Коммутационный аппарат
                     </Box>
@@ -43,34 +40,29 @@ const SwitchingDevice: FC<{ id: string }> = ({ id }) => {
                 </h2>
                 <AccordionPanel pb={4} className={styles.AccordionPanel}>
                   <div className={styles.AccordionPanelItem}>
-                    <label htmlFor="SwitchingDeviceType">Тип</label>
-                    <Input
-                      type="text"
-                      name="SwitchingDeviceType"
-                      id="SwitchingDeviceType"
+                    <MyInput
+                      tag={"SwitchingDeviceType"}
+                      label={"Тип"}
+                      inputType={"text"}
                     />
                   </div>
-                  <label htmlFor="SwitchingDeviceName">Наименование</label>
-                  <Input
-                    type="text"
-                    name="SwitchingDeviceName"
-                    id="SwitchingDeviceName"
+
+                  <MyInput
+                    tag={"SwitchingDeviceName"}
+                    label={"Наименование"}
+                    inputType={"text"}
                   />
-                  <label htmlFor="SwitchingDeviceRatedCurrent">
-                    Номинальный ток (А)
-                  </label>
-                  <Input
-                    type="number"
-                    name="SwitchingDeviceRatedCurrent"
-                    id="SwitchingDeviceRatedCurrent"
+
+                  <MyInput
+                    tag={"SwitchingDeviceRatedCurrent"}
+                    label={"Номинальный ток (А)"}
+                    inputType={"number"}
                   />
-                  <label htmlFor="SwitchingDeviceRatedCutOffCurrent">
-                    Номинальный ток отключения (кА)
-                  </label>
-                  <Input
-                    type="number"
-                    name="SwitchingDeviceRatedCutOffCurrent"
-                    id="SwitchingDeviceRatedCutOffCurrent"
+
+                  <MyInput
+                    tag={"SwitchingDeviceRatedCutOffCurrent"}
+                    label={"Номинальный ток отключения (кА)"}
+                    inputType={"number"}
                   />
                 </AccordionPanel>
               </>

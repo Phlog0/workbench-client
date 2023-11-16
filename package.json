@@ -16,14 +16,9 @@
     "@react-pdf/renderer": "^3.1.14",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.5.1",
-    "canvg": "^4.0.1",
-    "downloadjs": "^1.4.7",
     "file-saver": "^2.0.5",
     "framer-motion": "^10.16.4",
     "html-to-image": "^1.11.11",
-    "html2canvas": "^1.4.1",
-    "jspdf": "^2.5.1",
-    "pdfkit": "^0.13.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
@@ -31,9 +26,7 @@
     "react-pdf-html": "^1.1.18",
     "react-redux": "^8.1.2",
     "reactflow": "^11.8.3",
-    "sass": "^1.66.1",
-    "svg-to-pdfkit": "^0.1.8",
-    "svg2pdf.js": "^2.2.2"
+    "sass": "^1.66.1"
   },
   "devDependencies": {
     "@types/downloadjs": "^1.4.4",

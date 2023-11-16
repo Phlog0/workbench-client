@@ -6,6 +6,7 @@ import { changeCurrentGrid, uploadNodes } from "../store/nodesSlice";
 import { addNode, deleteNode } from "../store/nodesSlice";
 // =============================COMPONENT============================
 import { Button, ButtonGroup, Input, Select } from "@chakra-ui/react";
+import MySelect from "../shared/MySelect";
 
 const TopNavbar: FC = () => {
   const snapGrids = useAppSelector((state) => state.nodes.snapGrid);
@@ -14,13 +15,9 @@ const TopNavbar: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const gap = event.target.value;
-    dispatch(changeCurrentGrid({ index: +gap }));
-  };
+
 
   const addFigure = (): void => {
-    console.log("add");
     const node = {
       id: Date.now().toString(),
       type: "CustomNodeType",
@@ -37,14 +34,7 @@ const TopNavbar: FC = () => {
     dispatch(addNode(node));
   };
 
-  // const importJsonFromServer = async() =>{
-  //   try {
-  //    const response = await axios.get("http://localhost:3000/savedata");
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+
 
   const deleteItem = () => {
     dispatch(deleteNode(currentId));
@@ -67,7 +57,6 @@ const TopNavbar: FC = () => {
       <Button colorScheme="red" onClick={deleteItem}>
         Удалить шкаф
       </Button>
-  
 
       <label className={styles.importJsonLabel}>
         <span>ипорт JSON &#123; &#125;</span>
@@ -79,29 +68,12 @@ const TopNavbar: FC = () => {
         />
       </label>
       <div className={styles.navbarStep}>
-        <label htmlFor="select-step">Шаг:</label>
-        <Select name="select-step" id="select-step" onChange={selectChange} value={currentGrid}>
-          {snapGrids.map((gridItem, index) => (
-            <option
-              value={index}
-              key={index}
-              // selected={index === currentGrid ? true : false}
-            >
-              {gridItem}
-            </option>
-          ))}
-        </Select>
-        {/* <select name="select-step" id="select-step" onChange={selectChange}>
-          {snapGrids.map((gridItem, index) => (
-            <option
-              value={index}
-              key={index}
-              selected={index === currentGrid ? true : false}
-            >
-              {gridItem}
-            </option>
-          ))}
-        </select> */}
+        <MySelect
+          options={snapGrids}
+          tag={"snapGrid"}
+          label={"Шаг:"}
+          current={currentGrid}
+        />
       </div>
     </header>
   );

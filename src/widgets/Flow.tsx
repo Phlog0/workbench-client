@@ -22,17 +22,17 @@ import ReactFlow, {
 } from "reactflow";
 
 import "reactflow/dist/style.css";
-import Shkaf from "./Shkaf";
+import Shkaf from "../entities/Shkaf";
 
 import { updateCoordinats } from "../store/nodesSlice";
-import CustomNode from "./CustomNode";
-import TireNode from "./TireNode";
+import CustomNode from "../entities/CustomNode";
+import TireNode from "../entities/TireNode";
 import axios from "axios";
 import { Button } from "@chakra-ui/react";
 
 import pdfMake from "pdfmake/build/pdfmake";
-import DownloadButton from "./utils/DownLoadButton";
-import PDFScheme from "./utils/PDFScheme";
+import DownloadButton from "../features/exportPDF/DownLoadButton";
+import PDFScheme from "../features/exportPDF/PDFScheme";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 // const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
