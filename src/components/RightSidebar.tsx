@@ -9,6 +9,7 @@ import {
 import SwitchingDevice from "./RightSidebar/SwitchingDevice";
 import SwitchingTransformator from "./RightSidebar/SwitchingTransformator";
 import { Select } from "@chakra-ui/react";
+import SwitchOPN from "./RightSidebar/SwitchOPN";
 
 const RightSidebar: FC = () => {
   const currentItemId: string = useAppSelector(
@@ -128,6 +129,7 @@ const RightSidebar: FC = () => {
             })}
         </Select>
         <SwitchingTransformator id={currentItemId} />
+        <SwitchOPN id={currentItemId} />
       </div>
     </div>
   );
