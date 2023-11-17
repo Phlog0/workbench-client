@@ -7,7 +7,6 @@ interface ITableRowProps {
 }
 
 const TableRow: FC<ITableRowProps> = ({ data }) => {
-  console.log(data);
   return (
     <Tr className={styles.row}>
       {data && data.map((item) => <Td>{item}</Td>)}

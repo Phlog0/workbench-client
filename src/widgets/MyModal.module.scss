@@ -2,3 +2,9 @@
     width: clamp(500px, 100%, 900px);
     outline: 1px solid teal;
 }
+
+.modalContainer{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    // overflow: hidden;
+}

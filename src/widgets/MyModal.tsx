@@ -26,8 +26,10 @@ import styles from "./MyModal.module.scss";
 
 import { useFetchAllOPNQuery } from "../services/dictService";
 import MyTable from "../shared/ModalTable/MyTable";
+import FilterItems from "../features/FilterItems";
 const MyModal = ({ isOpen, onOpen, onClose, btnRef }) => {
   // const { data, error, isLoading } = useFetchAllOPNQuery();
+  console.log('Modal is open!')
 
   return (
     <>
@@ -39,22 +41,13 @@ const MyModal = ({ isOpen, onOpen, onClose, btnRef }) => {
         scrollBehavior={"inside"}
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent >
           <ModalHeader>ОПН🟥</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            {/* <TableContainer className={styles.scrollBlock}>
-              <Table variant="simple">
-                <Tbody>
-                  {data &&
-                    data.map((dataItem) => {
-                      return <TableRow data={dataItem} />;
-                    })}
-                </Tbody>
-              </Table>
-            </TableContainer> */}
-            {/* {isLoading && <h1>LOADING......</h1>} */}
+          <ModalBody className={styles.modalContainer}>
+
             <MyTable  />
+            <FilterItems/>
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose} colorScheme="red">

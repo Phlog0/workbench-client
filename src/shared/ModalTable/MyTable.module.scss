@@ -1,4 +1,6 @@
-.scrollBlock {
+.MyTable .scrollBlock {
   width: clamp(500px, 100%, 900px);
   outline: 1px solid teal;
+  height: 80dvh;
+  overflow-y: auto;
 }

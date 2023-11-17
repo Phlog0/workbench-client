@@ -9,9 +9,8 @@ interface IMyTableProps {
 
 const MyTable = () => {
   const { data, error, isLoading } = useFetchAllOPNQuery();
-
   return (
-    <>
+    <div className={styles.MyTable}>
       {isLoading && (
         <Spinner
           thickness="4px"
@@ -31,7 +30,7 @@ const MyTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };
 
