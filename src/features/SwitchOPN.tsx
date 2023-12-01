@@ -1,4 +1,11 @@
-import React, { FC, useState, useRef } from "react";
+import React, {
+  FC,
+  useState,
+  useRef,
+  useTransition,
+  useDeferredValue,
+  startTransition,
+} from "react";
 import {
   Accordion,
   AccordionButton,
@@ -35,8 +42,10 @@ interface ISwitchOPNProps {
 
 const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // const deferredisOpen = useDeferredValue(isOpen);
 
   const btnRef = useRef(null);
+  // const [isPending, startTransition] = useTransition();
 
   return (
     <>
@@ -65,16 +74,23 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                   <span
                     className={styles.OpenMenuDots}
                     ref={btnRef}
-                    onClick={onOpen}
+                    onClick={() => {
+                      startTransition(() => {
+                        onOpen();
+                      });
+                    }}
                   >
                     ...
                   </span>
-                  <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                    btnRef={btnRef}
-                  />
+
+                  {isOpen && (
+                    <MyModal
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      onClose={onClose}
+                      // btnRef={btnRef}
+                    />
+                  )}
                 </div>
                 <div className={styles.AccordionPanelItem}>
                   <MyInput

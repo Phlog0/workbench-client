@@ -1,6 +1,17 @@
 .MyTable .scrollBlock {
   width: clamp(500px, 100%, 900px);
   outline: 1px solid teal;
-  height: 80dvh;
-  overflow-y: auto;
+  // height: 80dvh;
+  // height: 80dvh;
+  // overflow-y: auto;
+}
+
+.virtTable {
+  // overflow-y: scroll;
+  // outline: 1px solid red;
+  // width: 100%;
+  // height:500px;
+}
+.virtTableHeadRow{
+  padding: 0.8rem;
 }
