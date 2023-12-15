@@ -35,6 +35,11 @@ import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import styles from "./SwitchOPN.module.scss";
 import MyModal from "../widgets/MyModal";
 import MyInput from "../shared/MyInput";
+import MyInputModal from "../shared/MyInputModal";
+import { useFetchDataQuery } from "../services/dictService";
+import { useAppSelector } from "../hook";
+import { useDispatch } from "react-redux";
+import { updateOPN, updateProp } from "../store/nodesSlice";
 
 interface ISwitchOPNProps {
   id: string;
@@ -42,11 +47,30 @@ interface ISwitchOPNProps {
 
 const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const deferredisOpen = useDeferredValue(isOpen);
 
   const btnRef = useRef(null);
-  // const [isPending, startTransition] = useTransition();
 
+  const { data, error, isLoading } = useFetchDataQuery("opn");
+
+  const currentItemProperties = useAppSelector((state) =>
+    state.nodes.nodes.find((node) => node.id === id)
+  );
+  const opn = currentItemProperties?.OPN;
+
+  const allOpn = Object.values(opn);
+
+  const dispatch = useDispatch();
+
+  const inputChange = (event) => {
+    dispatch(
+      updateProp({
+        id: id,
+        key1: event.target.dataset.opt1,
+        key2: event.target.dataset.opt2,
+        value: event.target.value,
+      })
+    );
+  };
   return (
     <>
       <Accordion allowToggle className="">
@@ -58,45 +82,51 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <Box as="span" flex="1" textAlign="left">
-                    ОПН
+                    <MyInputModal label={"ОПН"} value={allOpn.toString()} />
                   </Box>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div
-                  className={`${styles.AccordionPanelItem} ${styles.openModalInput}`}
-                >
+                <Flex w={"100%"}>
+                  {" "}
                   <MyInput
                     tag={"SwitchOPNType"}
                     label={"Тип"}
                     inputType={"text"}
+                    value={opn.type}
+                    opt1={"OPN"}
+                    opt2={"type"}
+                    onChange={inputChange}
                   />
-                  <span
+                  <Button
                     className={styles.OpenMenuDots}
                     ref={btnRef}
-                    onClick={() => {
-                      startTransition(() => {
-                        onOpen();
-                      });
-                    }}
+                    onClick={onOpen}
                   >
                     ...
-                  </span>
-
+                  </Button>
                   {isOpen && (
                     <MyModal
                       isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
-                      // btnRef={btnRef}
+                      data={data}
+                      error={error}
+                      isLoading={isLoading}
+                      type={"opn"}
                     />
                   )}
-                </div>
+                </Flex>
+
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"SwitchOPNName"}
                     label={"Наименование"}
                     inputType={"text"}
+                    value={opn.name}
+                    opt1={"OPN"}
+                    opt2={"name"}
+                    onChange={inputChange}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
@@ -104,6 +134,10 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                     tag={"SwitchOPNManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
+                    value={opn.manufacturer}
+                    opt1={"OPN"}
+                    opt2={"manufacturer"}
+                    onChange={inputChange}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
@@ -111,6 +145,10 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                     tag={"SwitchOPNRatedOperatingVoltage"}
                     label={"Номинальное рабочее напряжение"}
                     inputType={"text"}
+                    value={opn.ratedOperatingVoltage}
+                    opt1={"OPN"}
+                    opt2={"ratedOperatingVoltage"}
+                    onChange={inputChange}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
@@ -118,6 +156,10 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                     tag={"SwitchOPNThroughput"}
                     label={"Пропускная способность, А"}
                     inputType={"text"}
+                    value={opn.throughput}
+                    opt1={"OPN"}
+                    opt2={"throughput"}
+                    onChange={inputChange}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
@@ -125,6 +167,10 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                     tag={"SwitchOPNRatedDischargeCurrent"}
                     label={"Номинальный разрядный ток, А"}
                     inputType={"text"}
+                    value={opn.ratedDischargeCurrent}
+                    opt1={"OPN"}
+                    opt2={"ratedDischargeCurrent"}
+                    onChange={inputChange}
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
@@ -136,6 +182,10 @@ const SwitchOPN: FC<ISwitchOPNProps> = ({ id }) => {
                       "Наибольшее длительно допустимое рабочее напряжение, кВ"
                     }
                     inputType={"text"}
+                    value={opn.maximumContinuousPermissibleOperatingVoltage}
+                    opt1={"OPN"}
+                    opt2={"maximumContinuousPermissibleOperatingVoltage"}
+                    onChange={inputChange}
                   />
                 </div>
               </AccordionPanel>

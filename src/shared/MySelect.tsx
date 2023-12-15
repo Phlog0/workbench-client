@@ -6,6 +6,7 @@ import {
   updateCommutationType,
   updateTransformatorType,
   changeCurrentGrid,
+  updateRatedCurrentOfTheMainCircuits
 } from "../store/nodesSlice";
 
 interface IMySelectProps {
@@ -21,7 +22,7 @@ const MySelect: FC<IMySelectProps> = ({ options, id, current, label, tag }) => {
 
   const selectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const select = event.target;
-
+    console.log(select.id);
     if (select.id === "snapGrid") console.log(options);
     dispatch(changeCurrentGrid({ index: select.selectedIndex }));
 
@@ -43,6 +44,13 @@ const MySelect: FC<IMySelectProps> = ({ options, id, current, label, tag }) => {
     if (select.id === "transformatorType")
       dispatch(
         updateTransformatorType({
+          id: id,
+          index: select.selectedIndex,
+        })
+      );
+    if (select.id === "RatedCurrentOfTheMainCircuits")
+      dispatch(
+        updateRatedCurrentOfTheMainCircuits({
           id: id,
           index: select.selectedIndex,
         })

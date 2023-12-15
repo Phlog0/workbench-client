@@ -26,7 +26,7 @@ import Shkaf from "../entities/Shkaf";
 
 import { updateCoordinats } from "../store/nodesSlice";
 import CustomNode from "../entities/CustomNode";
-import TireNode from "../entities/TireNode";
+import TireNode from "../features/TireNode";
 import axios from "axios";
 import { Button } from "@chakra-ui/react";
 

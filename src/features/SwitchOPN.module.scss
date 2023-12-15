@@ -2,12 +2,17 @@
     position: relative;
 }
 
-.OpenMenuDots{
-    position: absolute;
+// .OpenMenuDots{
+//     position: absolute;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     right: 1rem;
+//     top: 2rem;
+//     cursor: pointer;
+// }
+
+.AccordionPanelItem{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    right: 1rem;
-    top: 2rem;
-    cursor: pointer;
+    margin: 0.3rem;
 }

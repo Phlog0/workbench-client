@@ -34,13 +34,7 @@ import styles from "./MyModal.module.scss";
 import { useFetchAllOPNQuery } from "../services/dictService";
 import MyTable from "../shared/ModalTable/MyTable";
 import FilterItems from "../features/FilterItems";
-const MyModal = ({ isOpen, onOpen, onClose }) => {
-  // const { data, error, isLoading } = useFetchAllOPNQuery();
-  console.log("Modal render!");
-  const deferredQuery = useDeferredValue(isOpen);
-  const { data, error, isLoading } = useFetchAllOPNQuery();
-  const deferredData = useDeferredValue(data);
-  console.log(data);
+const MyModal = ({ isOpen, onOpen, onClose, data, error, isLoading, type }) => {
   return (
     <>
       <Modal
@@ -55,10 +49,13 @@ const MyModal = ({ isOpen, onOpen, onClose }) => {
           <ModalHeader>ОПН🟥</ModalHeader>
           <ModalCloseButton />
           <ModalBody className={styles.modalContainer}>
-            
-              <MyTable isLoading={isLoading} data={data} />
-              <FilterItems />
-      
+            <MyTable
+              isLoading={isLoading}
+              data={data}
+              type={type}
+              onClose={onClose}
+            />
+            <FilterItems />
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose} colorScheme="red">
@@ -69,25 +66,6 @@ const MyModal = ({ isOpen, onOpen, onClose }) => {
       </Modal>
     </>
   );
-  // return (
-  //   <Modal isOpen={isOpen} onClose={onClose}>
-  //     <ModalOverlay />
-  //     <ModalContent>
-  //       <ModalHeader>Modal Title</ModalHeader>
-  //       <ModalCloseButton />
-  //       <ModalBody>
-  //         hello svinka!
-  //       </ModalBody>
-
-  //       <ModalFooter>
-  //         <Button colorScheme="blue" mr={3} onClick={onClose}>
-  //           Close
-  //         </Button>
-  //         <Button variant="ghost">Secondary Action</Button>
-  //       </ModalFooter>
-  //     </ModalContent>
-  //   </Modal>
-  // );
 };
 
 export default MyModal;

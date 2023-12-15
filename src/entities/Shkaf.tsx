@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import styles from "./Skkaf.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
 import tire from "../SvgModels/SERGO_tire.svg";
-import PowerSwitch from "./PowerSwitch";
+import PowerSwitch from "../features/PowerSwitch";
 interface IShkafProps {
   id: string;
 }

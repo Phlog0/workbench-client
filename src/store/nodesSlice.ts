@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import orderItems from "./utils/orderItems";
+import { act } from "react-dom/test-utils";
 
 type TUpdateNodeProps = {
   id: string;
@@ -46,6 +47,22 @@ type TTransformator = {
 
 type TUpdateGroup = {
   id: string;
+};
+
+type TrowData = {
+  type: string;
+  name: string;
+  manufacturer: string;
+  ratedOperatingVoltage: string;
+  throughput: string;
+  ratedDischargeCurrent: string;
+  maximumContinuousPermissibleOperatingVoltage: string;
+};
+
+type TSwitchOPN = {
+  id: string;
+
+  rowData: TrowData;
 };
 
 const initialState = {
@@ -98,6 +115,47 @@ const initialState = {
       currentCommutationOption: 0,
       currentTransformatorOption: 1,
       parentNode: "group1",
+      ratedCurrentOfTheMainCircuits: 0,
+      OPN: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedOperatingVoltage: "",
+        throughput: "",
+        ratedDischargeCurrent: "",
+        maximumContinuousPermissibleOperatingVoltage: "",
+      },
+      microprocessorProtectionDeviceAndAutomation: {
+        type: "",
+        name: "",
+        manufacturer: "",
+      },
+      electromagneticLocking: {
+        type: "",
+        name: "",
+        manufacturer: "",
+      },
+      instrumentCurrentTransformers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        transformationRatio: "",
+        accuracyClass: "",
+        oneSecondThermalCurrent: "",
+        typeOfService: "",
+      },
+      voltageTransformers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedThreePhasePowerOfTheFirstWinding: "",
+        accuracyClassOfTheFirstSecondaryWinding: "",
+        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
+        accuracyClassOfTheSecondSecondaryWinding: "",
+        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
+        accuracyClassOfSecondaryReturnWires: "",
+        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
+      },
     },
 
     {
@@ -109,6 +167,47 @@ const initialState = {
       currentCommutationOption: 1,
       currentTransformatorOption: 9,
       parentNode: "",
+      ratedCurrentOfTheMainCircuits: 1,
+      OPN: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedOperatingVoltage: "",
+        throughput: "",
+        ratedDischargeCurrent: "",
+        maximumContinuousPermissibleOperatingVoltage: "",
+      },
+      microprocessorProtectionDeviceAndAutomation: {
+        type: "",
+        name: "",
+        manufacturer: "",
+      },
+      electromagneticLocking: {
+        type: "",
+        name: "",
+        manufacturer: "",
+      },
+      instrumentCurrentTransformers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        transformationRatio: "",
+        accuracyClass: "",
+        oneSecondThermalCurrent: "",
+        typeOfService: "",
+      },
+      voltageTransformers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedThreePhasePowerOfTheFirstWinding: "",
+        accuracyClassOfTheFirstSecondaryWinding: "",
+        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
+        accuracyClassOfTheSecondSecondaryWinding: "",
+        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
+        accuracyClassOfSecondaryReturnWires: "",
+        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
+      },
     },
   ],
 
@@ -118,11 +217,6 @@ const initialState = {
   snapGrid: ["10", "50", "100"],
   currentGrid: {
     index: 0,
-  },
-
-  // 🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥
-  currentOPN: {
-    id: 4,
   },
 };
 
@@ -159,6 +253,59 @@ const nodeSlice = createSlice({
       const node = state.nodes.find((item) => item.id === action.payload.id);
       if (node) node.currentTransformatorOption = action.payload.index;
     },
+    updateRatedCurrentOfTheMainCircuits(state, action) {
+      console.log(action.payload);
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      if (node) node.ratedCurrentOfTheMainCircuits = action.payload.index;
+    },
+
+    updateOPN(state, action: PayloadAction<TSwitchOPN>) {
+      // console.log(action.payload);
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+
+      if (node) node.OPN = action.payload.rowData;
+    },
+    updateMicroprocessorProtectionDeviceAndAutomation(state, action) {
+      // console.log(action.payload);
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      if (node)
+        node.microprocessorProtectionDeviceAndAutomation =
+          action.payload.rowData;
+    },
+    updateElectromagneticLocking(state, action) {
+      // console.log(action.payload);
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      if (node) node.electromagneticLocking = action.payload.rowData;
+    },
+    updateInstrumentCurrentTransformers(state, action) {
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      if (node) node.instrumentCurrentTransformers = action.payload.rowData;
+    },
+    updateVoltageTransformersTransformers(state, action) {
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      const currentProps = node[action.payload.type];
+      let i = 0;
+      if (node)
+        for (const property in currentProps) {
+          currentProps[property] = action.payload.rowData[i];
+          i++;
+        }
+      node[action.payload.type] = currentProps;
+      // if (node) node.instrumentCurrentTransformers = action.payload.rowData;
+    },
+
+    updateProp(state, action) {
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+      console.log(
+        action.payload.key1,
+        action.payload.key2,
+        action.payload.id,
+        action.payload.value
+      );
+      if (node)
+        node[action.payload.key1][action.payload.key2] = action.payload.value;
+    },
+
     updateCoordinats(state, action: PayloadAction<TUpdateNodeCoords>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
 
@@ -207,6 +354,13 @@ export const {
   deleteNode,
   changeCurrentNode,
   changeCurrentGrid,
+  updateOPN,
+  updateMicroprocessorProtectionDeviceAndAutomation,
+  updateElectromagneticLocking,
+  updateInstrumentCurrentTransformers,
+  updateVoltageTransformersTransformers,
+  updateProp,
+  updateRatedCurrentOfTheMainCircuits,
 } = nodeSlice.actions;
 
 export default nodeSlice.reducer;

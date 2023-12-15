@@ -1,16 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-
 export const dictAPI = createApi({
   reducerPath: "dictAPI",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
   endpoints: (builder) => ({
-    fetchAllOPN: builder.query({
+    fetchAllRatedCurrentOfTheMainCircuits: builder.query({
       query: () => ({
-        url: "/opn",
+        url: "RatedCurrentOfTheMainCircuits",
+      }),
+    }),
+    fetchData: builder.query({
+      query: (url) => ({
+        url,
       }),
     }),
   }),
 });
 
-export const { useFetchAllOPNQuery } = dictAPI;
+export const { useFetchAllRatedCurrentOfTheMainCircuitsQuery, useFetchDataQuery } = dictAPI;

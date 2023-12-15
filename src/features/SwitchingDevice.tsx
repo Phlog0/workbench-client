@@ -15,6 +15,7 @@ import {
 
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
+import MyInputModal from "../shared/MyInputModal";
 
 const SwitchingDevice: FC<{ id: string }> = ({ id }) => {
   const currentItemProperties = useAppSelector((state) =>
@@ -33,8 +34,9 @@ const SwitchingDevice: FC<{ id: string }> = ({ id }) => {
                 <h2>
                   <AccordionButton>
                     {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
-                    <Box as="span" flex="1" textAlign="left">
-                      Коммутационный аппарат
+                    <Box as="div" flex="1" textAlign="left" className={styles.modalBtnContainer}>
+                      {/* Коммутационный аппарат <Input  disabled/> */}
+                      <MyInputModal label={'Коммутационный аппарат'}/>
                     </Box>
                   </AccordionButton>
                 </h2>
@@ -55,13 +57,18 @@ const SwitchingDevice: FC<{ id: string }> = ({ id }) => {
 
                   <MyInput
                     tag={"SwitchingDeviceRatedCurrent"}
-                    label={"Номинальный ток (А)"}
+                    label={"Номинальный ток, А"}
                     inputType={"number"}
                   />
 
                   <MyInput
                     tag={"SwitchingDeviceRatedCutOffCurrent"}
-                    label={"Номинальный ток отключения (кА)"}
+                    label={"Номинальный ток отключения, кА"}
+                    inputType={"number"}
+                  />
+                  <MyInput
+                    tag={"SwitchingDeviceRatedVoltage"}
+                    label={"Номинальное напряжение, кВ"}
                     inputType={"number"}
                   />
                 </AccordionPanel>

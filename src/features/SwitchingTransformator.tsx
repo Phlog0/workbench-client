@@ -38,7 +38,7 @@ const SwitchingTransformator: FC<{ id: string }> = ({ id }) => {
                     {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                     <Box as="span" flex="1" textAlign="left">
-                      Изменить траснформаторы тока
+                      Изменить траснформаторы тока(SwitchingTransformator)
                     </Box>
                   </AccordionButton>
                 </h2>

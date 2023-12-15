@@ -11,6 +11,21 @@ import SwitchingTransformator from "../features/SwitchingTransformator";
 import { Select } from "@chakra-ui/react";
 import SwitchOPN from "../features/SwitchOPN";
 import MySelect from "../shared/MySelect";
+import MicroprocessorProtectionDeviceAndAutomation from "../features/MicroprocessorProtectionDeviceAndAutomation";
+import ElectromagneticLocking from "../features/ElectromagneticLocking";
+import InstrumentCurrentTransformers from "../features/InstrumentCurrentTransformers";
+import VoltageTransformers from "../features/VoltageTransformers";
+import CurrentTransducersType1 from "../features/CurrentTransducersType1";
+import CurrentTransducersType2 from "../features/CurrentTransducersType2";
+import FrequencyСonvertersType1 from "../features/FrequencyConvertersType1";
+import FrequencyСonvertersType2 from "../features/FrequencyConvertersType2";
+import VoltageTransducersType1 from "../features/VoltageTransducersType1";
+import VoltageTransducersType2 from "../features/VoltageTransducersType2";
+import PowerTransducersType1 from "../features/PowerTransducersType1";
+import PowerTransducersType2 from "../features/PowerTransducersType2";
+import RatedCurrentOfTheMainCircuits from "../features/RatedCurrentOfTheMainCircuits";
+import FrequencyConvertersType1 from "../features/FrequencyConvertersType1";
+import FrequencyConvertersType2 from "../features/FrequencyConvertersType2";
 
 const RightSidebar: FC = () => {
   const currentItemId: string = useAppSelector(
@@ -90,9 +105,21 @@ const RightSidebar: FC = () => {
           id={currentItemId}
           current={currentTransformatorOption}
         />
-
+        <RatedCurrentOfTheMainCircuits id={currentItemId}/>
         <SwitchingTransformator id={currentItemId} />
         <SwitchOPN id={currentItemId} />
+        <MicroprocessorProtectionDeviceAndAutomation  id={currentItemId}/>
+        <ElectromagneticLocking  id={currentItemId}/>
+        <InstrumentCurrentTransformers  id={currentItemId}/>
+        <VoltageTransformers  id={currentItemId}/>
+        <CurrentTransducersType1 id={currentItemId}/>
+        <CurrentTransducersType2 id={currentItemId}/>
+        <FrequencyConvertersType1 id={currentItemId}/>
+        <FrequencyConvertersType2 id={currentItemId}/>
+        <VoltageTransducersType1 id={currentItemId}/>
+        <VoltageTransducersType2 id={currentItemId}/>
+        <PowerTransducersType1 id={currentItemId}/>
+        <PowerTransducersType2 id={currentItemId}/>
       </div>
     </div>
   );
