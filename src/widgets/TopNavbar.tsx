@@ -2,7 +2,7 @@ import React, { FC, useState, SyntheticEvent } from "react";
 import styles from "./TopNavbar.module.scss";
 //  ===============================REDUX===============================
 import { useAppDispatch, useAppSelector } from "../hook";
-import { changeCurrentGrid, uploadNodes } from "../store/nodesSlice";
+import { changeCurrentGrid, changeCurrentNode, uploadNodes } from "../store/nodesSlice";
 import { addNode, deleteNode } from "../store/nodesSlice";
 // =============================COMPONENT============================
 import { Button, ButtonGroup, Input, Select } from "@chakra-ui/react";
@@ -14,8 +14,6 @@ const TopNavbar: FC = () => {
   const currentGrid = useAppSelector((state) => state.nodes.currentGrid.index);
 
   const dispatch = useAppDispatch();
-
-
 
   const addFigure = (): void => {
     const node = {
@@ -30,14 +28,141 @@ const TopNavbar: FC = () => {
 
       currentTransformatorOption: 0,
       parentNode: "",
-    };
+      ratedCurrentOfTheMainCircuits: 1,
+      opn: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedOperatingVoltage: "",
+        throughput: "",
+        ratedDischargeCurrent: "",
+        maximumContinuousPermissibleOperatingVoltage: "",
+      },
+      microprocessorProtectionDeviceAndAutomation: {
+        type: "",
+        name: "",
+        manufacturer: "",
+      },
+      electromagneticLocking: {
+        type: "",
+        name: "",
+        manufacturer: "",
+      },
+      instrumentCurrentTransformers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        transformationRatio: "",
+        accuracyClass: "",
+        oneSecondThermalCurrent: "",
+        typeOfService: "",
+      },
+      voltageTransformers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedThreePhasePowerOfTheFirstWinding: "",
+        accuracyClassOfTheFirstSecondaryWinding: "",
+        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
+        accuracyClassOfTheSecondSecondaryWinding: "",
+        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
+        accuracyClassOfSecondaryReturnWires: "",
+        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
+      },
+      currentTransducersType1: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputCurrentRange: "",
+        outputCurrentRange: "",
+        quantity: "",
+      },
+      currentTransducersType2: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputCurrentRange: "",
+        outputCurrentRange: "",
+        quantity: "",
+      },
+      frequencyConvertersType1: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputVoltageRange: "",
+        outputCurrentRange: "",
+        frequencyMeasurementRange: "",
+        quantity: "",
+      },
+      frequencyConvertersType2: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputVoltageRange: "",
+        outputCurrentRange: "",
+        frequencyMeasurementRange: "",
+        quantity: "",
+      },
+      voltageTransducersType1: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputVoltageRange: "",
+        outputCurrentRange: "",
+        quantity: "",
+      },
+      voltageTransducersType2: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputVoltageRange: "",
+        outputCurrentRange: "",
+        quantity: "",
+      },
+      powerTransducersType1: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputCurrentRange: "",
+        outputCurrentRange: "",
+        nputVoltageRange: "",
+        utputVoltageRange: "",
+        sin: "",
+        cos: "",
+      },
+      powerTransducersType2: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        numberOfChannels: "",
+        inputCurrentRange: "",
+        outputCurrentRange: "",
+        nputVoltageRange: "",
+        utputVoltageRange: "",
+        sin: "",
+        cos: "",
+      },
+      circuitBreakers: {
+        type: "",
+        name: "",
+        manufacturer: "",
+        ratedCurrentOfFuseLink: "",
+      },
+    };  //🔥🔥🔥🔥🔥🔥🔥🔥 NEW ITEM!
     dispatch(addNode(node));
   };
 
-
-
   const deleteItem = () => {
     dispatch(deleteNode(currentId));
+    dispatch(changeCurrentNode({ id: null }));
+    
   };
 
   const importJson = (e) => {

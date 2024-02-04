@@ -27,16 +27,41 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./FrequencyConvertersType1.module.scss";
+import styles from "./properties.module.scss";
+
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
+import { updateProp } from "../store/nodesSlice";
+import { useAppSelector } from "../hook";
+import { useDispatch } from "react-redux";
 
-const FrequencyConvertersType1 = () => {
+const FrequencyConvertersType1 = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  const { data, error, isLoading } = useFetchDataQuery(
-    "FrequencyConvertersType1"
+
+  
+
+  const currentItemProperties = useAppSelector((state) =>
+    state.nodes.nodes.find((node) => node.id === id)
   );
+  const frequencyConvertersType1 =
+    currentItemProperties?.frequencyConvertersType1;
+
+  const AllFrequencyConvertersType1 = Object.values(frequencyConvertersType1);
+
+  const dispatch = useDispatch();
+
+  const inputChange = (event) => {
+    dispatch(
+      updateProp({
+        id: id,
+        key1: event.target.dataset.opt1,
+        key2: event.target.dataset.opt2,
+        value: event.target.value,
+      })
+    );
+  };
+
   return (
     <>
       <Accordion allowToggle className="">
@@ -47,19 +72,24 @@ const FrequencyConvertersType1 = () => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Box as="span" flex="1" textAlign="left">
+                  <div className={styles.inputContainer}>
                     <MyInputModal
                       label={"Измерительные преобразователи частоты тип 1"}
+                      value={AllFrequencyConvertersType1.toString()}
                     />
-                  </Box>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"} m={"16px"}>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"CurrentTransducersType1Type"}
+                    tag={"FrequencyConvertersType1Type"}
                     label={"Тип"}
                     inputType={"text"}
+                    value={frequencyConvertersType1.type}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"type"}
+                    
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -71,65 +101,91 @@ const FrequencyConvertersType1 = () => {
 
                   {isOpen && (
                     <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                      type={"frequencyConvertersType1"}
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1Name"}
                     label={"Наименование"}
                     inputType={"text"}
+                    value={frequencyConvertersType1.name}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"name"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1Manufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
+                    value={frequencyConvertersType1.manufacturer}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"manufacturer"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1NumberOfChannels"}
                     label={"Количество каналов"}
-                    inputType={"number"}
+                    inputType={"text"}
+                    value={frequencyConvertersType1.numberOfChannels}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"numberOfChannels"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1InputVoltageRange"}
                     label={"Диапазон входного напряжения, В"}
                     inputType={"text"}
+                    value={frequencyConvertersType1.inputVoltageRange}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"inputVoltageRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1OutputCurrentRange"}
                     label={"Диапазон выходного тока, мА"}
                     inputType={"text"}
+                    value={frequencyConvertersType1.outputCurrentRange}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"outputCurrentRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1FrequencyMeasurementRange"}
                     label={"Диапазон измерения частоты, Гц"}
                     inputType={"text"}
+                    value={frequencyConvertersType1.frequencyMeasurementRange}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"measurementRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"FrequencyConvertersType1Quantity"}
                     label={"Количество"}
-                    inputType={"number"}
+                    inputType={"text"}
+                    value={frequencyConvertersType1.quantity}
+                    opt1={"frequencyConvertersType1"}
+                    opt2={"uantity"}
+                    
                     // disabled 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

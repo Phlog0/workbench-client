@@ -27,17 +27,40 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./VoltageTransducersType2.module.scss";
+import styles from "./properties.module.scss";
+
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
+import { useDispatch } from "react-redux";
+import { updateProp } from "../store/nodesSlice";
+import { useAppSelector } from "../hook";
 
-const VoltageTransducersType2 = () => {
+const VoltageTransducersType2 = ({id}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  const { data, error, isLoading } = useFetchDataQuery(
-    "VoltageTransducersType2"
+
+
+  const currentItemProperties = useAppSelector((state) =>
+  state.nodes.nodes.find((node) => node.id === id)
+);
+const voltageTransducersType2 =
+  currentItemProperties?.voltageTransducersType2;
+
+const AllvoltageTransducersType2 = Object.values(voltageTransducersType2);
+
+const dispatch = useDispatch();
+
+const inputChange = (event) => {
+  dispatch(
+    updateProp({
+      id: id,
+      key1: event.target.dataset.opt1,
+      key2: event.target.dataset.opt2,
+      value: event.target.value,
+    })
   );
-  
+};
+
   return (
     <>
       <Accordion allowToggle className="">
@@ -48,19 +71,24 @@ const VoltageTransducersType2 = () => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Box as="span" flex="1" textAlign="left">
+                  <div className={styles.inputContainer}>
                     <MyInputModal
-                      label={"Измерительные преобразователи напряжения тип 2"}
+                      label={"Измерительные преобразователь напряжения тип 2"}
+                      value={AllvoltageTransducersType2.toString()}
                     />
-                  </Box>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"} m={"16px"}>
+              <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2Type"}
+                    tag={"voltageTransducersType2Type"}
                     label={"Тип"}
                     inputType={"text"}
+                    value={voltageTransducersType2.type}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"type"}
+                    
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -72,58 +100,80 @@ const VoltageTransducersType2 = () => {
 
                   {isOpen && (
                     <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                      type={'voltageTransducersType2'}
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2Name"}
+                    tag={"voltageTransducersType2Name"}
                     label={"Наименование"}
                     inputType={"text"}
+                    value={voltageTransducersType2.name}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"name"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2Manufacturer"}
+                    tag={"voltageTransducersType2Manufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
+                    value={voltageTransducersType2.manufacturer}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"manufacturer"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2NumberOfChannels"}
+                    tag={"voltageTransducersType2NumberOfChannels"}
                     label={"Количество каналов"}
                     inputType={"number"}
+                    value={voltageTransducersType2.numberOfChannels}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"numberOfChannels"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2InputVoltageRange"}
+                    tag={"voltageTransducersType2InputVoltageRange"}
                     label={"Диапазон входного напряжения, В"}
                     inputType={"text"}
+                    value={voltageTransducersType2.inputVoltageRange}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"inputVoltageRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2OutputCurrentRange"}
+                    tag={"voltageTransducersType2OutputCurrentRange"}
                     label={"Диапазон выходного тока, мА"}
                     inputType={"text"}
+                    value={voltageTransducersType2.outputCurrentRange}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"outputCurrentRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"VoltageTransducersType2Quantity"}
+                    tag={"voltageTransducersType2Quantity"}
                     label={"Количество"}
                     inputType={"number"}
+                    value={voltageTransducersType2.quantity}
+                    opt1={"voltageTransducersType2"}
+                    opt2={"quantity"}
+                    
                     // disabled 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

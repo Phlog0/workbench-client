@@ -3,58 +3,63 @@ import { Select } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../hook";
 import {
   updateCellType,
-  updateCommutationType,
-  updateTransformatorType,
+
   changeCurrentGrid,
-  updateRatedCurrentOfTheMainCircuits
+  updateNodePropSelect
 } from "../store/nodesSlice";
 
 interface IMySelectProps {
   options: string[];
-  id?: string;
+  itemId?: string;
   current: number;
   label: string;
   tag: string;
 }
 
-const MySelect: FC<IMySelectProps> = ({ options, id, current, label, tag }) => {
+const MySelect: FC<IMySelectProps> = ({
+  options,
+  itemId,
+  current,
+  label,
+  tag,
+}) => {
   const dispatch = useAppDispatch();
 
   const selectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const select = event.target;
     console.log(select.id);
-    if (select.id === "snapGrid") console.log(options);
-    dispatch(changeCurrentGrid({ index: select.selectedIndex }));
+    if (select.id === "snapGrid")
+      dispatch(changeCurrentGrid({ index: select.selectedIndex }));
 
-    if (select.id === "cellType")
-      dispatch(
-        updateCellType({
-          id: id,
-          index: select.selectedIndex,
-        })
-      );
+    dispatch(
+      updateNodePropSelect({
+        id: itemId,
+        index: select.selectedIndex,
+        key: select.id,
+      })
+    );
 
-    if (select.id === "commutationType")
-      dispatch(
-        updateCommutationType({
-          id: id,
-          index: select.selectedIndex,
-        })
-      );
-    if (select.id === "transformatorType")
-      dispatch(
-        updateTransformatorType({
-          id: id,
-          index: select.selectedIndex,
-        })
-      );
-    if (select.id === "RatedCurrentOfTheMainCircuits")
-      dispatch(
-        updateRatedCurrentOfTheMainCircuits({
-          id: id,
-          index: select.selectedIndex,
-        })
-      );
+    // if (select.id === "commutationType")
+    //   dispatch(
+    //     updateCommutationType({
+    //       id: id,
+    //       index: select.selectedIndex,
+    //     })
+    //   );
+    // if (select.id === "transformatorType")
+    //   dispatch(
+    //     updateTransformatorType({
+    //       id: id,
+    //       index: select.selectedIndex,
+    //     })
+    //   );
+    // if (select.id === "RatedCurrentOfTheMainCircuits")
+    //   dispatch(
+    //     updateRatedCurrentOfTheMainCircuits({
+    //       id: id,
+    //       index: select.selectedIndex,
+    //     })
+    //   );
   };
   return (
     <>

@@ -27,7 +27,9 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./InstrumentCurrentTransformers.module.scss";
+
+import styles from "./properties.module.scss";
+
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
@@ -38,9 +40,11 @@ const InstrumentCurrentTransformers = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const { data, error, isLoading } = useFetchDataQuery(
-    "InstrumentCurrentTransformers"
-  );
+  // const currentTransformatorOption = useAppSelector(
+  //   (state) =>
+  //     state.nodes.nodes.find((node) => node.id === id)
+  //       ?.currentTransformatorOption
+  // );
 
   const dispatch = useDispatch();
   const currentItemProperties = useAppSelector((state) =>
@@ -48,11 +52,23 @@ const InstrumentCurrentTransformers = ({ id }) => {
   );
   const instrumentCurrentTransformers =
     currentItemProperties?.instrumentCurrentTransformers;
+  const currentTransformatorOption =
+    currentItemProperties?.currentTransformatorOption;
+
+  let currentTransformatorOptionQuery: number;
+
+  if (currentTransformatorOption === 1 || currentTransformatorOption === 4)
+    currentTransformatorOptionQuery = 2;
+  if (currentTransformatorOption === 2 || currentTransformatorOption === 5)
+    currentTransformatorOptionQuery = 3;
+  if (currentTransformatorOption === 3 || currentTransformatorOption === 6)
+    currentTransformatorOptionQuery = 4;
 
   const allInstrumentCurrentTransformers = Object.values(
     instrumentCurrentTransformers
   );
 
+  // console.log("CURRENT");
 
   const inputChange = (event) => {
     dispatch(
@@ -75,16 +91,16 @@ const InstrumentCurrentTransformers = ({ id }) => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Box as="span" flex="1" textAlign="left">
+                  <div className={styles.inputContainer}>
                     <MyInputModal
                       label={"Измерительные Трансформаторы Тока"}
                       value={allInstrumentCurrentTransformers.toString()}
                     />
-                  </Box>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"}>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersType"}
                     label={"Тип"}
@@ -92,7 +108,6 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     value={instrumentCurrentTransformers.type}
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"type"}
-                    onChange={inputChange}
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -107,14 +122,12 @@ const InstrumentCurrentTransformers = ({ id }) => {
                       isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
-                      type={'instrumentCurrentTransformers'}
+                      type={`instrumentCurrentTransformers`}
+                      query={currentTransformatorOptionQuery}
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersName"}
                     label={"Наименование"}
@@ -122,10 +135,9 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     value={instrumentCurrentTransformers.name}
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"name"}
-                    onChange={inputChange}
                   />
-                </Flex>
-                <Flex w={"100%"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersManufacturer"}
                     label={"Производитель"}
@@ -133,10 +145,9 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     value={instrumentCurrentTransformers.manufacturer}
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"manufacturer"}
-                    onChange={inputChange}
                   />
-                </Flex>
-                <Flex w={"100%"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersTransformationRatio"}
                     label={"Коэффициент трансформации"}
@@ -144,10 +155,9 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     value={instrumentCurrentTransformers.transformationRatio}
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"transformationRatio"}
-                    onChange={inputChange}
                   />
-                </Flex>
-                <Flex w={"100%"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersAccuracyClass"}
                     label={"Класс точности"}
@@ -155,10 +165,9 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     value={instrumentCurrentTransformers.accuracyClass}
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"accuracyClass"}
-                    onChange={inputChange}
                   />
-                </Flex>
-                <Flex w={"100%"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersOneSecondThermalCurrent"}
                     label={"Односекундный ток термической стойкости, кА"}
@@ -168,10 +177,9 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     }
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"oneSecondThermalCurrent"}
-                    onChange={inputChange}
                   />
-                </Flex>
-                <Flex w={"100%"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersTypeOfService"}
                     label={"Вид обслуживания"}
@@ -179,9 +187,8 @@ const InstrumentCurrentTransformers = ({ id }) => {
                     value={instrumentCurrentTransformers.typeOfService}
                     opt1={"instrumentCurrentTransformers"}
                     opt2={"typeOfService"}
-                    onChange={inputChange}
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

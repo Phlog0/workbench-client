@@ -28,7 +28,7 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./ElectromagneticLocking.module.scss";
+import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
@@ -38,10 +38,6 @@ const ElectromagneticLocking = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   const dispatch = useDispatch();
-
-  const { data, error, isLoading } = useFetchDataQuery(
-    "ElectromagneticLocking"
-  );
 
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
@@ -70,8 +66,11 @@ const ElectromagneticLocking = ({ id }) => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Flex w={"100%"} className={styles.inputContainer}>
-                    <MyInputModal label={"Электромагнитная блокировка"}  value={allElectromagneticLocking.toString()}/>
+                  <div className={styles.inputContainer}>
+                    <MyInputModal
+                      label={"Электромагнитная блокировка"}
+                      value={allElectromagneticLocking.toString()}
+                    />
                     <Button
                       className={styles.OpenMenuDots}
                       ref={btnRef}
@@ -79,11 +78,11 @@ const ElectromagneticLocking = ({ id }) => {
                     >
                       ...
                     </Button>
-                  </Flex>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ElectromagneticLockingType"}
                     label={"Тип"}
@@ -91,7 +90,7 @@ const ElectromagneticLocking = ({ id }) => {
                     value={electromagneticLocking.type}
                     opt1={"electromagneticLocking"}
                     opt2={"type"}
-                    onChange={inputChange}
+                    
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -103,17 +102,14 @@ const ElectromagneticLocking = ({ id }) => {
 
                   {isOpen && (
                     <MyModal
-                      isOpen={isOpen}
+                    isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
                       type={"electromagneticLocking"}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                </div>
+                <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"ElectromagneticLockingName"}
                     label={"Наименование"}
@@ -121,10 +117,10 @@ const ElectromagneticLocking = ({ id }) => {
                     value={electromagneticLocking.name}
                     opt1={"electromagneticLocking"}
                     opt2={"name"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                </div>
+                <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"ElectromagneticLockingManufacturer"}
                     label={"Производитель"}
@@ -132,9 +128,9 @@ const ElectromagneticLocking = ({ id }) => {
                     value={electromagneticLocking.manufacturer}
                     opt1={"electromagneticLocking"}
                     opt2={"manufacturer"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

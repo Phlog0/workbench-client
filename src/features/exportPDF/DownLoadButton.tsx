@@ -5,19 +5,21 @@ import {
   getRectOfNodes,
   getTransformForBounds,
 } from "reactflow";
-import { toJpeg, toPng, toSvg } from "html-to-image";
+import { toPng } from "html-to-image";
 
 import { saveAs } from "file-saver";
 import { pdf } from '@react-pdf/renderer'
 
 // import Html from "react-pdf-html";
-import PDFScheme from "./PDFScheme";
+
+
+import PDFScheme from "./PDFScheme"; //MY COMPONENT
 
 const imageWidth = 2000;
 const imageHeight = 2000;
 
 function downloadImage(dataUrl) {
-  const a = document.createElement("a");
+  // const a = document.createElement("a");
  
 
   // const image = new Image();

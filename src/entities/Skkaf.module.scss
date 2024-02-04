@@ -6,6 +6,8 @@
   align-items: center;
   position: relative;
   overflow: hidden;
+  // padding: 2rem;
+  // outline: 1px solid blue;
   // & > *{
   //     outline: 1px dashed #922310;
   // }
@@ -13,17 +15,22 @@
 
 .mainSkelet{
   position: absolute;
-  top: 0;
+  top: -6.1rem;
   left: 50%;
   transform: translateX(-50%);
 }
 
-
+.shkafPowerSwitch{
+  margin-top: 1.6rem;
+  position: relative;
+  left:-0.47px;
+  // transform: translateX(-50%);
+}
 
 .transformators{
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
+  // display: flex;
+  // justify-content: center;
+  // margin-top: 1rem;
   margin-left: .1rem;
   img{
     display: block;

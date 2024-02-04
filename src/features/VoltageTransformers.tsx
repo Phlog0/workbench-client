@@ -27,7 +27,8 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./VoltageTransformers.module.scss";
+import styles from "./properties.module.scss";
+
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { updateProp } from "../store/nodesSlice";
@@ -38,8 +39,6 @@ const VoltageTransformers = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const { data, error, isLoading } = useFetchDataQuery("VoltageTransformers");
-  const dispatch = useDispatch();
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
   );
@@ -68,16 +67,16 @@ const VoltageTransformers = ({ id }) => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Box as="span" flex="1" textAlign="left">
+                  <div className={styles.inputContainer}>
                     <MyInputModal
                       label={"Измерительные Трансформаторы Напряжения"}
                       value={allVoltageTransformers.toString()}
                     />
-                  </Box>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"} m={"16px"}>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"VoltageTransformersType"}
                     label={"Тип"}
@@ -85,7 +84,7 @@ const VoltageTransformers = ({ id }) => {
                     value={voltageTransformers.type}
                     opt1={"voltageTransformers"}
                     opt2={"type"}
-                    onChange={inputChange}
+                    
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -100,14 +99,11 @@ const VoltageTransformers = ({ id }) => {
                       isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
                       type={"voltageTransformers"}
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"VoltageTransformersName"}
                     label={"Наименование"}
@@ -115,10 +111,10 @@ const VoltageTransformers = ({ id }) => {
                     value={voltageTransformers.name}
                     opt1={"voltageTransformers"}
                     opt2={"name"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"VoltageTransformersManufacturer"}
                     label={"Производитель"}
@@ -126,40 +122,40 @@ const VoltageTransformers = ({ id }) => {
                     value={voltageTransformers.manufacturer}
                     opt1={"voltageTransformers"}
                     opt2={"manufacturer"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersRatedThreePhasePowerOfTheFirstWinding"
                     }
                     label={"Номинальная трехфазная мощность первой обмотки"}
-                    inputType={"number"}
+                    inputType={"text"}
                     value={
                       voltageTransformers.ratedThreePhasePowerOfTheFirstWinding
                     }
                     opt1={"voltageTransformers"}
                     opt2={"ratedThreePhasePowerOfTheFirstWinding"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersAccuracyClassOfTheFirstSecondaryWinding"
                     }
                     label={"Класс точности первой вторичной обмотки"}
-                    inputType={"number"}
+                    inputType={"text"}
                     value={
                       voltageTransformers.accuracyClassOfTheFirstSecondaryWinding
                     }
                     opt1={"voltageTransformers"}
                     opt2={"accuracyClassOfTheFirstSecondaryWinding"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersRatedThreePhasePowerOfTheSecondSecondaryWinding"
@@ -167,25 +163,25 @@ const VoltageTransformers = ({ id }) => {
                     label={
                       "Номинальная трехфазная мощность второй вторичной обмотки"
                     }
-                    inputType={"number"}
+                    inputType={"text"}
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersAccuracyClassOfTheSecondSecondaryWinding"
                     }
                     label={"Класс точности второй вторичной обмотки"}
-                    inputType={"number"}
+                    inputType={"text"}
                     value={
                       voltageTransformers.accuracyClassOfTheSecondSecondaryWinding
                     }
                     opt1={"voltageTransformers"}
                     opt2={"accuracyClassOfTheSecondSecondaryWinding"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersRatedThreePhasePowerOfAadditionalSecondaryWinding"
@@ -193,31 +189,31 @@ const VoltageTransformers = ({ id }) => {
                     label={
                       "Номинальная трехфазная мощность дополнительной вторичной обмотки"
                     }
-                    inputType={"number"}
+                    inputType={"text"}
                     value={
                       voltageTransformers.ratedThreePhasePowerOfAadditionalSecondaryWinding
                     }
                     opt1={"voltageTransformers"}
                     opt2={"ratedThreePhasePowerOfAadditionalSecondaryWinding"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersAccuracyClassOfSecondaryReturnWires"
                     }
                     label={"Класс точности дополнительной вторичной обмотки"}
-                    inputType={"number"}
+                    inputType={"text"}
                     value={
                       voltageTransformers.accuracyClassOfSecondaryReturnWires
                     }
                     opt1={"voltageTransformers"}
                     opt2={"accuracyClassOfSecondaryReturnWires"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={
                       "VoltageTransformersRatedLineVoltageAtTheTerminalsOfThePrimaryWinding"
@@ -225,15 +221,15 @@ const VoltageTransformers = ({ id }) => {
                     label={
                       "Номинальное линейное напряжение на выводах первичной обмотки"
                     }
-                    inputType={"number"}
+                    inputType={"text"}
                     value={
                       voltageTransformers.ratedLineVoltageAtTheTerminalsOfThePrimaryWinding
                     }
                     opt1={"voltageTransformers"}
                     opt2={"ratedLineVoltageAtTheTerminalsOfThePrimaryWinding"}
-                    onChange={inputChange}
+                    
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

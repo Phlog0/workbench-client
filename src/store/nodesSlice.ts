@@ -5,6 +5,7 @@ import { act } from "react-dom/test-utils";
 type TUpdateNodeProps = {
   id: string;
   index: number;
+  key: string;
 };
 
 type TCoords = {
@@ -20,18 +21,18 @@ type TUpdateNodeSize = {
   height: number;
 };
 
-type TNode = {
-  id: string;
-  type: string;
-  position: TCoords;
-  draggable: boolean;
-  currentCellOption: number;
+// type TNode = {
+//   id: string;
+//   type: string;
+//   position: TCoords;
+//   draggable: boolean;
+//   currentCellOption: number;
 
-  currentCommutationOption: number;
+//   currentCommutationOption: number;
 
-  currentTransformatorOption: number;
-  parentNode: string;
-};
+//   currentTransformatorOption: number;
+//   parentNode: string;
+// };
 
 type TCurrentNodeId = {
   id: string;
@@ -54,7 +55,7 @@ type TrowData = {
   name: string;
   manufacturer: string;
   ratedOperatingVoltage: string;
-  throughput: string;
+  throughput: string | number;
   ratedDischargeCurrent: string;
   maximumContinuousPermissibleOperatingVoltage: string;
 };
@@ -66,153 +67,390 @@ type TSwitchOPN = {
 };
 
 const initialState = {
-  properties: {
-    cellOptions: [
-      "ТСН",
-      "Шинный мост",
-      "СВ",
-      "СР",
-      "Шинный переход",
-      "Ввод",
-      "Отходящая линия",
-      "УКРМ",
-      "ТН",
-    ],
-    commutationOptions: ["нет", "ВВ", "ВР", "ВНВР"],
-    transformatorOptions: [
-      "нет",
-      "2 трансформатора тока 2 обмотки",
-      "2 трансформатора тока 3 обмотки",
-      "2 трансформатора тока 4 обмотки",
-      "2 трансформатора тока 5 обмотки",
-      "2 трансформатора тока 6 обмотки",
-      "3 трансформатора тока 2 обмотки",
-      "3 трансформатора тока 3 обмотки",
-      "3 трансформатора тока 4 обмотки",
-      "3 трансформатора тока 5 обмотки",
-      "3 трансформатора тока 6 обмотки",
-    ],
-  },
+  properties: {},
   nodes: [
-    {
-      id: "group1",
-
-      position: { x: 420, y: 300 },
-      type: "TireNodeType",
-      // className: "light",
-      style: {
-        width: 360,
-        height: 30,
-      },
-    },
-
-    {
-      id: "1",
-      type: "CustomNodeType",
-      position: { x: 30, y: 0 },
-      draggable: false,
-      currentCellOption: 0,
-      currentCommutationOption: 0,
-      currentTransformatorOption: 1,
-      parentNode: "group1",
-      ratedCurrentOfTheMainCircuits: 0,
-      OPN: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedOperatingVoltage: "",
-        throughput: "",
-        ratedDischargeCurrent: "",
-        maximumContinuousPermissibleOperatingVoltage: "",
-      },
-      microprocessorProtectionDeviceAndAutomation: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      electromagneticLocking: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      instrumentCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        accuracyClass: "",
-        oneSecondThermalCurrent: "",
-        typeOfService: "",
-      },
-      voltageTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedThreePhasePowerOfTheFirstWinding: "",
-        accuracyClassOfTheFirstSecondaryWinding: "",
-        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
-        accuracyClassOfTheSecondSecondaryWinding: "",
-        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
-        accuracyClassOfSecondaryReturnWires: "",
-        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
-      },
-    },
-
-    {
-      id: "2",
-      type: "CustomNodeType",
-      position: { x: 0, y: 100 },
-      draggable: true,
-      currentCellType: 2,
-      currentCommutationOption: 1,
-      currentTransformatorOption: 9,
-      parentNode: "",
-      ratedCurrentOfTheMainCircuits: 1,
-      OPN: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedOperatingVoltage: "",
-        throughput: "",
-        ratedDischargeCurrent: "",
-        maximumContinuousPermissibleOperatingVoltage: "",
-      },
-      microprocessorProtectionDeviceAndAutomation: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      electromagneticLocking: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      instrumentCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        accuracyClass: "",
-        oneSecondThermalCurrent: "",
-        typeOfService: "",
-      },
-      voltageTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedThreePhasePowerOfTheFirstWinding: "",
-        accuracyClassOfTheFirstSecondaryWinding: "",
-        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
-        accuracyClassOfTheSecondSecondaryWinding: "",
-        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
-        accuracyClassOfSecondaryReturnWires: "",
-        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
-      },
-    },
+    // {
+    //   id: "group1",
+    //   position: { x: 420, y: 300 },
+    //   type: "TireNodeType",
+    //   // className: "light",
+    //   style: {
+    //     width: 360,
+    //     height: 30,
+    //   },
+    // },
+    // {
+    //   id: "1",
+    //   type: "CustomNodeType",
+    //   position: { x: 30, y: 0 },
+    //   draggable: false,
+    //   currentCellOption: 0,
+    //   // ===============================================================
+    //   currentTypeOfSwitchingDevice: 0,
+    //   switchingDeviceVV: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrent: "",
+    //     ratedBreakingCurrent: "",
+    //     ratedVoltage: "",
+    //   },
+    //   switchingDeviceVN: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrent: "",
+    //     ratedBreakingCurrent: "",
+    //     ratedVoltage: "",
+    //     numberOfGroundShafts: "",
+    //     locationOfGroundingBlades: "",
+    //     switchDriveLocation: "",
+    //     locationOfTheGroundingBladeDrive: "",
+    //   },
+    //   switchingDeviceR: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrent: "",
+    //     thermalCurrent: "",
+    //     ratedVoltage: "",
+    //   },
+    //   // ===============================================================
+    //   currentTransformatorOption: 1,
+    //   parentNode: "group1",
+    //   ratedCurrentOfTheMainCircuits: 0, // Номинальный ток главных цепей,А
+    //   opn: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedOperatingVoltage: "",
+    //     throughput: "",
+    //     ratedDischargeCurrent: "",
+    //     maximumContinuousPermissibleOperatingVoltage: "",
+    //   },
+    //   microprocessorProtectionDeviceAndAutomation: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //   },
+    //   electromagneticLocking: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //   },
+    //   instrumentCurrentTransformers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     transformationRatio: "",
+    //     accuracyClass: "",
+    //     oneSecondThermalCurrent: "",
+    //     typeOfService: "",
+    //   },
+    //   voltageTransformers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedThreePhasePowerOfTheFirstWinding: "",
+    //     accuracyClassOfTheFirstSecondaryWinding: "",
+    //     ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
+    //     accuracyClassOfTheSecondSecondaryWinding: "",
+    //     ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
+    //     accuracyClassOfSecondaryReturnWires: "",
+    //     ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
+    //   },
+    //   currentTransducersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   currentTransducersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   frequencyConvertersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     frequencyMeasurementRange: "",
+    //     quantity: "",
+    //   },
+    //   frequencyConvertersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     frequencyMeasurementRange: "",
+    //     quantity: "",
+    //   },
+    //   voltageTransducersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   voltageTransducersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   powerTransducersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     inputVoltageRange: "",
+    //     outputVoltageRange: "",
+    //     sin: "",
+    //     cos: "",
+    //   },
+    //   powerTransducersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     inputVoltageRange: "",
+    //     outputVoltageRange: "",
+    //     sin: "",
+    //     cos: "",
+    //   },
+    //   circuitBreakers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrentOfFuseLink: "",
+    //   },
+    //   electricityMeter: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     accuracyClass: "",
+    //   },
+    //   transformersForOwnNeeds: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedPower: "",
+    //   },
+    // },
+    // ========================================================ITEM #2===============================================================
+    // {
+    //   // ==========================REACT-FLOW PROPS==========================
+    //   id: "2",
+    //   type: "CustomNodeType",
+    //   position: { x: 0, y: 100 },
+    //   draggable: true,
+    //   // ==========================END OF REACT-FLOW PROPS==========================
+    //   currentCellOption: 2,
+    //   // ==========================КОММУТАЦИОННЫЙ АППАРАТ==========================
+    //   currentTypeOfSwitchingDevice: 1,
+    //   switchingDeviceVV: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrent: "",
+    //     ratedBreakingCurrent: "",
+    //     ratedVoltage: "",
+    //   },
+    //   switchingDeviceVN: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrent: "",
+    //     ratedBreakingCurrent: "",
+    //     ratedVoltage: "",
+    //     numberOfGroundShafts: "",
+    //     locationOfGroundingBlades: "",
+    //     switchDriveLocation: "",
+    //     locationOfTheGroundingBladeDrive: "",
+    //   },
+    //   switchingDeviceR: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrent: "",
+    //     thermalCurrent: "",
+    //     ratedVoltage: "",
+    //   },
+    //   // ==========================КОНЕЦ КОММУТАЦИОННОГО АППАРАТА==========================
+    //   currentTransformatorOption: 2,
+    //   parentNode: "",
+    //   ratedCurrentOfTheMainCircuits: 1,
+    //   opn: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedOperatingVoltage: "",
+    //     throughput: "",
+    //     ratedDischargeCurrent: "",
+    //     maximumContinuousPermissibleOperatingVoltage: "",
+    //   },
+    //   microprocessorProtectionDeviceAndAutomation: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //   },
+    //   electromagneticLocking: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //   },
+    //   instrumentCurrentTransformers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     transformationRatio: "",
+    //     accuracyClass: "",
+    //     oneSecondThermalCurrent: "",
+    //     typeOfService: "",
+    //   },
+    //   voltageTransformers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedThreePhasePowerOfTheFirstWinding: "",
+    //     accuracyClassOfTheFirstSecondaryWinding: "",
+    //     ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
+    //     accuracyClassOfTheSecondSecondaryWinding: "",
+    //     ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
+    //     accuracyClassOfSecondaryReturnWires: "",
+    //     ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
+    //   },
+    //   currentTransducersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   currentTransducersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   frequencyConvertersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     frequencyMeasurementRange: "",
+    //     quantity: "",
+    //   },
+    //   frequencyConvertersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     frequencyMeasurementRange: "",
+    //     quantity: "",
+    //   },
+    //   voltageTransducersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   voltageTransducersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputVoltageRange: "",
+    //     outputCurrentRange: "",
+    //     quantity: "",
+    //   },
+    //   powerTransducersType1: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     inputVoltageRange: "",
+    //     outputVoltageRange: "",
+    //     sin: "",
+    //     cos: "",
+    //   },
+    //   powerTransducersType2: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     numberOfChannels: "",
+    //     inputCurrentRange: "",
+    //     outputCurrentRange: "",
+    //     inputVoltageRange: "",
+    //     outputVoltageRange: "",
+    //     sin: "",
+    //     cos: "",
+    //   },
+    //   circuitBreakers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedCurrentOfFuseLink: "",
+    //   },
+    //   electricityMeter: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     accuracyClass: "",
+    //   },
+    //   transformersForOwnNeeds: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     ratedPower: "",
+    //   },
+    //   zeroSequenceCurrentTransformers: {
+    //     type: "",
+    //     name: "",
+    //     manufacturer: "",
+    //     transformationRatio: "",
+    //     oneSecondThermalCurrentOfTheSecondaryWinding: "",
+    //   },
+    // },
   ],
 
   currentNode: {
-    id: "1",
+    id: "",
   },
   snapGrid: ["10", "50", "100"],
   currentGrid: {
@@ -224,6 +462,9 @@ const nodeSlice = createSlice({
   name: "properties",
 
   initialState,
+  selectors: {
+    getCurrentId: (state)=>state
+  },
 
   reducers: {
     addNode(state, action: PayloadAction<TNode>) {
@@ -241,47 +482,26 @@ const nodeSlice = createSlice({
       state.nodes = orderItems(filteredNodes, tire);
     },
 
-    updateCellType(state, action: PayloadAction<TUpdateNodeProps>) {
+    updateNodePropSelect(state, action: PayloadAction<TUpdateNodeProps>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node) node.currentCellOption = action.payload.index;
+      // if (node) node.currentCellType = action.payload.index;
+      if (node) node[action.payload.key] = action.payload.index;
     },
-    updateCommutationType(state, action: PayloadAction<TUpdateNodeProps>) {
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node) node.currentCommutationOption = action.payload.index;
-    },
-    updateTransformatorType(state, action: PayloadAction<TTransformator>) {
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node) node.currentTransformatorOption = action.payload.index;
-    },
-    updateRatedCurrentOfTheMainCircuits(state, action) {
-      console.log(action.payload);
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node) node.ratedCurrentOfTheMainCircuits = action.payload.index;
-    },
+    // updateCommutationType(state, action: PayloadAction<TUpdateNodeProps>) {
+    //   const node = state.nodes.find((item) => item.id === action.payload.id);
+    //   if (node) node.currentCommutationOption = action.payload.index;
+    // },
+    // updateTransformatorType(state, action: PayloadAction<TTransformator>) {
+    //   const node = state.nodes.find((item) => item.id === action.payload.id);
+    //   if (node) node.currentTransformatorOption = action.payload.index;
+    // },
+    // updateRatedCurrentOfTheMainCircuits(state, action) {
+    //   console.log(action.payload);
+    //   const node = state.nodes.find((item) => item.id === action.payload.id);
+    //   if (node) node.ratedCurrentOfTheMainCircuits = action.payload.index;
+    // },
 
-    updateOPN(state, action: PayloadAction<TSwitchOPN>) {
-      // console.log(action.payload);
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-
-      if (node) node.OPN = action.payload.rowData;
-    },
-    updateMicroprocessorProtectionDeviceAndAutomation(state, action) {
-      // console.log(action.payload);
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node)
-        node.microprocessorProtectionDeviceAndAutomation =
-          action.payload.rowData;
-    },
-    updateElectromagneticLocking(state, action) {
-      // console.log(action.payload);
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node) node.electromagneticLocking = action.payload.rowData;
-    },
-    updateInstrumentCurrentTransformers(state, action) {
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      if (node) node.instrumentCurrentTransformers = action.payload.rowData;
-    },
-    updateVoltageTransformersTransformers(state, action) {
+    updatePropsByRow(state, action) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
       const currentProps = node[action.payload.type];
       let i = 0;
@@ -343,9 +563,7 @@ const nodeSlice = createSlice({
 });
 
 export const {
-  updateCellType,
-  updateCommutationType,
-  updateTransformatorType,
+  updateNodePropSelect,
   updateCoordinats,
   updateGroup,
   updateTireSize,
@@ -354,13 +572,11 @@ export const {
   deleteNode,
   changeCurrentNode,
   changeCurrentGrid,
-  updateOPN,
-  updateMicroprocessorProtectionDeviceAndAutomation,
-  updateElectromagneticLocking,
-  updateInstrumentCurrentTransformers,
-  updateVoltageTransformersTransformers,
+
+  updatePropsByRow,
   updateProp,
-  updateRatedCurrentOfTheMainCircuits,
 } = nodeSlice.actions;
+
+export const { getCurrentId } = nodeSlice.selectors;
 
 export default nodeSlice.reducer;

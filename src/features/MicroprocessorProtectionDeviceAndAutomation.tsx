@@ -27,7 +27,7 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./MicroprocessorProtectionDeviceAndAutomation.module.scss";
+import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useAppSelector } from "../hook";
@@ -40,10 +40,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
 
   const dispatch = useDispatch();
 
-  const { data, error, isLoading } = useFetchDataQuery(
-    "MicroprocessorProtectionDeviceAndAutomation"
-  );
-
+ 
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
   );
@@ -73,16 +70,16 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Box as="span" flex="1" textAlign="left">
+                  <div className={styles.inputContainer}>
                     <MyInputModal
                       label={"Микропроциссорное устройство защиты и автоматики"}
                       value={allMicroprocessorProtectionDeviceAndAutomation.toString()}
                     />
-                  </Box>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"}>
+              <div className={styles.inputContainer}>
                   <MyInput
                     tag={"MicroprocessorProtectionDeviceAndAutomationType"}
                     label={"Тип"}
@@ -90,7 +87,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                     value={microprocessorProtectionDeviceAndAutomation.type}
                     opt1={"microprocessorProtectionDeviceAndAutomation"}
                     opt2={"type"}
-                    onChange={inputChange}
+                    
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -102,16 +99,13 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
 
                   {isOpen && (
                     <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
                       type={"microprocessorProtectionDeviceAndAutomation"}
                     />
                   )}
-                </Flex>
+                </div>
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"MicroprocessorProtectionDeviceAndAutomationName"}
@@ -120,7 +114,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                     value={microprocessorProtectionDeviceAndAutomation.name}
                     opt1={"microprocessorProtectionDeviceAndAutomation"}
                     opt2={"name"}
-                    onChange={inputChange}
+                    
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
@@ -135,7 +129,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                     }
                     opt1={"microprocessorProtectionDeviceAndAutomation"}
                     opt2={"manufacturer"}
-                    onChange={inputChange}
+                    
                   />
                 </div>
               </AccordionPanel>

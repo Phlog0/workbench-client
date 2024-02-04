@@ -1,0 +1,15 @@
+.inputContainer {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  .OpenMenuDots {
+    position: absolute;
+
+    top: 1.5rem;
+    right: -0.3125rem;
+    z-index: 2;
+  }
+}
+.AccordionPanel {
+  margin-left: 4rem;
+}

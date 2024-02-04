@@ -1,6 +1,6 @@
 import { useState, FC } from "react";
 
-import "./App.css";
+import "./App.scss";
 
 import TopNavbar from "./widgets/TopNavbar";
 import RightSidebar from "./widgets/RightSidebar";

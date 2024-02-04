@@ -27,14 +27,39 @@ import {
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import styles from "./PowerTransducersType1.module.scss";
+import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
+import { useDispatch } from "react-redux";
+import { updateProp } from "../store/nodesSlice";
+import { useAppSelector } from "../hook";
 
-const PowerTransducersType2 = () => {
+const PowerTransducersType2 = ({id}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  const { data, error, isLoading } = useFetchDataQuery("PowerTransducersType2");
+ 
+  
+  const currentItemProperties = useAppSelector((state) =>
+  state.nodes.nodes.find((node) => node.id === id)
+);
+const powerTransducersType2 =
+  currentItemProperties?.powerTransducersType2;
+
+const AllPowerTransducersType2 = Object.values(powerTransducersType2);
+
+const dispatch = useDispatch();
+
+const inputChange = (event) => {
+  dispatch(
+    updateProp({
+      id: id,
+      key1: event.target.dataset.opt1,
+      key2: event.target.dataset.opt2,
+      value: event.target.value,
+    })
+  );
+};
+
 
   return (
     <>
@@ -46,19 +71,31 @@ const PowerTransducersType2 = () => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Box as="span" flex="1" textAlign="left">
+                  <div className={styles.inputContainer}>
                     <MyInputModal
-                      label={"Измерительные преобразователи мощности тип 2"}
+                      label={"Измерительные преобразователи мощности тип 1"}
+                      value={AllPowerTransducersType2.toString()}
                     />
-                  </Box>
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"} m={"16px"}>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2Type"}
+                    tag={"powerTransducersType2Type"}
                     label={"Тип"}
                     inputType={"text"}
+                    value={powerTransducersType2.type}
+                    opt1={"powerTransducersType2"}
+                    opt2={"type"}
+                    
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -70,78 +107,112 @@ const PowerTransducersType2 = () => {
 
                   {isOpen && (
                     <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                      type={'powerTransducersType2'}
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2Name"}
+                    tag={"powerTransducersType2Name"}
                     label={"Наименование"}
                     inputType={"text"}
+                    value={powerTransducersType2.name}
+                    opt1={"powerTransducersType2"}
+                    opt2={"name"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2Manufacturer"}
+                    tag={"powerTransducersType2Manufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
+                    value={powerTransducersType2.manufacturer}
+                    opt1={"powerTransducersType2"}
+                    opt2={"manufacturer"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2NumberOfChannels"}
+                    tag={"powerTransducersType2NumberOfChannels"}
                     label={"Количество каналов"}
-                    inputType={"number"}
+                    inputType={"text"}
+                    value={powerTransducersType2.numberOfChannels}
+                    opt1={"powerTransducersType2"}
+                    opt2={"numberOfChannels"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2InputCurrentRange"}
+                    tag={"powerTransducersType2InputCurrentRange"}
                     label={"Диапазон входного тока"}
                     inputType={"text"}
+                    value={powerTransducersType2.inputCurrentRange}
+                    opt1={"powerTransducersType2"}
+                    opt2={"inputCurrentRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2OutputCurrentRange"}
+                    tag={"powerTransducersType2OutputCurrentRange"}
                     label={"Диапазон выходного тока"}
                     inputType={"text"}
+                    value={powerTransducersType2.outputCurrentRange}
+                    opt1={"powerTransducersType2"}
+                    opt2={"outputCurrentRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2InputVoltageRange"}
+                    tag={"powerTransducersType2InputVoltageRange"}
                     label={"Диапазон входного напряжения"}
                     inputType={"text"}
+                    value={powerTransducersType2.inputVoltageRange}
+                    opt1={"powerTransducersType2"}
+                    opt2={"inputVoltageRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2OutputVoltageRange"}
+                    tag={"powerTransducersType2OutputVoltageRange"}
                     label={"Диапазон выходного напряжения"}
                     inputType={"text"}
+                    value={powerTransducersType2.outputVoltageRange}
+                    opt1={"powerTransducersType2"}
+                    opt2={"outputVoltageRange"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2Sin"}
+                    tag={"powerTransducersType2Sin"}
                     label={"Sin ф"}
                     inputType={"text"}
+                    value={powerTransducersType2.sin}
+                    opt1={"powerTransducersType2"}
+                    opt2={"sin"}
+                    
                   />
-                </Flex>
-                <Flex w={"100%"} m={"16px"}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"PowerTransducersType2Cos"}
+                    tag={"powerTransducersType2Cos"}
                     label={"Cos ф"}
                     inputType={"text"}
+                    value={powerTransducersType2.cos}
+                    opt1={"powerTransducersType2"}
+                    opt2={"cos"}
+                    
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import styles from "./ElectricityMeter.module.scss";
+import styles from "./properties.module.scss";
 import {
   Accordion,
   AccordionButton,
@@ -29,9 +29,34 @@ import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
 import MyInputModal from "../shared/MyInputModal";
-const ElectricityMeter = () => {
+import { useAppSelector } from "../hook";
+import { useDispatch } from "react-redux";
+import { useFetchDataQuery } from "../services/dictService";
+import { updateProp } from "../store/nodesSlice";
+const ElectricityMeter = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
+
+
+  const currentItemProperties = useAppSelector((state) =>
+    state.nodes.nodes.find((node) => node.id === id)
+  );
+  const electricityMeter = currentItemProperties?.electricityMeter;
+
+  const AllElectricityMeter = Object.values(electricityMeter);
+
+  const dispatch = useDispatch();
+
+  const inputChange = (event) => {
+    dispatch(
+      updateProp({
+        id: id,
+        key1: event.target.dataset.opt1,
+        key2: event.target.dataset.opt2,
+        value: event.target.value,
+      })
+    );
+  };
   return (
     <>
       <Accordion allowToggle className="">
@@ -42,8 +67,11 @@ const ElectricityMeter = () => {
                 <AccordionButton>
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <Flex w={"100%"}>
-                    <MyInputModal label={"Счетчик электроэнергии"} />
+                  <div className={styles.inputContainer}>
+                    <MyInputModal
+                      label={"Счетчик электроэнергии"}
+                      value={AllElectricityMeter.toString()}
+                    />
                     <Button
                       className={styles.OpenMenuDots}
                       ref={btnRef}
@@ -51,15 +79,21 @@ const ElectricityMeter = () => {
                     >
                       ...
                     </Button>
-                  </Flex>
+                  </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ElectricityMeterType"}
                     label={"Тип"}
                     inputType={"text"}
+                    
+                    opt1={"electricityMeter"}
+                    opt2={"type"}
+                    value={
+                      electricityMeter?.type
+                    }
                   />
                   <Button
                     className={styles.OpenMenuDots}
@@ -71,33 +105,54 @@ const ElectricityMeter = () => {
 
                   {isOpen && (
                     <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                    type={'electricityMeter'}
+
                     />
                   )}
-                </Flex>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ElectricityMeterName"}
                     label={"Наименование"}
                     inputType={"text"}
+                    
+                    opt1={"electricityMeter"}
+                    opt2={"name"}
+                    value={
+                      electricityMeter?.name
+                    }
                   />
-                </Flex>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ElectricityMeterManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
+                    
+                    opt1={"electricityMeter"}
+                    opt2={"manufacturer"}
+                    value={
+                      electricityMeter?.manufacturer
+                    }
+    
                   />
-                </Flex>
-                <Flex w={"100%"} className={styles.inputContainer}>
+                </div>
+                <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ElectricityMeterAccuracyСlass"}
                     label={"Класс точности"}
                     inputType={"text"}
+                    
+                    opt1={"electricityMeter"}
+                    opt2={"accuracyClass"}
+                    value={
+                      electricityMeter?.accuracyClass
+                    }
                   />
-                </Flex>
+                </div>
               </AccordionPanel>
             </>
           )}

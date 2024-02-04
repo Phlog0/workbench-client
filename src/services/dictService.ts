@@ -12,9 +12,13 @@ export const dictAPI = createApi({
     fetchData: builder.query({
       query: (url) => ({
         url,
+        // body: "1",
       }),
     }),
   }),
 });
 
-export const { useFetchAllRatedCurrentOfTheMainCircuitsQuery, useFetchDataQuery } = dictAPI;
+export const {
+  useFetchAllRatedCurrentOfTheMainCircuitsQuery,
+  useFetchDataQuery,
+} = dictAPI;
