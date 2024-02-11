@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -92,16 +93,8 @@ const InstrumentCurrentTransformers = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Измерительные Трансформаторы Тока"}
-                      value={allInstrumentCurrentTransformers.toString()}
-                    />
-                  </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
+                    <Text>змерительные Трансформаторы Тока</Text>
+                    <MyInput
                     tag={"InstrumentCurrentTransformersType"}
                     label={"Тип"}
                     inputType={"text"}
@@ -126,7 +119,11 @@ const InstrumentCurrentTransformers = ({ id }) => {
                       query={currentTransformatorOptionQuery}
                     />
                   )}
-                </div>
+                  </div>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} className={styles.AccordionPanel}>
+     
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersName"}

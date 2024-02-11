@@ -24,15 +24,14 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
 import MyModal from "../widgets/MyModal";
-import MyInputModal from "../shared/MyInputModal";
+
 import { useAppSelector } from "../hook";
-import { useDispatch } from "react-redux";
-import { useFetchDataQuery } from "../services/dictService";
-import { updateProp } from "../store/nodesSlice";
+
 const ZeroSequenceCurrentTransformers = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -46,22 +45,8 @@ const ZeroSequenceCurrentTransformers = ({ id }) => {
   const zeroSequenceCurrentTransformers =
     currentItemProperties?.zeroSequenceCurrentTransformers;
 
-  const AllZeroSequenceCurrentTransformers = Object.values(
-    zeroSequenceCurrentTransformers
-  );
+ 
 
-  const dispatch = useDispatch();
-
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
   return (
     <>
       <Accordion allowToggle className="">
@@ -73,23 +58,8 @@ const ZeroSequenceCurrentTransformers = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Трансформаторы собственных нужд"}
-                      value={AllZeroSequenceCurrentTransformers.toString()}
-                    />
-                    <Button
-                      className={styles.OpenMenuDots}
-                      ref={btnRef}
-                      onClick={onOpen}
-                    >
-                      ...
-                    </Button>
-                  </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
+                    <Text>Трансформаторы тока нулевой последовательности</Text>
+                    <MyInput
                     tag={"ZeroSequenceCurrentTransformersType"}
                     label={"Тип"}
                     inputType={"text"}
@@ -114,7 +84,10 @@ const ZeroSequenceCurrentTransformers = ({ id }) => {
                       type={"zeroSequenceCurrentTransformers"}
                     />
                   )}
-                </div>
+                  </div>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} className={styles.AccordionPanel}>
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ZeroSequenceCurrentTransformersName"}
@@ -151,7 +124,7 @@ const ZeroSequenceCurrentTransformers = ({ id }) => {
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ZeroSequenceCurrentTransformersTransformationRatio"}
-                    label={"Коэффициент трансформации"}
+                    label={"Односекундный ток термической стойкости вторичной обмотки (А)"}
                     inputType={"text"}
                     
                     opt1={"zeroSequenceCurrentTransformers"}

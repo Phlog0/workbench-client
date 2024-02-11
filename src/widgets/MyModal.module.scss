@@ -4,7 +4,8 @@
 }
 
 .modalContainer{
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    // display: grid;
+    // grid-template-columns: 2fr 1fr;
+    max-width: 95rem;
     // overflow: hidden;
 }

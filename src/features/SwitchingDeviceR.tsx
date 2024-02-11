@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -71,9 +72,15 @@ const inputChange = (event) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Коммутационный аппарат Р"}
-                      value={AllswitchingDeviceR.toString()}
+                    <Text>Коммутационный аппарат Р</Text>
+                      <MyInput
+                      tag={"switchingDeviceRType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={switchingDeviceR.type}
+                      opt1={"switchingDeviceR"}
+                      opt2={"type"}
+                      
                     />
                     <Button
                       className={styles.OpenMenuDots}
@@ -82,36 +89,21 @@ const inputChange = (event) => {
                     >
                       ...
                     </Button>
+  
+                    {isOpen && (
+                      <MyModal
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      onClose={onClose}
+                        type={'switchingDeviceR'}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
                 <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"switchingDeviceRType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={switchingDeviceR.type}
-                    opt1={"switchingDeviceR"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={'switchingDeviceR'}
-                    />
-                  )}
+                
                 </div>
                 <div className={styles.inputContainer}>
                   <MyInput

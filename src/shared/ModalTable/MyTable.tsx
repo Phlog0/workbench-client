@@ -2,25 +2,57 @@ import { Spinner, Table, TableContainer, Tbody } from "@chakra-ui/react";
 import TableRow from "./TableRow";
 import styles from "./MyTable.module.scss";
 import "react-virtualized/styles.css";
-import React, { FC, Suspense, useDeferredValue } from "react";
+import React, {
+  FC,
+  Suspense,
+  useDeferredValue,
+  useEffect,
+  useState,
+} from "react";
 import { Column, Table as VirtTable } from "react-virtualized";
+import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import { List } from "react-virtualized";
 import { useFetchAllOPNQuery } from "../../services/dictService";
 import { useDispatch } from "react-redux";
 import { updatePropsByRow } from "../../store/nodesSlice";
 import { useAppSelector } from "../../hook";
+import Draggable from "react-draggable";
+import MyHeaderRenderer from "./resizeColumns/MyHeaderRenderer";
+import { MdDragIndicator } from "react-icons/md";
+// import { DragHandleIcon} from '@chakra-ui/icons'
 interface IMyTableProps {
   data: string[][];
 }
 
+// const testState = {
+//   Тип: 1 / 4,
+//   Наименование: 1 / 4,
+//   Производитель: 1 / 4,
+//   "НОМИНАЛЬНАЯ МОЩНОСТЬ (КВА)": 1 / 4,
+// };
+const testState = [1 / 4, 1 / 4, 1 / 4, 1 / 4];
+
 const MyTable = ({ data, isLoading, type, onClose }) => {
   const dispatch = useDispatch();
-
   const currentId = useAppSelector((state) => state.nodes.currentNode.id);
+  const [state, setState] = useState(testState);
+  const [renderData, setRenderData] = useState(null);
+
+  useEffect(() => {
+    const resizeTableMetrics = async (data) => {
+      const quantity = await data[0].length;
+      const render = await data.slice(1);
+      const metrics = Array(quantity).fill(1 / quantity);
+      setState(metrics);
+      setRenderData(render);
+    };
+
+    resizeTableMetrics(data);
+  }, [data]);
+  console.log(data);
+  console.log(renderData);
 
   const onRowClick = ({ _, index, rowData }) => {
-    console.log({ currentId, rowData });
-
     dispatch(
       updatePropsByRow({
         id: currentId,
@@ -31,6 +63,55 @@ const MyTable = ({ data, isLoading, type, onClose }) => {
 
     onClose();
   };
+
+  const resizeRow = ({ dataKey, deltaX }) => {
+    const prevWidths = state;
+    const percentDelta = deltaX / 1596;
+    console.log(percentDelta);
+    // This is me being lazy :)
+    const nextDataKey = +dataKey + 1;
+
+    setState({
+      ...prevWidths,
+      [dataKey]: prevWidths[dataKey] + percentDelta,
+      [nextDataKey]: prevWidths[nextDataKey] - percentDelta,
+    });
+  };
+
+  const MyHeaderRenderer = ({
+    columnData,
+    dataKey,
+    disableSort,
+    label,
+    sortBy,
+    sortDirection,
+  }) => {
+    return (
+      <div key={dataKey} className={styles.virtTableHeader}>
+        <div className="ReactVirtualized__Table__headerTruncatedText">
+          {label}
+        </div>
+        <Draggable
+          axis="x"
+          defaultClassName="DragHandle"
+          defaultClassNameDragging="DragHandleActive"
+          onDrag={(event, { deltaX }) =>
+            resizeRow({
+              dataKey,
+              deltaX,
+            })
+          }
+          position={{ x: 100 }}
+          zIndex={999}
+        >
+          <div className={styles.dragHandleIcon}>
+            <MdDragIndicator />
+          </div>
+        </Draggable>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.MyTable}>
       {isLoading ? (
@@ -44,33 +125,55 @@ const MyTable = ({ data, isLoading, type, onClose }) => {
       ) : (
         <TableContainer className={styles.scrollBlock}>
           <Table variant="simple">
-            <Tbody>
-              <VirtTable
-                className={styles.virtTable}
-                width={900}
-                height={600}
-                headerHeight={40}
-                rowHeight={30}
-                rowCount={data.length}
-                rowGetter={({ index }) => {
-                  if (index === data.length - 1) return data[index];
-                  return data[index + 1];
-                }}
-                onRowClick={onRowClick}
-              >
+            <Tbody className={styles.tableContainer}>
+              {renderData && (
+                <AutoSizer>
+                  {({ height, width }) => (
+                    <VirtTable
+                      className={styles.virtTable}
+                      width={width}
+                      height={height}
+                      headerHeight={40}
+                      rowHeight={50}
+                      rowCount={data.length - 1}
+                      rowGetter={({ index }) => {
+                        // if (index === data.length - 1) return data[index];
+                        // return data[index + 1];
 
-                {data &&
-                  data[0].map((col: string, index: number) => {
-                    return (
-                      <Column
-                        className={styles.column}
-                        width={200}
-                        label={col}
-                        dataKey={String(index)}
-                      />
-                    );
-                  })}
-              </VirtTable>
+                        // if (index === data.length - 1) return data[index];
+                        return renderData[index];
+                      }}
+                      onRowClick={onRowClick}
+                    >
+                      {renderData &&
+                        data[0].map((col: string, index: number) => {
+                          if (index === data[0].length - 1) {
+                            return (
+                              <Column
+                                className={styles.column}
+                                // width={width / data[0].length}
+                                width={state[index] * width}
+                                label={col}
+                                dataKey={String(index)}
+                              />
+                            );
+                          }
+                          return (
+                            <Column
+                              className={styles.column}
+                              // width={width / data[0].length}
+                              width={state[index] * width}
+                              label={col}
+                              dataKey={String(index)}
+                              // dataKey={String(col)}
+                              headerRenderer={MyHeaderRenderer}
+                            />
+                          );
+                        })}
+                    </VirtTable>
+                  )}
+                </AutoSizer>
+              )}
             </Tbody>
           </Table>
         </TableContainer>

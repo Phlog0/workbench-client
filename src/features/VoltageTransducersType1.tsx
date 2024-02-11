@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -48,18 +49,6 @@ const VoltageTransducersType1 = ({ id }) => {
 
   const AllVoltageTransducersType1 = Object.values(voltageTransducersType1);
 
-  const dispatch = useDispatch();
-
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
 
   return (
     <>
@@ -72,41 +61,37 @@ const VoltageTransducersType1 = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Измерительные преобразователь напряжения тип 1"}
-                      value={AllVoltageTransducersType1.toString()}
+                    <Text>Измерительные преобразователь напряжения тип 1</Text>
+                      <MyInput
+                      tag={"VoltageTransducersType1Type"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={voltageTransducersType1.type}
+                      opt1={"voltageTransducersType1"}
+                      opt2={"type"}
+                      
                     />
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+  
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"voltageTransducersType1"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"VoltageTransducersType1Type"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={voltageTransducersType1.type}
-                    opt1={"voltageTransducersType1"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      type={"voltageTransducersType1"}
-                    />
-                  )}
-                </div>
+        
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"VoltageTransducersType1Name"}

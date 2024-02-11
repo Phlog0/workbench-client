@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -71,22 +72,7 @@ const inputChange = (event) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Коммутационный аппарат ВВ"}
-                      value={AllswitchingDeviceVV.toString()}
-                    />
-                    <Button
-                      className={styles.OpenMenuDots}
-                      ref={btnRef}
-                      onClick={onOpen}
-                    >
-                      ...
-                    </Button>
-                  </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
+                    <Text>Коммутационный аппарат ВВ</Text>
                   <MyInput
                     tag={"switchingDeviceVVType"}
                     label={"Тип"}
@@ -112,6 +98,12 @@ const inputChange = (event) => {
                       type={'switchingDeviceVV'}
                     />
                   )}
+                  </div>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} className={styles.AccordionPanel}>
+                <div className={styles.inputContainer}>
+                 
                 </div>
                 <div className={styles.inputContainer}>
                   <MyInput

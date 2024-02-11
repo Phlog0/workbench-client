@@ -24,6 +24,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -67,23 +68,8 @@ const ElectromagneticLocking = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Электромагнитная блокировка"}
-                      value={allElectromagneticLocking.toString()}
-                    />
-                    <Button
-                      className={styles.OpenMenuDots}
-                      ref={btnRef}
-                      onClick={onOpen}
-                    >
-                      ...
-                    </Button>
-                  </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
+                   <Text>Электромагнитная блокировка</Text>
+                   <MyInput
                     tag={"ElectromagneticLockingType"}
                     label={"Тип"}
                     inputType={"text"}
@@ -108,7 +94,11 @@ const ElectromagneticLocking = ({ id }) => {
                       type={"electromagneticLocking"}
                     />
                   )}
-                </div>
+                  </div>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} className={styles.AccordionPanel}>
+                
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"ElectromagneticLockingName"}

@@ -30,6 +30,7 @@ import {
   ModalBody,
   ModalFooter,
   Divider,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 // import styles from "./Switchopn.module.scss";
@@ -60,9 +61,8 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
   // console.log(test);
   // const currentItemProperties = useAppSelector(getCurrentId);
 
-  console.log(currentItemProperties);
+  // console.log(currentItemProperties);
   const opn = currentItemProperties?.opn;
-
 
   const dispatch = useDispatch();
 
@@ -104,13 +104,8 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal label={"ОПН"} value={allopn.toString()} />
-                  </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
+                    <Text>ОПН</Text>
+                    <MyInput
                     tag={"SwitchopnType"}
                     label={"Тип"}
                     inputType={"text"}
@@ -135,8 +130,10 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                       type={"opn"}
                     />
                   )}
-                </div>
-
+                  </div>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} className={styles.AccordionPanel}>
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"SwitchopnName"}

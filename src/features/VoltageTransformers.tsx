@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -44,19 +45,6 @@ const VoltageTransformers = ({ id }) => {
   );
   const voltageTransformers = currentItemProperties?.voltageTransformers;
 
-  const allVoltageTransformers = Object.values(voltageTransformers);
-
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
-
   return (
     <>
       <Accordion allowToggle className="">
@@ -68,41 +56,35 @@ const VoltageTransformers = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Измерительные Трансформаторы Напряжения"}
-                      value={allVoltageTransformers.toString()}
+                    <Text>Измерительные Трансформаторы Напряжения</Text>
+                    <MyInput
+                      tag={"VoltageTransformersType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={voltageTransformers.type}
+                      opt1={"voltageTransformers"}
+                      opt2={"type"}
                     />
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"voltageTransformers"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"VoltageTransformersType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={voltageTransformers.type}
-                    opt1={"voltageTransformers"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      type={"voltageTransformers"}
-                    />
-                  )}
-                </div>
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"VoltageTransformersName"}
@@ -111,7 +93,6 @@ const VoltageTransformers = ({ id }) => {
                     value={voltageTransformers.name}
                     opt1={"voltageTransformers"}
                     opt2={"name"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -122,7 +103,6 @@ const VoltageTransformers = ({ id }) => {
                     value={voltageTransformers.manufacturer}
                     opt1={"voltageTransformers"}
                     opt2={"manufacturer"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -137,7 +117,6 @@ const VoltageTransformers = ({ id }) => {
                     }
                     opt1={"voltageTransformers"}
                     opt2={"ratedThreePhasePowerOfTheFirstWinding"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -152,7 +131,6 @@ const VoltageTransformers = ({ id }) => {
                     }
                     opt1={"voltageTransformers"}
                     opt2={"accuracyClassOfTheFirstSecondaryWinding"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -164,6 +142,11 @@ const VoltageTransformers = ({ id }) => {
                       "Номинальная трехфазная мощность второй вторичной обмотки"
                     }
                     inputType={"text"}
+                    value={
+                      voltageTransformers.ratedThreePhasePowerOfTheSecondSecondaryWinding
+                    }
+                    opt1={"voltageTransformers"}
+                    opt2={"ratedThreePhasePowerOfTheSecondSecondaryWinding"}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -174,11 +157,10 @@ const VoltageTransformers = ({ id }) => {
                     label={"Класс точности второй вторичной обмотки"}
                     inputType={"text"}
                     value={
-                      voltageTransformers.accuracyClassOfTheSecondSecondaryWinding
+                      voltageTransformers?.accuracyClassOfTheSecondSecondaryWinding
                     }
                     opt1={"voltageTransformers"}
                     opt2={"accuracyClassOfTheSecondSecondaryWinding"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -195,7 +177,6 @@ const VoltageTransformers = ({ id }) => {
                     }
                     opt1={"voltageTransformers"}
                     opt2={"ratedThreePhasePowerOfAadditionalSecondaryWinding"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -210,7 +191,6 @@ const VoltageTransformers = ({ id }) => {
                     }
                     opt1={"voltageTransformers"}
                     opt2={"accuracyClassOfSecondaryReturnWires"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -227,7 +207,6 @@ const VoltageTransformers = ({ id }) => {
                     }
                     opt1={"voltageTransformers"}
                     opt2={"ratedLineVoltageAtTheTerminalsOfThePrimaryWinding"}
-                    
                   />
                 </div>
               </AccordionPanel>

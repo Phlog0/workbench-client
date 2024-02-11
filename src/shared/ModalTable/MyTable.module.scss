@@ -1,25 +1,42 @@
 .MyTable .scrollBlock {
-  width: clamp(500px, 100%, 900px);
-  outline: 1px solid teal;
+  // width: clamp(500px, 100%, 900px);
+  // outline: 1px solid red;
   // height: 80dvh;
   // height: 80dvh;
   // overflow-y: auto;
 }
 
-.virtTable {
-  // overflow-y: scroll;
-  // outline: 1px solid red;
-  // width: 100%;
-  // height:500px;
-}
-.virtTableHeadRow{
-  padding: 0.8rem;
+.tableContainer {
+  flex: 1 1 auto;
+  height: 85vh;
 }
 
-.column{
+// .virtTableHeadRow {
+//   padding: 8.8rem;
+// }
+
+.virtTableHeader{
+  padding:0.8rem;
+  position: relative;
+}
+
+.column {
   cursor: pointer;
   transition: all, 0.3s;
-  &:hover{
-   box-shadow: 0 0 3px #000;
+  position: relative;
+  &:hover {
+    box-shadow: 0 0 3px #000;
   }
 }
+
+
+.dragHandleIcon {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  right: -1rem;
+  cursor: col-resize;
+  font-size: 1.5rem;
+
+}
+

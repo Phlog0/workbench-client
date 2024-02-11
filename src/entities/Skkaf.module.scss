@@ -13,7 +13,7 @@
   // }
 }
 
-.mainSkelet{
+.top{
   position: absolute;
   top: -6.1rem;
   left: 50%;
@@ -21,10 +21,21 @@
 }
 
 .shkafPowerSwitch{
+position: relative;
+}
+
+.switchingDevice{
   margin-top: 1.6rem;
   position: relative;
   left:-0.47px;
   // transform: translateX(-50%);
+}
+
+.vnImage{
+  margin-top: 1.6rem;
+  position: relative;
+  right: 4rem;
+
 }
 
 .transformators{
@@ -34,6 +45,6 @@
   margin-left: .1rem;
   img{
     display: block;
-    max-width: 100%;
+    // max-width: 100%;
   }
 }

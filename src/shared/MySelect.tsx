@@ -3,10 +3,11 @@ import { Select } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../hook";
 import {
   updateCellType,
-
   changeCurrentGrid,
-  updateNodePropSelect
+  updateNodePropSelect,
 } from "../store/nodesSlice";
+
+import styles from "./MySelect.module.scss";
 
 interface IMySelectProps {
   options: string[];
@@ -38,32 +39,10 @@ const MySelect: FC<IMySelectProps> = ({
         key: select.id,
       })
     );
-
-    // if (select.id === "commutationType")
-    //   dispatch(
-    //     updateCommutationType({
-    //       id: id,
-    //       index: select.selectedIndex,
-    //     })
-    //   );
-    // if (select.id === "transformatorType")
-    //   dispatch(
-    //     updateTransformatorType({
-    //       id: id,
-    //       index: select.selectedIndex,
-    //     })
-    //   );
-    // if (select.id === "RatedCurrentOfTheMainCircuits")
-    //   dispatch(
-    //     updateRatedCurrentOfTheMainCircuits({
-    //       id: id,
-    //       index: select.selectedIndex,
-    //     })
-    //   );
   };
   return (
-    <>
-      <label htmlFor={tag}>{label}</label>
+    <div className={styles.container}>
+      <label className={styles.label} htmlFor={tag}>{label}</label>
       <Select
         name={tag}
         id={tag}
@@ -84,7 +63,7 @@ const MySelect: FC<IMySelectProps> = ({
             );
           })}
       </Select>
-    </>
+    </div>
   );
 };
 

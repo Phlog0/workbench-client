@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -38,8 +39,7 @@ import { useDispatch } from "react-redux";
 const FrequencyConvertersType2 = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
- 
-  
+
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
   );
@@ -72,41 +72,35 @@ const FrequencyConvertersType2 = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Измерительные преобразователи частоты тип 2"}
-                      value={AllfrequencyConvertersType2.toString()}
+                    <Text>Измерительные преобразователи частоты тип 2</Text>
+                    <MyInput
+                      tag={"frequencyConvertersType2Type"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={frequencyConvertersType2.type}
+                      opt1={"frequencyConvertersType2"}
+                      opt2={"type"}
                     />
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"frequencyConvertersType2"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"frequencyConvertersType2Type"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={frequencyConvertersType2.type}
-                    opt1={"frequencyConvertersType2"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={"frequencyConvertersType2"}
-                    />
-                  )}
-                </div>
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"frequencyConvertersType2Name"}
@@ -115,7 +109,6 @@ const FrequencyConvertersType2 = ({ id }) => {
                     value={frequencyConvertersType2.name}
                     opt1={"frequencyConvertersType2"}
                     opt2={"name"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -126,7 +119,6 @@ const FrequencyConvertersType2 = ({ id }) => {
                     value={frequencyConvertersType2.manufacturer}
                     opt1={"frequencyConvertersType2"}
                     opt2={"manufacturer"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -137,7 +129,6 @@ const FrequencyConvertersType2 = ({ id }) => {
                     value={frequencyConvertersType2.numberOfChannels}
                     opt1={"frequencyConvertersType2"}
                     opt2={"numberOfChannels"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -148,7 +139,6 @@ const FrequencyConvertersType2 = ({ id }) => {
                     value={frequencyConvertersType2.inputVoltageRange}
                     opt1={"frequencyConvertersType2"}
                     opt2={"inputVoltageRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -159,7 +149,6 @@ const FrequencyConvertersType2 = ({ id }) => {
                     value={frequencyConvertersType2.outputCurrentRange}
                     opt1={"frequencyConvertersType2"}
                     opt2={"outputCurrentRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -169,8 +158,7 @@ const FrequencyConvertersType2 = ({ id }) => {
                     inputType={"text"}
                     value={frequencyConvertersType2.frequencyMeasurementRange}
                     opt1={"frequencyConvertersType2"}
-                    opt2={"measurementRange"}
-                    
+                    opt2={"frequencyMeasurementRange"}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -180,8 +168,8 @@ const FrequencyConvertersType2 = ({ id }) => {
                     inputType={"text"}
                     value={frequencyConvertersType2.quantity}
                     opt1={"frequencyConvertersType2"}
-                    opt2={"uantity"}
-                    
+                    opt2={"quantity"}
+
                     // disabled 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
                   />
                 </div>

@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -34,31 +35,16 @@ import { useDispatch } from "react-redux";
 import { updateProp } from "../store/nodesSlice";
 import { useAppSelector } from "../hook";
 
-const PowerTransducersType1 = ({id}) => {
+const PowerTransducersType1 = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  
+
   const currentItemProperties = useAppSelector((state) =>
-  state.nodes.nodes.find((node) => node.id === id)
-);
-const powerTransducersType1 =
-  currentItemProperties?.powerTransducersType1;
-
-const AllPowerTransducersType1 = Object.values(powerTransducersType1);
-
-const dispatch = useDispatch();
-
-const inputChange = (event) => {
-  dispatch(
-    updateProp({
-      id: id,
-      key1: event.target.dataset.opt1,
-      key2: event.target.dataset.opt2,
-      value: event.target.value,
-    })
+    state.nodes.nodes.find((node) => node.id === id)
   );
-};
+  const powerTransducersType1 = currentItemProperties?.powerTransducersType1;
 
+  const AllPowerTransducersType1 = Object.values(powerTransducersType1);
 
   return (
     <>
@@ -71,9 +57,14 @@ const inputChange = (event) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Измерительные преобразователи мощности тип 1"}
-                      value={AllPowerTransducersType1.toString()}
+                    <Text>Измерительные преобразователи мощности тип 1</Text>
+                    <MyInput
+                      tag={"PowerTransducersType1Type"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={powerTransducersType1.type}
+                      opt1={"powerTransducersType1"}
+                      opt2={"type"}
                     />
                     <Button
                       className={styles.OpenMenuDots}
@@ -82,37 +73,19 @@ const inputChange = (event) => {
                     >
                       ...
                     </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"powerTransducersType1"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"PowerTransducersType1Type"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={powerTransducersType1.type}
-                    opt1={"powerTransducersType1"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={'powerTransducersType1'}
-                    />
-                  )}
-                </div>
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"PowerTransducersType1Name"}
@@ -121,7 +94,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.name}
                     opt1={"powerTransducersType1"}
                     opt2={"name"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -132,7 +104,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.manufacturer}
                     opt1={"powerTransducersType1"}
                     opt2={"manufacturer"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -143,7 +114,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.numberOfChannels}
                     opt1={"powerTransducersType1"}
                     opt2={"numberOfChannels"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -154,7 +124,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.inputCurrentRange}
                     opt1={"powerTransducersType1"}
                     opt2={"inputCurrentRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -165,7 +134,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.outputCurrentRange}
                     opt1={"powerTransducersType1"}
                     opt2={"outputCurrentRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -176,7 +144,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.inputVoltageRange}
                     opt1={"powerTransducersType1"}
                     opt2={"inputVoltageRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -187,7 +154,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.outputVoltageRange}
                     opt1={"powerTransducersType1"}
                     opt2={"outputVoltageRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -198,7 +164,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.sin}
                     opt1={"powerTransducersType1"}
                     opt2={"sin"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -209,7 +174,6 @@ const inputChange = (event) => {
                     value={powerTransducersType1.cos}
                     opt1={"powerTransducersType1"}
                     opt2={"cos"}
-                    
                   />
                 </div>
               </AccordionPanel>

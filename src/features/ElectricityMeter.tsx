@@ -24,6 +24,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -68,23 +69,8 @@ const ElectricityMeter = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Счетчик электроэнергии"}
-                      value={AllElectricityMeter.toString()}
-                    />
-                    <Button
-                      className={styles.OpenMenuDots}
-                      ref={btnRef}
-                      onClick={onOpen}
-                    >
-                      ...
-                    </Button>
-                  </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
+                    <Text>Счетчик электроэнергии</Text>
+                    <MyInput
                     tag={"ElectricityMeterType"}
                     label={"Тип"}
                     inputType={"text"}
@@ -112,7 +98,11 @@ const ElectricityMeter = ({ id }) => {
 
                     />
                   )}
-                </div>
+                  </div>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} className={styles.AccordionPanel}>
+            
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"ElectricityMeterName"}

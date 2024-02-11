@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -34,30 +35,30 @@ import { useDispatch } from "react-redux";
 import { updateProp } from "../store/nodesSlice";
 import { useAppSelector } from "../hook";
 
-const SwitchingDeviceVN = ({id}) => {
+const SwitchingDeviceVN = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  
+
   const currentItemProperties = useAppSelector((state) =>
-  state.nodes.nodes.find((node) => node.id === id)
-);
-const switchingDeviceVN =
-  currentItemProperties?.switchingDeviceVN;
-
-const AllswitchingDeviceVN = Object.values(switchingDeviceVN);
-
-const dispatch = useDispatch();
-
-const inputChange = (event) => {
-  dispatch(
-    updateProp({
-      id: id,
-      key1: event.target.dataset.opt1,
-      key2: event.target.dataset.opt2,
-      value: event.target.value,
-    })
+    state.nodes.nodes.find((node) => node.id === id)
   );
-};
+  const switchingDeviceVN =
+    currentItemProperties?.switchingDeviceVN;
+
+  const AllswitchingDeviceVN = Object.values(switchingDeviceVN);
+
+  const dispatch = useDispatch();
+
+  const inputChange = (event) => {
+    dispatch(
+      updateProp({
+        id: id,
+        key1: event.target.dataset.opt1,
+        key2: event.target.dataset.opt2,
+        value: event.target.value,
+      })
+    );
+  };
 
 
   return (
@@ -71,9 +72,15 @@ const inputChange = (event) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Коммутационный аппарат ВН"}
-                      value={AllswitchingDeviceVN.join(' ')}
+                    <Text>Коммутационный аппарат ВН</Text>
+                    <MyInput
+                      tag={"switchingDeviceVNType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={switchingDeviceVN.type}
+                      opt1={"switchingDeviceVN"}
+                      opt2={"type"}
+
                     />
                     <Button
                       className={styles.OpenMenuDots}
@@ -82,36 +89,22 @@ const inputChange = (event) => {
                     >
                       ...
                     </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={'switchingDeviceVN'}
+                      />
+                    )}
+
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
                 <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"switchingDeviceVNType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={switchingDeviceVN.type}
-                    opt1={"switchingDeviceVN"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
 
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={'switchingDeviceVN'}
-                    />
-                  )}
                 </div>
                 <div className={styles.inputContainer}>
                   <MyInput
@@ -121,7 +114,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.name}
                     opt1={"switchingDeviceVN"}
                     opt2={"name"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -132,7 +125,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.manufacturer}
                     opt1={"switchingDeviceVN"}
                     opt2={"manufacturer"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -143,7 +136,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.ratedCurrent}
                     opt1={"switchingDeviceVN"}
                     opt2={"ratedCurrent"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -154,7 +147,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.ratedBreakingCurrent}
                     opt1={"switchingDeviceVN"}
                     opt2={"ratedBreakingCurrent"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -165,7 +158,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.ratedVoltage}
                     opt1={"switchingDeviceVN"}
                     opt2={"ratedVoltage"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -176,7 +169,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.numberOfGroundShafts}
                     opt1={"switchingDeviceVN"}
                     opt2={"numberOfGroundShafts"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -187,7 +180,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.locationOfGroundingBlades}
                     opt1={"switchingDeviceVN"}
                     opt2={"locationOfGroundingBlades"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -198,7 +191,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.switchDriveLocation}
                     opt1={"switchingDeviceVN"}
                     opt2={"switchDriveLocation"}
-                    
+
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -209,7 +202,7 @@ const inputChange = (event) => {
                     value={switchingDeviceVN.ratedVoltage}
                     opt1={"switchingDeviceVN"}
                     opt2={"locationOfTheGroundingBladeDrive"}
-                    
+
                   />
                 </div>
               </AccordionPanel>

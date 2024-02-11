@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -40,19 +41,14 @@ const CircuitBreakers = ({ id }) => {
 
   const dispatch = useDispatch();
 
-  const { data, error, isLoading } = useFetchDataQuery(
-    "CircuitBreakers"
-  );
+  const { data, error, isLoading } = useFetchDataQuery("CircuitBreakers");
 
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
   );
-  const circuitBreakers =
-    currentItemProperties?.circuitBreakers;
+  const circuitBreakers = currentItemProperties?.circuitBreakers;
 
-  const allCircuitBreakers = Object.values(
-    circuitBreakers
-  );
+  const allCircuitBreakers = Object.values(circuitBreakers);
   const inputChange = (event) => {
     dispatch(
       updateProp({
@@ -74,44 +70,38 @@ const CircuitBreakers = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Предохранители"}
-                      value={allCircuitBreakers.toString()}
+                    <Text>Предохранители</Text>
+                    <MyInput
+                      tag={"circuitBreakersType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={circuitBreakers.type}
+                      opt1={"circuitBreakers"}
+                      opt2={"type"}
                     />
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        data={data}
+                        isLoading={isLoading}
+                        error={error}
+                        type={"circuitBreakers"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-              <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"circuitBreakersType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={circuitBreakers.type}
-                    opt1={"circuitBreakers"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      data={data}
-                      isLoading={isLoading}
-                      error={error}
-                      type={"circuitBreakers"}
-                    />
-                  )}
-                </div>
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
                     tag={"circuitBreakersName"}
@@ -120,37 +110,26 @@ const CircuitBreakers = ({ id }) => {
                     value={circuitBreakers.name}
                     opt1={"circuitBreakers"}
                     opt2={"name"}
-                    
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
-                    tag={
-                      "circuitBreakersManufacturer"
-                    }
+                    tag={"circuitBreakersManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    value={
-                      circuitBreakers.manufacturer
-                    }
+                    value={circuitBreakers.manufacturer}
                     opt1={"circuitBreakers"}
                     opt2={"manufacturer"}
-                    
                   />
                 </div>
                 <div className={styles.AccordionPanelItem}>
                   <MyInput
-                    tag={
-                      "circuitBreakersRatedCurrentOfFuseLink"
-                    }
+                    tag={"circuitBreakersRatedCurrentOfFuseLink"}
                     label={"Номинальный ток плавкой вставки (А)"}
                     inputType={"number"}
-                    value={
-                      circuitBreakers.ratedCurrentOfFuseLink
-                    }
+                    value={circuitBreakers.ratedCurrentOfFuseLink}
                     opt1={"circuitBreakers"}
                     opt2={"ratedCurrentOfFuseLink"}
-                    
                   />
                 </div>
               </AccordionPanel>

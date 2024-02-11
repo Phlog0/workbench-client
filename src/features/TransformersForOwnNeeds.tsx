@@ -24,6 +24,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -36,8 +37,6 @@ import { updateProp } from "../store/nodesSlice";
 const TransformersForOwnNeeds = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-
-
 
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
@@ -71,9 +70,14 @@ const TransformersForOwnNeeds = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Трансформаторы собственных нужд"}
-                      value={AllTransformersForOwnNeeds.toString()}
+                    <Text>Трансформаторы собственных нужд</Text>
+                    <MyInput
+                      tag={"TransformersForOwnNeedsType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      opt1={"transformersForOwnNeeds"}
+                      opt2={"type"}
+                      value={transformersForOwnNeeds?.type}
                     />
                     <Button
                       className={styles.OpenMenuDots}
@@ -82,50 +86,27 @@ const TransformersForOwnNeeds = ({ id }) => {
                     >
                       ...
                     </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"transformersForOwnNeeds"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
                 <div className={styles.inputContainer}>
                   <MyInput
-                    tag={"TransformersForOwnNeedsType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    
-                    opt1={"transformersForOwnNeeds"}
-                    opt2={"type"}
-                    value={
-                        transformersForOwnNeeds?.type
-                      }
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={"transformersForOwnNeeds"}
-                    />
-                  )}
-                </div>
-                <div className={styles.inputContainer}>
-                  <MyInput
                     tag={"TransformersForOwnNeedsName"}
                     label={"Наименование"}
                     inputType={"text"}
-                    
                     opt1={"transformersForOwnNeeds"}
                     opt2={"name"}
-                    value={
-                        transformersForOwnNeeds?.name
-                      }
+                    value={transformersForOwnNeeds?.name}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -133,12 +114,9 @@ const TransformersForOwnNeeds = ({ id }) => {
                     tag={"TransformersForOwnNeedsManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    
                     opt1={"transformersForOwnNeeds"}
                     opt2={"manufacturer"}
-                    value={
-                        transformersForOwnNeeds?.manufacturer
-                      }
+                    value={transformersForOwnNeeds?.manufacturer}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -146,12 +124,9 @@ const TransformersForOwnNeeds = ({ id }) => {
                     tag={"TransformersForOwnNeedsAccuracyСlass"}
                     label={"Номинальная мощность (кВА)"}
                     inputType={"text"}
-                    
                     opt1={"transformersForOwnNeeds"}
                     opt2={"ratedPower"}
-                    value={
-                        transformersForOwnNeeds?.ratedPower
-                      }
+                    value={transformersForOwnNeeds?.ratedPower}
                   />
                 </div>
               </AccordionPanel>

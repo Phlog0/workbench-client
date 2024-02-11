@@ -30,6 +30,7 @@ import TransformersForOwnNeeds from "../features/TransformersForOwnNeeds";
 import CurrentTransformers from "../features/CurrentTransformers";
 import TypeOfCell from "../features/TypeOfCell";
 import TypeOfSwitchingDevice from "../features/TypeOfSwitchingDevice";
+import ZeroSequenceCurrentTransformers from "../features/ZeroSequenceCurrentTransformers";
 
 const RightSidebar: FC = () => {
   const currentItemId: string = useAppSelector(
@@ -42,14 +43,15 @@ const RightSidebar: FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.selectItem}>
+      {currentItemId && <TypeOfCell id={currentItemId} />}
         {currentItemId && <TypeOfSwitchingDevice id={currentItemId} />}
-        {currentItemId && <TypeOfCell id={currentItemId} />}
+     
         {currentItemId && <CurrentTransformers id={currentItemId} />}
         {currentItemId && <RatedCurrentOfTheMainCircuits id={currentItemId} />}
         {currentItemId && <SwitchOPN id={currentItemId} />}
-        {currentItemId && (
+        {/* {currentItemId && (
           <MicroprocessorProtectionDeviceAndAutomation id={currentItemId} />
-        )}
+        )} */}
         {currentItemId && <ElectromagneticLocking id={currentItemId} />}
         {currentItemId && <InstrumentCurrentTransformers id={currentItemId} />}
         {currentItemId && <VoltageTransformers id={currentItemId} />}
@@ -61,9 +63,11 @@ const RightSidebar: FC = () => {
         {currentItemId && <VoltageTransducersType2 id={currentItemId} />}
         {currentItemId && <PowerTransducersType1 id={currentItemId} />}
         {currentItemId && <PowerTransducersType2 id={currentItemId} />}
-        {currentItemId && <CircuitBreakers id={currentItemId} />}
+        {/* {currentItemId && <CircuitBreakers id={currentItemId} />} */}
         {currentItemId && <ElectricityMeter id={currentItemId} />}
         {currentItemId && <TransformersForOwnNeeds id={currentItemId} />}
+        {currentItemId && <ZeroSequenceCurrentTransformers id={currentItemId} />}
+
       </div>
     </div>
   );

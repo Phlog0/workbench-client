@@ -68,7 +68,7 @@ const MyModal = ({ isOpen, onOpen, onClose, type, query }) => {
                 type={type}
                 onClose={onClose}
               />
-              <FilterItems />
+              {/* <FilterItems /> */}
             </ModalBody>
           )}
           <ModalFooter>

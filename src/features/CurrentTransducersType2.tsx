@@ -23,6 +23,7 @@ import {
   Lorem,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import MyInput from "../shared/MyInput";
@@ -37,8 +38,6 @@ import { useAppSelector } from "../hook";
 const CurrentTransducersType2 = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
- 
-  
 
   const currentItemProperties = useAppSelector((state) =>
     state.nodes.nodes.find((node) => node.id === id)
@@ -71,41 +70,35 @@ const CurrentTransducersType2 = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <MyInputModal
-                      label={"Измерительные преобразователь тока тип 2"}
-                      value={allcurrentTransducersType2.toString()}
+                    <Text>Измерительные преобразователь тока тип 2</Text>
+                    <MyInput
+                      tag={"currentTransducersType2Type"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={currentTransducersType2.type}
+                      opt1={"currentTransducersType2"}
+                      opt2={"type"}
                     />
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"currentTransducersType2"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                  <MyInput
-                    tag={"currentTransducersType2Type"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={currentTransducersType2.type}
-                    opt1={"currentTransducersType2"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={'currentTransducersType2'}
-                    />
-                  )}
-                </div>
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"currentTransducersType2Name"}
@@ -114,7 +107,6 @@ const CurrentTransducersType2 = ({ id }) => {
                     value={currentTransducersType2.name}
                     opt1={"currentTransducersType2"}
                     opt2={"name"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -125,7 +117,6 @@ const CurrentTransducersType2 = ({ id }) => {
                     value={currentTransducersType2.manufacturer}
                     opt1={"currentTransducersType2"}
                     opt2={"manufacturer"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -136,7 +127,6 @@ const CurrentTransducersType2 = ({ id }) => {
                     value={currentTransducersType2.numberOfChannels}
                     opt1={"currentTransducersType2"}
                     opt2={"numberOfChannels"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -147,7 +137,6 @@ const CurrentTransducersType2 = ({ id }) => {
                     value={currentTransducersType2.inputCurrentRange}
                     opt1={"currentTransducersType2"}
                     opt2={"inputCurrentRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -158,7 +147,6 @@ const CurrentTransducersType2 = ({ id }) => {
                     value={currentTransducersType2.outputCurrentRange}
                     opt1={"currentTransducersType2"}
                     opt2={"outputCurrentRange"}
-                    
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -169,7 +157,7 @@ const CurrentTransducersType2 = ({ id }) => {
                     value={currentTransducersType2.quantity}
                     opt1={"currentTransducersType2"}
                     opt2={"quantity"}
-                    
+
                     // disabled 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
                   />
                 </div>

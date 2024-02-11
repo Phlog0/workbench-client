@@ -52,16 +52,16 @@ const nodeTypes = { CustomNodeType: CustomNode, TireNodeType: TireNode };
 // =====================НАЧАЛО КОМПОНЕНТА=========================
 
 const Flow: FC = () => {
-  const { data, error, isLoading } = useFetchDataQuery(`myapp`);
+  // const { data, error, isLoading } = useFetchDataQuery(`myapp`);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const firstRender = async () => {
-      //ПОЧЕМУ РАБОТАЕТ С ASYNC????
-      dispatch(uploadNodes(JSON.parse(data)));
-    };
-    firstRender();
-  }, [data, dispatch]);
+  // useEffect(() => {
+  //   const firstRender = async () => {
+  //     //ПОЧЕМУ РАБОТАЕТ С ASYNC????
+  //     dispatch(uploadNodes(JSON.parse(data)));
+  //   };
+  //   firstRender();
+  // }, [data, dispatch]);
 
   let reduxNodes = useAppSelector((state) => state.nodes.nodes);
   const renderNodes = reduxNodes.map((node) => {
@@ -149,22 +149,20 @@ const Flow: FC = () => {
     console.log("right-click");
   };
 
-  if (error)
-    return (
-      <div className={styles.errorMessage}>
-        <Alert status="error">
-          <AlertIcon />
-          <AlertTitle>error.status</AlertTitle>
-          <AlertDescription>?????</AlertDescription>
-        </Alert>
-      </div>
-    );
+  // if (error)
+  //   return (
+  //     <div className={styles.errorMessage}>
+  //       <Alert status="error">
+  //         <AlertIcon />
+  //         <AlertTitle>error.status</AlertTitle>
+  //         <AlertDescription>?????</AlertDescription>
+  //       </Alert>
+  //     </div>
+  //   );
   return (
     <div className={styles.mainFlow}>
-      {isLoading ? (
-        <MySpinner />
-      ) : (
-        <ReactFlow
+
+       <ReactFlow
           ref={flowRef}
           style={{ width: "100%", height: "100dvh" }}
           nodes={nodes}
@@ -220,7 +218,6 @@ const Flow: FC = () => {
           </Panel>
           <Controls />
         </ReactFlow>
-      )}
     </div>
   );
 };
