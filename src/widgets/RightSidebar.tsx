@@ -37,23 +37,24 @@ const RightSidebar: FC = () => {
     (state) => state.nodes.currentNode.id
   );
 
-  // console.log('RIGHT SB RENDER>>>');
 
+  // console.log('RIGHT SB RENDER>>>');
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.selectItem}>
-      {currentItemId && <TypeOfCell id={currentItemId} />}
+        {currentItemId && <TypeOfCell id={currentItemId} />}
         {currentItemId && <TypeOfSwitchingDevice id={currentItemId} />}
-     
+
         {currentItemId && <CurrentTransformers id={currentItemId} />}
         {currentItemId && <RatedCurrentOfTheMainCircuits id={currentItemId} />}
+        {currentItemId && <InstrumentCurrentTransformers id={currentItemId} />}
         {currentItemId && <SwitchOPN id={currentItemId} />}
         {/* {currentItemId && (
           <MicroprocessorProtectionDeviceAndAutomation id={currentItemId} />
         )} */}
         {currentItemId && <ElectromagneticLocking id={currentItemId} />}
-        {currentItemId && <InstrumentCurrentTransformers id={currentItemId} />}
+
         {currentItemId && <VoltageTransformers id={currentItemId} />}
         {currentItemId && <CurrentTransducersType1 id={currentItemId} />}
         {currentItemId && <CurrentTransducersType2 id={currentItemId} />}
@@ -66,8 +67,9 @@ const RightSidebar: FC = () => {
         {/* {currentItemId && <CircuitBreakers id={currentItemId} />} */}
         {currentItemId && <ElectricityMeter id={currentItemId} />}
         {currentItemId && <TransformersForOwnNeeds id={currentItemId} />}
-        {currentItemId && <ZeroSequenceCurrentTransformers id={currentItemId} />}
-
+        {currentItemId && (
+          <ZeroSequenceCurrentTransformers id={currentItemId} />
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,11 @@ import React, { FC, useState, SyntheticEvent } from "react";
 import styles from "./TopNavbar.module.scss";
 //  ===============================REDUX===============================
 import { useAppDispatch, useAppSelector } from "../hook";
-import { changeCurrentGrid, changeCurrentNode, uploadNodes } from "../store/nodesSlice";
+import {
+  changeCurrentGrid,
+  changeCurrentNode,
+  uploadNodes,
+} from "../store/nodesSlice";
 import { addNode, deleteNode } from "../store/nodesSlice";
 // =============================COMPONENT============================
 import { Button, ButtonGroup, Input, Select } from "@chakra-ui/react";
@@ -18,7 +22,7 @@ const TopNavbar: FC = () => {
   const addFigure = (): void => {
     const node = {
       id: Date.now().toString(),
-      type: "CustomNodeType",
+      type: "ElectricalPanelsNodeType",
       position: { x: 0, y: 0 },
       parentNode: "",
       draggable: true,
@@ -55,8 +59,8 @@ const TopNavbar: FC = () => {
 
       thereIsAFuseCurrent: 0,
       currentTransformatorOption: 1,
-    
-      ratedCurrentOfTheMainCircuits: 0, 
+
+      ratedCurrentOfTheMainCircuits: 0,
       opn: {
         type: "",
         name: "",
@@ -202,14 +206,13 @@ const TopNavbar: FC = () => {
         transformationRatio: "",
         oneSecondThermalCurrentOfTheSecondaryWinding: "",
       },
-    };  //🔥🔥🔥🔥🔥🔥🔥🔥 NEW ITEM!
+    }; //🔥🔥🔥🔥🔥🔥🔥🔥 NEW ITEM!
     dispatch(addNode(node));
   };
 
   const deleteItem = () => {
     dispatch(deleteNode(currentId));
     dispatch(changeCurrentNode({ id: null }));
-    
   };
 
   const importJson = (e) => {
@@ -219,6 +222,51 @@ const TopNavbar: FC = () => {
     reader.onload = () => {
       dispatch(uploadNodes(JSON.parse(reader.result)));
     };
+    e.target.value = null;
+  };
+
+  const importImage = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      // console.log(reader.result);
+      const node = {
+        id: `img-${Date.now()}`,
+
+        type: "ImageNodeType",
+
+        src: reader.result,
+        position: { x: 0, y: 0 },
+        style: {
+          width: 360,
+          height: 30,
+        },
+      };
+
+      dispatch(addNode(node));
+      e.target.value = null;
+    };
+
+    // if (file) {
+    //   const src = reader.readAsDataURL(file);
+    //   console.log(src);
+    //   const node = {
+    //     id: `img-${Date.now()}`,
+
+    //     type: "ImageNodeType",
+
+    //     src: src,
+    //     position: { x: 0, y: 0 },
+    //     style: {
+    //       width: 360,
+    //       height: 30,
+    //     },
+    //   };
+    //   dispatch(addNode(node));
+    // }
   };
 
   return (
@@ -247,6 +295,16 @@ const TopNavbar: FC = () => {
           current={currentGrid}
         />
       </div>
+      <label className={styles.addTrafaret}>
+        <span>Добавить трафарет</span>
+        <input
+          type="file"
+          id="myfile"
+          accept="image/png, image/jpeg"
+          className={styles.importJSONBtn}
+          onChange={importImage}
+        />
+      </label>
     </header>
   );
 };

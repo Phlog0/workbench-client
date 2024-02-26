@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionButton,
@@ -34,32 +34,78 @@ import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
 import { updateProp } from "../store/nodesSlice";
 import { useAppSelector } from "../hook";
+import useDebounce from "../hooks/useDebounce";
 
-const SwitchingDeviceVV = ({id}) => {
+const SwitchingDeviceVV = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  
+
   const currentItemProperties = useAppSelector((state) =>
-  state.nodes.nodes.find((node) => node.id === id)
-);
-const switchingDeviceVV =
-  currentItemProperties?.switchingDeviceVV;
-
-const AllswitchingDeviceVV = Object.values(switchingDeviceVV);
-
-const dispatch = useDispatch();
-
-const inputChange = (event) => {
-  dispatch(
-    updateProp({
-      id: id,
-      key1: event.target.dataset.opt1,
-      key2: event.target.dataset.opt2,
-      value: event.target.value,
-    })
+    state.nodes.nodes.find((node) => node.id === id)
   );
-};
 
+  const switchingDeviceVV = currentItemProperties?.switchingDeviceVV;
+
+  const [state, setState] = useState({ ...switchingDeviceVV });
+
+  const AllswitchingDeviceVV = Object.values(switchingDeviceVV);
+
+  const dispatch = useDispatch();
+  console.log(state);
+  let isSearching = useRef(false);
+
+  // const debouncedSearchTerm = useDebounce(state, 1000);
+
+  // const inputChange = (event) => {
+  //   console.log(event.target);
+  //   setState((prev) => ({
+  //     ...prev,
+  //     [event.target.dataset.opt2]: event.target.value,
+  //   }));
+  //   if (debouncedSearchTerm) {
+  //     isSearching.current = true;
+  //     dispatch(
+  //       updateProp({
+  //         id: id,
+  //         key1: event.target.dataset.opt1,
+  //         key2: event.target.dataset.opt2,
+  //         value: event.target.value,
+  //       })
+  //     );
+  //     isSearching.current = false;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setState({ ...switchingDeviceVV });
+  // }, [id, switchingDeviceVV]);
+
+  // useEffect(() => {
+  //   if (debouncedSearchTerm) {
+  //     isSearching.current = true;
+  //     dispatch(
+  //       updateProp({
+  //         id: id,
+  //         key1: event.target.dataset.opt1,
+  //         key2: event.target.dataset.opt2,
+  //         value: event.target.value,
+  //       })
+  //     );
+  //     isSearching.current = false;
+  //   }
+  // }, [state]);
+
+  // useEffect(() => {
+  //   if (debouncedSearchTerm) {
+  //     setIsSearching(true);
+  //     inputChange();
+
+  //   }
+
+  //   return () => {
+  //     setIsSearching(false);
+  //   };
+  // }, [debouncedSearchTerm]);
 
   return (
     <>
@@ -73,47 +119,44 @@ const inputChange = (event) => {
 
                   <div className={styles.inputContainer}>
                     <Text>Коммутационный аппарат ВВ</Text>
-                  <MyInput
-                    tag={"switchingDeviceVVType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={switchingDeviceVV.type}
-                    opt1={"switchingDeviceVV"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                      type={'switchingDeviceVV'}
+                    <MyInput
+                      tag={"switchingDeviceVVType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={state.type}
+                      opt1={"switchingDeviceVV"}
+                      opt2={"type"}
                     />
-                  )}
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={"switchingDeviceVV"}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.inputContainer}>
-                 
-                </div>
+                <div className={styles.inputContainer}></div>
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"switchingDeviceVVName"}
                     label={"Наименование"}
                     inputType={"text"}
-                    value={switchingDeviceVV.name}
+                    value={state.name}
                     opt1={"switchingDeviceVV"}
                     opt2={"name"}
-                    
+                    // onChange={inputChange}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -121,10 +164,10 @@ const inputChange = (event) => {
                     tag={"switchingDeviceVVManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    value={switchingDeviceVV.manufacturer}
+                    value={state.manufacturer}
                     opt1={"switchingDeviceVV"}
                     opt2={"manufacturer"}
-                    
+                    // onChange={inputChange}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -132,10 +175,10 @@ const inputChange = (event) => {
                     tag={"switchingDeviceVVRatedCurrent"}
                     label={"Номинальный ток, А"}
                     inputType={"number"}
-                    value={switchingDeviceVV.ratedCurrent}
+                    value={state.ratedCurrent}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedCurrent"}
-                    
+                    // onChange={inputChange}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -143,10 +186,10 @@ const inputChange = (event) => {
                     tag={"switchingDeviceVVRatedBreakingCurrent"}
                     label={"Номинальный ток отключения, кА"}
                     inputType={"text"}
-                    value={switchingDeviceVV.ratedBreakingCurrent}
+                    value={state.ratedBreakingCurrent}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedBreakingCurrent"}
-                    
+                    // onChange={inputChange}
                   />
                 </div>
                 <div className={styles.inputContainer}>
@@ -154,10 +197,10 @@ const inputChange = (event) => {
                     tag={"switchingDeviceVVRatedVoltage"}
                     label={"Номинальное напряжение, кВ"}
                     inputType={"text"}
-                    value={switchingDeviceVV.ratedVoltage}
+                    value={state.ratedVoltage}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedVoltage"}
-                    
+                    // onChange={inputChange}
                   />
                 </div>
               </AccordionPanel>

@@ -16,12 +16,12 @@ import ReactFlow, {
   NodeResizeControl,
 } from "reactflow";
 
-import styles from "./CustomNode.module.scss";
-const CustomNode = ({ data, isConnectable }) => {
+import styles from "./ElectricalPanelsNode.module.scss";
+const ElectricalPanelsNode = ({ data, isConnectable }) => {
   const onChange = useCallback((evt) => {
-    console.log(evt.target.value);
+    // console.log(evt.target.value);
   }, []);
-
+// console.log(data);
   return (
     <div className={styles.customNode}>
       <div>{data.label}</div>
@@ -29,4 +29,4 @@ const CustomNode = ({ data, isConnectable }) => {
   );
 };
 
-export default CustomNode;
+export default ElectricalPanelsNode;

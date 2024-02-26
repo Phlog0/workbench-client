@@ -47,7 +47,8 @@ type TTransformator = {
 };
 
 type TUpdateGroup = {
-  id: string;
+  nodeId: string;
+  tireId: string;
 };
 
 type TrowData = {
@@ -66,400 +67,20 @@ type TSwitchOPN = {
   rowData: TrowData;
 };
 
+type TStyle = {
+  width: number;
+  height: number;
+};
+
+type TUpdateSizeOnResizeEnd = {
+  id: string;
+  style: TStyle;
+  position: TCoords;
+};
+
 const initialState = {
   properties: {},
-  nodes: [
-    {
-      id: "group1",
-      position: { x: 420, y: 300 },
-      type: "TireNodeType",
-      // className: "light",
-      style: {
-        width: 360,
-        height: 30,
-      },
-    },
-    {
-      id: "1",
-      type: "CustomNodeType",
-      position: { x: 30, y: 0 },
-      parentNode: "group1",
-      draggable: false,
-      currentCellOption: 0,
-      currentTypeOfSwitchingDevice: 0,
-      switchingDeviceVV: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        ratedBreakingCurrent: "",
-        ratedVoltage: "",
-      },
-      switchingDeviceVN: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        ratedBreakingCurrent: "",
-        ratedVoltage: "",
-        numberOfGroundShafts: "",
-        locationOfGroundingBlades: "",
-        switchDriveLocation: "",
-        locationOfTheGroundingBladeDrive: "",
-      },
-      switchingDeviceR: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        thermalCurrent: "",
-        ratedVoltage: "",
-      },
-
-      thereIsAFuseCurrent: 0,
-      // ===============================================================
-      currentTransformatorOption: 1,
-    
-      ratedCurrentOfTheMainCircuits: 0, // Номинальный ток главных цепей,А
-      opn: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedOperatingVoltage: "",
-        throughput: "",
-        ratedDischargeCurrent: "",
-        maximumContinuousPermissibleOperatingVoltage: "",
-      },
-      microprocessorProtectionDeviceAndAutomation: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      electromagneticLocking: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      instrumentCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        accuracyClass: "",
-        oneSecondThermalCurrent: "",
-        typeOfService: "",
-      },
-      voltageTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedThreePhasePowerOfTheFirstWinding: "",
-        accuracyClassOfTheFirstSecondaryWinding: "",
-        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
-        accuracyClassOfTheSecondSecondaryWinding: "",
-        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
-        accuracyClassOfSecondaryReturnWires: "",
-        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
-      },
-      currentTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      currentTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      frequencyConvertersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        frequencyMeasurementRange: "",
-        quantity: "",
-      },
-      frequencyConvertersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        frequencyMeasurementRange: "",
-        quantity: "",
-      },
-      voltageTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      voltageTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      powerTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        inputVoltageRange: "",
-        outputVoltageRange: "",
-        sin: "",
-        cos: "",
-      },
-      powerTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        inputVoltageRange: "",
-        outputVoltageRange: "",
-        sin: "",
-        cos: "",
-      },
-      circuitBreakers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrentOfFuseLink: "",
-      },
-      electricityMeter: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        accuracyClass: "",
-      },
-      transformersForOwnNeeds: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedPower: "",
-      },
-      zeroSequenceCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        oneSecondThermalCurrentOfTheSecondaryWinding: "",
-      },
-    },
-    // ========================================================ITEM #2===============================================================
-    {
-      // ==========================REACT-FLOW PROPS==========================
-      id: "2",
-      type: "CustomNodeType",
-      position: { x: 0, y: 100 },
-      draggable: true,
-      // ==========================END OF REACT-FLOW PROPS==========================
-      currentCellOption: 2,
-      // ==========================КОММУТАЦИОННЫЙ АППАРАТ==========================
-      currentTypeOfSwitchingDevice: 1,
-      switchingDeviceVV: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        ratedBreakingCurrent: "",
-        ratedVoltage: "",
-      },
-      switchingDeviceVN: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        ratedBreakingCurrent: "",
-        ratedVoltage: "",
-        numberOfGroundShafts: "",
-        locationOfGroundingBlades: "",
-        switchDriveLocation: "",
-        locationOfTheGroundingBladeDrive: "",
-      },
-      switchingDeviceR: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        thermalCurrent: "",
-        ratedVoltage: "",
-      },
-
-      thereIsAFuseCurrent: 0,
-
-      // ==========================КОНЕЦ КОММУТАЦИОННОГО АППАРАТА==========================
-      currentTransformatorOption: 2,
-      parentNode: "",
-      ratedCurrentOfTheMainCircuits: 1,
-      opn: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedOperatingVoltage: "",
-        throughput: "",
-        ratedDischargeCurrent: "",
-        maximumContinuousPermissibleOperatingVoltage: "",
-      },
-      microprocessorProtectionDeviceAndAutomation: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      electromagneticLocking: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      instrumentCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        accuracyClass: "",
-        oneSecondThermalCurrent: "",
-        typeOfService: "",
-      },
-      voltageTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedThreePhasePowerOfTheFirstWinding: "",
-        accuracyClassOfTheFirstSecondaryWinding: "",
-        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
-        accuracyClassOfTheSecondSecondaryWinding: "",
-        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
-        accuracyClassOfSecondaryReturnWires: "",
-        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
-      },
-      currentTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      currentTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      frequencyConvertersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        frequencyMeasurementRange: "",
-        quantity: "",
-      },
-      frequencyConvertersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        frequencyMeasurementRange: "",
-        quantity: "",
-      },
-      voltageTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      voltageTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      powerTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        inputVoltageRange: "",
-        outputVoltageRange: "",
-        sin: "",
-        cos: "",
-      },
-      powerTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        inputVoltageRange: "",
-        outputVoltageRange: "",
-        sin: "",
-        cos: "",
-      },
-      circuitBreakers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrentOfFuseLink: "",
-      },
-      electricityMeter: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        accuracyClass: "",
-      },
-      transformersForOwnNeeds: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedPower: "",
-      },
-      zeroSequenceCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        oneSecondThermalCurrentOfTheSecondaryWinding: "",
-      },
-    },
-  ],
+  nodes: [],
 
   currentNode: {
     id: "",
@@ -480,16 +101,17 @@ const nodeSlice = createSlice({
 
   reducers: {
     addNode(state, action: PayloadAction<TNode>) {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.nodes.push(action.payload);
     },
     deleteNode(state, action: PayloadAction<TCurrentNodeId>) {
       if (action.payload.id === "group1") return;
+      console.log(action.payload.id);
       const filteredNodes = state.nodes.filter(
         (node) => node.id !== action.payload.id
       );
       // const filteredChildren = filteredNodes.filter()
-      const tire = state.nodes.find((item) => item.id === "group1");
+      const tire = state.nodes.find((item) => item.id === "group1"); //🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
       state.nodes = orderItems(filteredNodes, tire);
     },
@@ -531,11 +153,13 @@ const nodeSlice = createSlice({
       console.log(
         action.payload.key1,
         action.payload.key2,
-        action.payload.id,
         action.payload.value
       );
-      if (node)
+      if (node && action.payload.key2 !== "") {
         node[action.payload.key1][action.payload.key2] = action.payload.value;
+      } else {
+        node[action.payload.key1] = action.payload.value;
+      }
     },
 
     updateCoordinats(state, action: PayloadAction<TUpdateNodeCoords>) {
@@ -544,21 +168,39 @@ const nodeSlice = createSlice({
       if (node) node.position = action.payload.position;
     },
 
-    updateTireSize(state, action: PayloadAction<TUpdateNodeSize>) {
-      const node = state.nodes.find((item) => item.id === "group1");
-      if (node) node.style = action.payload;
+    updateSizeOnResizeEnd(
+      state,
+      action: PayloadAction<TUpdateSizeOnResizeEnd>
+    ) {
+      const node = state.nodes.find((item) => item.id === action.payload.id);
+
+      if (node) node.style = action.payload.style;
+      if (node) node.position = action.payload.position;
     },
 
+    // updateTireSize(state, action: PayloadAction<TUpdateNodeSize>) {
+    //   const node = state.nodes.find((item) => item.id === "group1");
+    //   if (node) node.style = action.payload;
+    // },
+
     updateGroup(state, action: PayloadAction<TUpdateGroup>) {
-      const node = state.nodes.find((item) => item.id === action.payload.id);
-      const tire = state.nodes.find((item) => item.id === "group1");
+      let tireIndex;
+      let nodeIndex;
+      const node = state.nodes.find(
+        (item, index) => item.id === action.payload.nodeId
+      );
+
+      const tire = state.nodes.find(
+        (item, index) => item.id === action.payload.tireId
+      );
 
       if (node) {
-        node.parentNode = "group1";
+        node.parentNode = action.payload.tireId;
         node.draggable = false;
       }
 
       state.nodes = orderItems(state.nodes, tire);
+      // const allTires = state.nodes.filter((item) => item.id.includes("group"));
     },
 
     uploadNodes(state, action) {
@@ -577,8 +219,9 @@ const nodeSlice = createSlice({
 export const {
   updateNodePropSelect,
   updateCoordinats,
+  updateSizeOnResizeEnd,
   updateGroup,
-  updateTireSize,
+  // updateTireSize,
   uploadNodes,
   addNode,
   deleteNode,

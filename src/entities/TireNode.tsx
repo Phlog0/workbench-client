@@ -18,7 +18,7 @@ import ReactFlow, {
 
 import styles from "./TireNode.module.scss";
 import { useAppDispatch } from "../hook";
-import { updateTireSize } from "../store/nodesSlice";
+// import { updateTireSize } from "../store/nodesSlice";
 
 
 
@@ -32,10 +32,10 @@ const TireNode = ({ data, isConnectable }) => {
   }, []);
 
 
-  const resizeTire = (event, params) => {
-    console.log(params);
-    dispatch(updateTireSize({width: params.width, height: params.height}))
-  };
+  // const resizeTire = (event, params) => {
+  //   console.log(params);
+  //   dispatch(updateTireSize({width: params.width, height: params.height}))
+  // };
   // minWidth={300} minHeight={7} maxHeight={7}
   return (
     <div className={styles.tire}>

@@ -56,7 +56,6 @@ const MyModal = ({ isOpen, onOpen, onClose, type, query }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          {/* <ModalHeader>ОПН🟥</ModalHeader> */}
           <ModalCloseButton />
           {error ? (
             <h1>{error.error}</h1>

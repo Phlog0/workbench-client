@@ -36,3 +36,20 @@
     align-items: center;
     gap: 0.5rem;
 }
+
+
+.addTrafaret{
+    background-color: rgb(165, 169, 44);
+    color: aliceblue;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    & > input[type=file]{
+        display: none;
+    }
+    &:hover{
+        background-color: rgb(162, 157, 9);
+    }
+}

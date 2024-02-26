@@ -1,0 +1,21 @@
+.imageContainer{
+    border: 1px solid red;
+position: relative;
+    // img{
+    //     max-width: 100%;
+    // }
+}
+
+
+.resizeIcon{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 99999;
+    background-color: rgba( #eaeaea,  0.5);
+
+}
+
+.image{
+    width: 100%;
+}

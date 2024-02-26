@@ -82,7 +82,6 @@ const Shkaf: FC<IShkafProps> = ({ id }) => {
   const currentTransformatorOption = item?.currentTransformatorOption;
 
   const currentTypeOfSwitchingDevice = item?.currentTypeOfSwitchingDevice; // ВН-ВР-Р-НЕТ
-  console.log(currentTypeOfSwitchingDevice);
   // const locationOfGroundingBladesValue =
   // item?.switchingDeviceVN?.locationOfGroundingBlades ||
   // "Со стороны шарнирных контактов (предохранителей)"; //ВН-Варианты
@@ -101,7 +100,7 @@ const Shkaf: FC<IShkafProps> = ({ id }) => {
     setCurrentTypeOfSwitchingDevicePictureVN(checkVN);
   }, [locationOfGroundingBladesValue]);
 
-  console.log(currentTypeOfSwitchingDevicePictureVN);
+  // console.log(currentTypeOfSwitchingDevicePictureVN);
 
   // if (currentTypeOfSwitchingDevice === 2) {
   //   const locationOfGroundingBladesValue = item?.switchingDeviceVN?.locationOfGroundingBlades || "Со стороны шарнирных контактов (предохранителей)";

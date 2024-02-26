@@ -93,7 +93,7 @@ const InstrumentCurrentTransformers = ({ id }) => {
                   {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
                   <div className={styles.inputContainer}>
-                    <Text>змерительные Трансформаторы Тока</Text>
+                    <Text>Измерительные Трансформаторы Тока</Text>
                     <MyInput
                     tag={"InstrumentCurrentTransformersType"}
                     label={"Тип"}
