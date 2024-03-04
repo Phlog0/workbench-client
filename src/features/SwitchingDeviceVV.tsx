@@ -46,7 +46,7 @@ const SwitchingDeviceVV = ({ id }) => {
 
   const switchingDeviceVV = currentItemProperties?.switchingDeviceVV;
 
-  const [state, setState] = useState({ ...switchingDeviceVV });
+  const [state, setState] = useState( switchingDeviceVV );
 
   const AllswitchingDeviceVV = Object.values(switchingDeviceVV);
 
@@ -123,7 +123,7 @@ const SwitchingDeviceVV = ({ id }) => {
                       tag={"switchingDeviceVVType"}
                       label={"Тип"}
                       inputType={"text"}
-                      value={state.type}
+                      value={switchingDeviceVV.type}
                       opt1={"switchingDeviceVV"}
                       opt2={"type"}
                     />
@@ -153,7 +153,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVName"}
                     label={"Наименование"}
                     inputType={"text"}
-                    value={state.name}
+                    value={switchingDeviceVV.name}
                     opt1={"switchingDeviceVV"}
                     opt2={"name"}
                     // onChange={inputChange}
@@ -164,7 +164,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    value={state.manufacturer}
+                    value={switchingDeviceVV.manufacturer}
                     opt1={"switchingDeviceVV"}
                     opt2={"manufacturer"}
                     // onChange={inputChange}
@@ -175,7 +175,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVRatedCurrent"}
                     label={"Номинальный ток, А"}
                     inputType={"number"}
-                    value={state.ratedCurrent}
+                    value={switchingDeviceVV.ratedCurrent}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedCurrent"}
                     // onChange={inputChange}
@@ -186,7 +186,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVRatedBreakingCurrent"}
                     label={"Номинальный ток отключения, кА"}
                     inputType={"text"}
-                    value={state.ratedBreakingCurrent}
+                    value={switchingDeviceVV.ratedBreakingCurrent}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedBreakingCurrent"}
                     // onChange={inputChange}
@@ -197,7 +197,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVRatedVoltage"}
                     label={"Номинальное напряжение, кВ"}
                     inputType={"text"}
-                    value={state.ratedVoltage}
+                    value={switchingDeviceVV.ratedVoltage}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedVoltage"}
                     // onChange={inputChange}

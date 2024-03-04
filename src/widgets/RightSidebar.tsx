@@ -31,48 +31,92 @@ import CurrentTransformers from "../features/CurrentTransformers";
 import TypeOfCell from "../features/TypeOfCell";
 import TypeOfSwitchingDevice from "../features/TypeOfSwitchingDevice";
 import ZeroSequenceCurrentTransformers from "../features/ZeroSequenceCurrentTransformers";
+import TotalPowerOfAllElectricalAppliances from "../features/TotalPowerOfAllElectricalAppliances";
+import ReactiveCos from "../features/ReactiveCos";
 
 const RightSidebar: FC = () => {
   const currentItemId: string = useAppSelector(
     (state) => state.nodes.currentNode.id
   );
 
+  const currentCellOption = useAppSelector(
+    (state) =>
+      state.nodes.nodes.find((node) => node.id === currentItemId)
+        ?.currentCellOption
+  );
 
   // console.log('RIGHT SB RENDER>>>');
-
+  console.log(currentCellOption);
   return (
     <div className={styles.wrapper}>
-      <div className={styles.selectItem}>
-        {currentItemId && <TypeOfCell id={currentItemId} />}
-        {currentItemId && <TypeOfSwitchingDevice id={currentItemId} />}
+      {currentItemId && <TypeOfCell id={currentItemId} />}
 
-        {currentItemId && <CurrentTransformers id={currentItemId} />}
-        {currentItemId && <RatedCurrentOfTheMainCircuits id={currentItemId} />}
-        {currentItemId && <InstrumentCurrentTransformers id={currentItemId} />}
-        {currentItemId && <SwitchOPN id={currentItemId} />}
-        {/* {currentItemId && (
+      {[1, 4].includes(currentCellOption) ? null : (
+        <div className={styles.selectItem}>
+          {currentItemId && [6].includes(currentCellOption) && (
+            <TotalPowerOfAllElectricalAppliances id={currentItemId} />
+          )}
+          {currentItemId && [6].includes(currentCellOption) && (
+            <ReactiveCos id={currentItemId} />
+          )}
+          {currentItemId && <TypeOfSwitchingDevice id={currentItemId} />}
+
+          {currentItemId && ![3].includes(currentCellOption) && (
+            <CurrentTransformers id={currentItemId} />
+          )}
+          {currentItemId && ![3].includes(currentCellOption) && (
+            <RatedCurrentOfTheMainCircuits id={currentItemId} />
+          )}
+
+          {currentItemId && ![2, 3, 4, 7, 8].includes(currentCellOption) && (
+            <SwitchOPN id={currentItemId} />
+          )}
+
+          {currentItemId && ![3].includes(currentCellOption) && (
+            <ElectromagneticLocking id={currentItemId} />
+          )}
+          {currentItemId && currentCellOption === 8 && (
+            <VoltageTransformers id={currentItemId} />
+          )}
+          {currentItemId && ![3, 7, 8].includes(currentCellOption) && (
+            <ElectricityMeter id={currentItemId} />
+          )}
+
+          {currentItemId && currentCellOption === 0 && (
+            <TransformersForOwnNeeds id={currentItemId} />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default RightSidebar;
+{
+  /* ===================================================================================== */
+}
+{
+  /* {currentItemId && (
           <MicroprocessorProtectionDeviceAndAutomation id={currentItemId} />
-        )} */}
-        {currentItemId && <ElectromagneticLocking id={currentItemId} />}
+        )} */
+}
 
-        {currentItemId && <VoltageTransformers id={currentItemId} />}
-        {currentItemId && <CurrentTransducersType1 id={currentItemId} />}
+{
+  /* {currentItemId && <CurrentTransducersType1 id={currentItemId} />}
         {currentItemId && <CurrentTransducersType2 id={currentItemId} />}
         {currentItemId && <FrequencyConvertersType1 id={currentItemId} />}
         {currentItemId && <FrequencyConvertersType2 id={currentItemId} />}
         {currentItemId && <VoltageTransducersType1 id={currentItemId} />}
         {currentItemId && <VoltageTransducersType2 id={currentItemId} />}
         {currentItemId && <PowerTransducersType1 id={currentItemId} />}
-        {currentItemId && <PowerTransducersType2 id={currentItemId} />}
-        {/* {currentItemId && <CircuitBreakers id={currentItemId} />} */}
-        {currentItemId && <ElectricityMeter id={currentItemId} />}
-        {currentItemId && <TransformersForOwnNeeds id={currentItemId} />}
-        {currentItemId && (
-          <ZeroSequenceCurrentTransformers id={currentItemId} />
-        )}
-      </div>
-    </div>
-  );
-};
+        {currentItemId && <PowerTransducersType2 id={currentItemId} />} */
+}
+{
+  /* {currentItemId && <CircuitBreakers id={currentItemId} />} */
+}
 
-export default RightSidebar;
+{
+  /* {currentItemId && (
+          <ZeroSequenceCurrentTransformers id={currentItemId} />
+        )} */
+}

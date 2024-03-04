@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './mainSchemeNode.module.scss'
+import styles from './MainSchemeNode.module.scss'
 const MainSchemeNode = ({data}) => {
   return (
     <div className={styles.container}>

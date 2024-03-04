@@ -3,20 +3,22 @@ const testReduxState = [
     id: "mainScheme",
     position: { x: 0, y: 0 },
     type: "MainSchemeType",
-    draggable:true,
+    draggable: true,
     // className: "light",
     // style: {
     //   width: 360,
     //   height: 30,
     // },
-    totalVoltageForAll: "",
-    totalPowerOfAllElectricalAppliances:"",
+    totalVoltageForAll: "6", //(6/10 кВ) - для всего
   },
+
+  //========================================================== SECTION 1 & 2 ==========================================================
+
   {
     id: "group1",
     position: { x: 670 * 0, y: 100 },
     type: "TireNodeType",
-    draggable:false,
+    draggable: false,
     // className: "light",
     style: {
       width: 360,
@@ -28,7 +30,7 @@ const testReduxState = [
     id: "group2",
     position: { x: 670 * 1, y: 100 },
     type: "TireNodeType",
-    draggable:false,
+    draggable: false,
 
     // className: "light",
     style: {
@@ -37,14 +39,19 @@ const testReduxState = [
     },
     parentNode: "mainScheme",
   },
+
+  //========================================================== SKAF 1 ==========================================================
+
   {
     id: "1",
     type: "ElectricalPanelsNodeType",
     position: { x: 30, y: 0 },
     parentNode: "group1",
     draggable: false,
-    currentCellOption: 0,
-    currentTypeOfSwitchingDevice: 0,
+    currentCellOption: 0, //тип ячейки (СВ, ТСН, СР...)
+    totalPowerOfAllElectricalAppliances: 0, //Суммарная мощность всех электроприборов, Вт (Для каждой ячейки. Только при ячейке - отходящей линии)
+    currentTypeOfSwitchingDevice: 0, //КОММУТАЦИОННЫЙ АППАРАТ (ВВ,ВН,Р,НЕТ)
+    reactiveCos:'0', //Реактивный косинус
     switchingDeviceVV: {
       type: "",
       name: "",
@@ -74,30 +81,15 @@ const testReduxState = [
       ratedVoltage: "",
     },
 
-    thereIsAFuseCurrent: 0,
-    // ===============================================================
-    currentTransformatorOption: 1,
+    thereIsACircuitBreakers: 0, //есть предохранитель? (1/0) MySelect
+    circuitBreakers: {
+      type: "",
+      name: "",
+      manufacturer: "",
+      ratedCurrentOfFuseLink: "",
+    },
 
-    ratedCurrentOfTheMainCircuits: 0, // Номинальный ток главных цепей,А
-    opn: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      ratedOperatingVoltage: "",
-      throughput: "",
-      ratedDischargeCurrent: "",
-      maximumContinuousPermissibleOperatingVoltage: "",
-    },
-    microprocessorProtectionDeviceAndAutomation: {
-      type: "",
-      name: "",
-      manufacturer: "",
-    },
-    electromagneticLocking: {
-      type: "",
-      name: "",
-      manufacturer: "",
-    },
+    currentTransformatorOption: 1, //Трансформаторы тока (2 транс. 3 обомтки) MySelect
     instrumentCurrentTransformers: {
       type: "",
       name: "",
@@ -107,6 +99,35 @@ const testReduxState = [
       oneSecondThermalCurrent: "",
       typeOfService: "",
     },
+
+    ratedCurrentOfTheMainCircuits: 0, // Номинальный ток главных цепей,А MySelect
+    isThereAnOpn: 0,
+    opn: {
+      type: "",
+      name: "",
+      manufacturer: "",
+      ratedOperatingVoltage: "",
+      throughput: "",
+      ratedDischargeCurrent: "",
+      maximumContinuousPermissibleOperatingVoltage: "",
+    },
+
+    isThereAMicroprocessorProtectionDeviceAndAutomation: 0,
+
+    microprocessorProtectionDeviceAndAutomation: {
+      type: "",
+      name: "",
+      manufacturer: "",
+    },
+
+    isThereAnElectromagneticLocking: 0,
+    electromagneticLocking: {
+      type: "",
+      name: "",
+      manufacturer: "",
+    },
+
+    isThereAVoltageTransformers: 0,
     voltageTransformers: {
       type: "",
       name: "",
@@ -119,92 +140,7 @@ const testReduxState = [
       accuracyClassOfSecondaryReturnWires: "",
       ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
     },
-    currentTransducersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    currentTransducersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    frequencyConvertersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      frequencyMeasurementRange: "",
-      quantity: "",
-    },
-    frequencyConvertersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      frequencyMeasurementRange: "",
-      quantity: "",
-    },
-    voltageTransducersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    voltageTransducersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    powerTransducersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      inputVoltageRange: "",
-      outputVoltageRange: "",
-      sin: "",
-      cos: "",
-    },
-    powerTransducersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      inputVoltageRange: "",
-      outputVoltageRange: "",
-      sin: "",
-      cos: "",
-    },
-    circuitBreakers: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      ratedCurrentOfFuseLink: "",
-    },
+    isThereAElectricityMeter: 0,
     electricityMeter: {
       type: "",
       name: "",
@@ -217,24 +153,18 @@ const testReduxState = [
       manufacturer: "",
       ratedPower: "",
     },
-    zeroSequenceCurrentTransformers: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      transformationRatio: "",
-      oneSecondThermalCurrentOfTheSecondaryWinding: "",
-    },
   },
-  // ========================================================ITEM #2===============================================================
+
+  //========================================================== SKAF 2 ==========================================================
+
   {
-    // ==========================REACT-FLOW PROPS==========================
     id: "2",
     type: "ElectricalPanelsNodeType",
     position: { x: 0, y: 100 },
     draggable: true,
-    // ==========================END OF REACT-FLOW PROPS==========================
     currentCellOption: 2,
-    // ==========================КОММУТАЦИОННЫЙ АППАРАТ==========================
+    totalPowerOfAllElectricalAppliances: 0,
+    reactiveCos:'0',
     currentTypeOfSwitchingDevice: 1,
     switchingDeviceVV: {
       type: "",
@@ -267,10 +197,10 @@ const testReduxState = [
 
     thereIsAFuseCurrent: 0,
 
-    // ==========================КОНЕЦ КОММУТАЦИОННОГО АППАРАТА==========================
     currentTransformatorOption: 2,
     parentNode: "",
     ratedCurrentOfTheMainCircuits: 1,
+    isThereAnOpn: 0,
     opn: {
       type: "",
       name: "",
@@ -280,11 +210,14 @@ const testReduxState = [
       ratedDischargeCurrent: "",
       maximumContinuousPermissibleOperatingVoltage: "",
     },
+    isThereAMicroprocessorProtectionDeviceAndAutomation: 0,
     microprocessorProtectionDeviceAndAutomation: {
       type: "",
       name: "",
       manufacturer: "",
     },
+
+    isThereAnElectromagneticLocking: 0,
     electromagneticLocking: {
       type: "",
       name: "",
@@ -299,6 +232,7 @@ const testReduxState = [
       oneSecondThermalCurrent: "",
       typeOfService: "",
     },
+    isThereAVoltageTransformers: 0,
     voltageTransformers: {
       type: "",
       name: "",
@@ -311,92 +245,15 @@ const testReduxState = [
       accuracyClassOfSecondaryReturnWires: "",
       ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
     },
-    currentTransducersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    currentTransducersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    frequencyConvertersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      frequencyMeasurementRange: "",
-      quantity: "",
-    },
-    frequencyConvertersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      frequencyMeasurementRange: "",
-      quantity: "",
-    },
-    voltageTransducersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    voltageTransducersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputVoltageRange: "",
-      outputCurrentRange: "",
-      quantity: "",
-    },
-    powerTransducersType1: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      inputVoltageRange: "",
-      outputVoltageRange: "",
-      sin: "",
-      cos: "",
-    },
-    powerTransducersType2: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      numberOfChannels: "",
-      inputCurrentRange: "",
-      outputCurrentRange: "",
-      inputVoltageRange: "",
-      outputVoltageRange: "",
-      sin: "",
-      cos: "",
-    },
+
     circuitBreakers: {
       type: "",
       name: "",
       manufacturer: "",
       ratedCurrentOfFuseLink: "",
     },
+    isThereAElectricityMeter: 0,
+
     electricityMeter: {
       type: "",
       name: "",
@@ -409,25 +266,7 @@ const testReduxState = [
       manufacturer: "",
       ratedPower: "",
     },
-    zeroSequenceCurrentTransformers: {
-      type: "",
-      name: "",
-      manufacturer: "",
-      transformationRatio: "",
-      oneSecondThermalCurrentOfTheSecondaryWinding: "",
-    },
   },
-  // {
-  //   type: "ImageNodeType",
-  //   id:'img-1',
-  //   src:'',
-  //   position: { x: 670 * 0, y: 100 },
-  //   style: {
-  //     width: 360,
-  //     height: 30,
-  //   },
-  
-  // }
 ];
 
 export default testReduxState;

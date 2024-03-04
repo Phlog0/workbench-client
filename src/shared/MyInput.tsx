@@ -32,6 +32,7 @@ const MyInput = ({
   onChange,
   opt2,
   myId,
+  max,
 }) => {
   const dispatch = useDispatch();
 
@@ -157,6 +158,7 @@ const MyInput = ({
           ref={inputValue}
           // onChange={(e) => setLocalInputState(e.target.value)}
           onChange={debouncedHandleChange}
+          max={max || null}
         />
       )}
       <Divider marginBlock={"1rem"} />

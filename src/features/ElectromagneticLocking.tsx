@@ -35,6 +35,7 @@ import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../hook";
 import { updateProp } from "../store/nodesSlice";
+import MySelect from "../shared/MySelect";
 const ElectromagneticLocking = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -44,89 +45,84 @@ const ElectromagneticLocking = ({ id }) => {
     state.nodes.nodes.find((node) => node.id === id)
   );
   const electromagneticLocking = currentItemProperties?.electromagneticLocking;
-
-  const allElectromagneticLocking = Object.values(electromagneticLocking);
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
+  const isThereAnElectromagneticLocking =
+    currentItemProperties?.isThereAnElectromagneticLocking;
 
   return (
-    <>
-      <Accordion allowToggle className="">
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton>
-                  {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
+    <div className={styles.container}>
+      <MySelect
+        tag={"isThereAnElectromagneticLocking"}
+        label={"Есть электромагнитная блокировка"}
+        options={["Нет", "Да"]}
+        itemId={id}
+        current={isThereAnElectromagneticLocking}
+      />
+      {isThereAnElectromagneticLocking !== 0 && (
+        <Accordion allowToggle className="">
+          <AccordionItem>
+            {({ isExpanded }) => (
+              <>
+                <h2>
+                  <AccordionButton>
+                    {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <div className={styles.inputContainer}>
-                   <Text>Электромагнитная блокировка</Text>
-                   <MyInput
-                    tag={"ElectromagneticLockingType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={electromagneticLocking.type}
-                    opt1={"electromagneticLocking"}
-                    opt2={"type"}
-                    
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
+                    <div className={styles.inputContainer}>
+                      <Text>Электромагнитная блокировка</Text>
+                      <MyInput
+                        tag={"ElectromagneticLockingType"}
+                        label={"Тип"}
+                        inputType={"text"}
+                        value={electromagneticLocking.type}
+                        opt1={"electromagneticLocking"}
+                        opt2={"type"}
+                      />
+                      <Button
+                        className={styles.OpenMenuDots}
+                        ref={btnRef}
+                        onClick={onOpen}
+                      >
+                        ...
+                      </Button>
 
-                  {isOpen && (
-                    <MyModal
-                    isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      type={"electromagneticLocking"}
+                      {isOpen && (
+                        <MyModal
+                          isOpen={isOpen}
+                          onOpen={onOpen}
+                          onClose={onClose}
+                          type={"electromagneticLocking"}
+                        />
+                      )}
+                    </div>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4} className={styles.AccordionPanel}>
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={"ElectromagneticLockingName"}
+                      label={"Наименование"}
+                      inputType={"text"}
+                      value={electromagneticLocking.name}
+                      opt1={"electromagneticLocking"}
+                      opt2={"name"}
                     />
-                  )}
                   </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"ElectromagneticLockingName"}
-                    label={"Наименование"}
-                    inputType={"text"}
-                    value={electromagneticLocking.name}
-                    opt1={"electromagneticLocking"}
-                    opt2={"name"}
-                    
-                  />
-                </div>
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"ElectromagneticLockingManufacturer"}
-                    label={"Производитель"}
-                    inputType={"text"}
-                    value={electromagneticLocking.manufacturer}
-                    opt1={"electromagneticLocking"}
-                    opt2={"manufacturer"}
-                    
-                  />
-                </div>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
-      </Accordion>
-    </>
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={"ElectromagneticLockingManufacturer"}
+                      label={"Производитель"}
+                      inputType={"text"}
+                      value={electromagneticLocking.manufacturer}
+                      opt1={"electromagneticLocking"}
+                      opt2={"manufacturer"}
+                    />
+                  </div>
+                </AccordionPanel>
+              </>
+            )}
+          </AccordionItem>
+        </Accordion>
+      )}
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ const orderItems = (items, tire) => {
   let i = 0;
   tire.style.width = 60;
   const allTires = items.filter(
-    (item) => item.id.includes("group")
+    (item) => item.id.match("group")
     // && item.id > tire.id
   );
   const orderedItems = items.map((item, index) => {

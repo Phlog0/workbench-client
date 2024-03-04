@@ -54,7 +54,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useFetchDataQuery } from "../services/dictService";
 import MySpinner from "../shared/MySpinner";
 import testReduxState from "../store/utils/testReduxState";
-import MainSchemeNode from "../entities/mainSchemeNode";
+import MainSchemeNode from "../entities/MainSchemeNode";
 import renderNodesInFlow from "./helpers/renderNodesInFlow";
 import FirstOptionsModal from "./FirstOptionsModal";
 import createScheme from "./helpers/createScheme";

@@ -15,7 +15,7 @@ const TypeOfCell = ({ id }) => {
   return (
     <>
       {isLoading ? (
-        <MySpinner/>
+        <MySpinner />
       ) : (
         <MySelect
           tag={"currentCellOption"}

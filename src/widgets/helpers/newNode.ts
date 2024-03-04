@@ -1,0 +1,103 @@
+const newNode = {
+ 
+  type: "ElectricalPanelsNodeType",
+  position: { x: 0, y: 0 },
+  parentNode: "",
+  draggable: true,
+  currentCellOption: 0,
+  currentTypeOfSwitchingDevice: 0,
+  switchingDeviceVV: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedCurrent: "",
+    ratedBreakingCurrent: "",
+    ratedVoltage: "",
+  },
+  switchingDeviceVN: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedCurrent: "",
+    ratedBreakingCurrent: "",
+    ratedVoltage: "",
+    numberOfGroundShafts: "",
+    locationOfGroundingBlades: "",
+    switchDriveLocation: "",
+    locationOfTheGroundingBladeDrive: "",
+  },
+  switchingDeviceR: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedCurrent: "",
+    thermalCurrent: "",
+    ratedVoltage: "",
+  },
+
+  thereIsAFuseCurrent: 0,
+  currentTransformatorOption: 1,
+
+  ratedCurrentOfTheMainCircuits: 0,
+  opn: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedOperatingVoltage: "",
+    throughput: "",
+    ratedDischargeCurrent: "",
+    maximumContinuousPermissibleOperatingVoltage: "",
+  },
+  microprocessorProtectionDeviceAndAutomation: {
+    type: "",
+    name: "",
+    manufacturer: "",
+  },
+  electromagneticLocking: {
+    type: "",
+    name: "",
+    manufacturer: "",
+  },
+  instrumentCurrentTransformers: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    transformationRatio: "",
+    accuracyClass: "",
+    oneSecondThermalCurrent: "",
+    typeOfService: "",
+  },
+  voltageTransformers: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedThreePhasePowerOfTheFirstWinding: "",
+    accuracyClassOfTheFirstSecondaryWinding: "",
+    ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
+    accuracyClassOfTheSecondSecondaryWinding: "",
+    ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
+    accuracyClassOfSecondaryReturnWires: "",
+    ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
+  },
+
+  circuitBreakers: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedCurrentOfFuseLink: "",
+  },
+  electricityMeter: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    accuracyClass: "",
+  },
+  transformersForOwnNeeds: {
+    type: "",
+    name: "",
+    manufacturer: "",
+    ratedPower: "",
+  },
+}; //🔥🔥🔥🔥🔥🔥🔥🔥 NEW ITEM!
+
+export default newNode;

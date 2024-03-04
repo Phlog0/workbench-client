@@ -11,208 +11,31 @@ import { addNode, deleteNode } from "../store/nodesSlice";
 // =============================COMPONENT============================
 import { Button, ButtonGroup, Input, Select } from "@chakra-ui/react";
 import MySelect from "../shared/MySelect";
+import newNode from "./helpers/newNode";
 
 const TopNavbar: FC = () => {
   const snapGrids = useAppSelector((state) => state.nodes.snapGrid);
   const currentId = useAppSelector((state) => state.nodes.currentNode);
   const currentGrid = useAppSelector((state) => state.nodes.currentGrid.index);
 
+  const currentItemParent = useAppSelector(
+    (state) =>
+      state.nodes.nodes.find((item) => item.id === currentId.id)?.parentNode
+  );
+
+  console.log(currentId, currentItemParent);
   const dispatch = useAppDispatch();
 
   const addFigure = (): void => {
-    const node = {
-      id: Date.now().toString(),
-      type: "ElectricalPanelsNodeType",
-      position: { x: 0, y: 0 },
-      parentNode: "",
-      draggable: true,
-      currentCellOption: 0,
-      currentTypeOfSwitchingDevice: 0,
-      switchingDeviceVV: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        ratedBreakingCurrent: "",
-        ratedVoltage: "",
-      },
-      switchingDeviceVN: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        ratedBreakingCurrent: "",
-        ratedVoltage: "",
-        numberOfGroundShafts: "",
-        locationOfGroundingBlades: "",
-        switchDriveLocation: "",
-        locationOfTheGroundingBladeDrive: "",
-      },
-      switchingDeviceR: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrent: "",
-        thermalCurrent: "",
-        ratedVoltage: "",
-      },
-
-      thereIsAFuseCurrent: 0,
-      currentTransformatorOption: 1,
-
-      ratedCurrentOfTheMainCircuits: 0,
-      opn: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedOperatingVoltage: "",
-        throughput: "",
-        ratedDischargeCurrent: "",
-        maximumContinuousPermissibleOperatingVoltage: "",
-      },
-      microprocessorProtectionDeviceAndAutomation: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      electromagneticLocking: {
-        type: "",
-        name: "",
-        manufacturer: "",
-      },
-      instrumentCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        accuracyClass: "",
-        oneSecondThermalCurrent: "",
-        typeOfService: "",
-      },
-      voltageTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedThreePhasePowerOfTheFirstWinding: "",
-        accuracyClassOfTheFirstSecondaryWinding: "",
-        ratedThreePhasePowerOfTheSecondSecondaryWinding: "",
-        accuracyClassOfTheSecondSecondaryWinding: "",
-        ratedThreePhasePowerOfAadditionalSecondaryWinding: "",
-        accuracyClassOfSecondaryReturnWires: "",
-        ratedLineVoltageAtTheTerminalsOfThePrimaryWinding: "",
-      },
-      currentTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      currentTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      frequencyConvertersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        frequencyMeasurementRange: "",
-        quantity: "",
-      },
-      frequencyConvertersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        frequencyMeasurementRange: "",
-        quantity: "",
-      },
-      voltageTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      voltageTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputVoltageRange: "",
-        outputCurrentRange: "",
-        quantity: "",
-      },
-      powerTransducersType1: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        inputVoltageRange: "",
-        outputVoltageRange: "",
-        sin: "",
-        cos: "",
-      },
-      powerTransducersType2: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        numberOfChannels: "",
-        inputCurrentRange: "",
-        outputCurrentRange: "",
-        inputVoltageRange: "",
-        outputVoltageRange: "",
-        sin: "",
-        cos: "",
-      },
-      circuitBreakers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedCurrentOfFuseLink: "",
-      },
-      electricityMeter: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        accuracyClass: "",
-      },
-      transformersForOwnNeeds: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        ratedPower: "",
-      },
-      zeroSequenceCurrentTransformers: {
-        type: "",
-        name: "",
-        manufacturer: "",
-        transformationRatio: "",
-        oneSecondThermalCurrentOfTheSecondaryWinding: "",
-      },
-    }; //🔥🔥🔥🔥🔥🔥🔥🔥 NEW ITEM!
+    const node = { id: Date.now().toString(), ...newNode };
     dispatch(addNode(node));
   };
 
   const deleteItem = () => {
-    dispatch(deleteNode(currentId));
-    dispatch(changeCurrentNode({ id: null }));
+    if (currentId === null) return;
+    console.log(currentItemParent);
+    dispatch(deleteNode({ currentId, tireId: currentItemParent || "" }));
+    dispatch(changeCurrentNode({ id: "" }));
   };
 
   const importJson = (e) => {

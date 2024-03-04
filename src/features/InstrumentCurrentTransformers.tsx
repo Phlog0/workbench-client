@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Accordion,
   AccordionButton,
@@ -56,6 +56,11 @@ const InstrumentCurrentTransformers = ({ id }) => {
   const currentTransformatorOption =
     currentItemProperties?.currentTransformatorOption;
 
+  const currentCellOption = currentItemProperties?.currentCellOption;
+
+  const totalPowerOfAllElectricalAppliances =
+    currentItemProperties?.totalPowerOfAllElectricalAppliances;
+
   let currentTransformatorOptionQuery: number;
 
   if (currentTransformatorOption === 1 || currentTransformatorOption === 4)
@@ -65,22 +70,16 @@ const InstrumentCurrentTransformers = ({ id }) => {
   if (currentTransformatorOption === 3 || currentTransformatorOption === 6)
     currentTransformatorOptionQuery = 4;
 
-  const allInstrumentCurrentTransformers = Object.values(
-    instrumentCurrentTransformers
-  );
-
-  // console.log("CURRENT");
-
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
+  useEffect(() => {
+    if (
+      currentCellOption === 6 &&
+      Number(instrumentCurrentTransformers.transformationRatio.split("/")[0]) <
+        Number(totalPowerOfAllElectricalAppliances)
+    ) {
+     
+      alert("Проблема с трансформаторами! (InstrumentCurrentTransformers.tsx)");
+    }
+  }, [currentCellOption, totalPowerOfAllElectricalAppliances]);
 
   return (
     <>
@@ -95,35 +94,34 @@ const InstrumentCurrentTransformers = ({ id }) => {
                   <div className={styles.inputContainer}>
                     <Text>Измерительные Трансформаторы Тока</Text>
                     <MyInput
-                    tag={"InstrumentCurrentTransformersType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={instrumentCurrentTransformers.type}
-                    opt1={"instrumentCurrentTransformers"}
-                    opt2={"type"}
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-
-                  {isOpen && (
-                    <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      type={`instrumentCurrentTransformers`}
-                      query={currentTransformatorOptionQuery}
+                      tag={"InstrumentCurrentTransformersType"}
+                      label={"Тип"}
+                      inputType={"text"}
+                      value={instrumentCurrentTransformers.type}
+                      opt1={"instrumentCurrentTransformers"}
+                      opt2={"type"}
                     />
-                  )}
+                    <Button
+                      className={styles.OpenMenuDots}
+                      ref={btnRef}
+                      onClick={onOpen}
+                    >
+                      ...
+                    </Button>
+
+                    {isOpen && (
+                      <MyModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        type={`instrumentCurrentTransformers`}
+                        query={currentTransformatorOptionQuery}
+                      />
+                    )}
                   </div>
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} className={styles.AccordionPanel}>
-     
                 <div className={styles.inputContainer}>
                   <MyInput
                     tag={"InstrumentCurrentTransformersName"}

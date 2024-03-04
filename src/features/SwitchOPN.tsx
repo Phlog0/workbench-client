@@ -42,6 +42,7 @@ import { useAppSelector } from "../hook";
 import { useDispatch } from "react-redux";
 import { getCurrentId, updateopn, updateProp } from "../store/nodesSlice";
 import styles from "./properties.module.scss";
+import MySelect from "../shared/MySelect";
 
 interface ISwitchopnProps {
   id: string;
@@ -66,163 +67,151 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
 
   const dispatch = useDispatch();
 
-  const [inputState, setInputState] = useState({
-    type: "",
-    name: "",
-    manufacturer: "",
-    ratedOperatingVoltage: "",
-    throughput: "",
-    ratedDischargeCurrent: "",
-    maximumContinuousPermissibleOperatingVoltage: "",
-  });
+  const isThereAnOpn = useAppSelector(
+    (state) => state.nodes.nodes.find((node) => node.id === id)?.isThereAnOpn
+  );
 
-  const allopn = Object.values(opn);
+  console.log(isThereAnOpn);
 
-  // const allopn = Object.values(inputState);
-  // console.log(`OPN RENDER >>>>>>`);
-
-  // const inputChange = (event) => {
-  //   startTransition(() => {
-  //     dispatch(
-  //       updateProp({
-  //         id: id,
-  //         key1: event.target.dataset.opt1,
-  //         key2: event.target.dataset.opt2,
-  //         value: event.target.value,
-  //       })
-  //     );
-  //   });
-  // };
   return (
-    <>
-      <Accordion allowToggle className="">
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton>
-                  {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
+    <div className={styles.container}>
+      <MySelect
+        tag={"isThereAnOpn"}
+        label={"Есть ОПН"}
+        options={["Нет", "Да"]}
+        itemId={id}
+        current={isThereAnOpn}
+      />
+      {isThereAnOpn !== 0 && (
+        <Accordion allowToggle className="">
+          <AccordionItem>
+            {({ isExpanded }) => (
+              <>
+                <h2>
+                  <AccordionButton>
+                    {isExpanded ? <BsChevronDown /> : <BsChevronRight />}
 
-                  <div className={styles.inputContainer}>
-                    <Text>ОПН</Text>
+                    <div className={styles.inputContainer}>
+                      <Text>ОПН</Text>
+                      <MyInput
+                        tag={"SwitchopnType"}
+                        label={"Тип"}
+                        inputType={"text"}
+                        value={opn.type}
+                        opt1={"opn"}
+                        opt2={"type"}
+                        // value={inputState}
+                        //
+                      />
+                      <Button
+                        className={styles.OpenMenuDots}
+                        ref={btnRef}
+                        onClick={onOpen}
+                      >
+                        ...
+                      </Button>
+                      {isOpen && (
+                        <MyModal
+                          isOpen={isOpen}
+                          onOpen={onOpen}
+                          onClose={onClose}
+                          type={"opn"}
+                        />
+                      )}
+                    </div>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4} className={styles.AccordionPanel}>
+                  <div className={styles.AccordionPanelItem}>
                     <MyInput
-                    tag={"SwitchopnType"}
-                    label={"Тип"}
-                    inputType={"text"}
-                    value={opn.type}
-                    opt1={"opn"}
-                    opt2={"type"}
-                    // value={inputState}
-                    //
-                  />
-                  <Button
-                    className={styles.OpenMenuDots}
-                    ref={btnRef}
-                    onClick={onOpen}
-                  >
-                    ...
-                  </Button>
-                  {isOpen && (
-                    <MyModal
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      onClose={onClose}
-                      type={"opn"}
+                      tag={"SwitchopnName"}
+                      label={"Наименование"}
+                      inputType={"text"}
+                      value={opn.name}
+                      opt1={"opn"}
+                      opt2={"name"}
+                      // value={inputState}
+
+                      //
                     />
-                  )}
                   </div>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} className={styles.AccordionPanel}>
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"SwitchopnName"}
-                    label={"Наименование"}
-                    inputType={"text"}
-                    value={opn.name}
-                    opt1={"opn"}
-                    opt2={"name"}
-                    // value={inputState}
+                  {/* <Divider orientation='horizontal' /> */}
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={"SwitchopnManufacturer"}
+                      label={"Производитель"}
+                      inputType={"text"}
+                      value={opn.manufacturer}
+                      opt1={"opn"}
+                      opt2={"manufacturer"}
+                      // value={inputState}
 
-                    //
-                  />
-                </div>
-                {/* <Divider orientation='horizontal' /> */}
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"SwitchopnManufacturer"}
-                    label={"Производитель"}
-                    inputType={"text"}
-                    value={opn.manufacturer}
-                    opt1={"opn"}
-                    opt2={"manufacturer"}
-                    // value={inputState}
+                      //
+                    />
+                  </div>
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={"SwitchopnRatedOperatingVoltage"}
+                      label={"Номинальное рабочее напряжение"}
+                      inputType={"text"}
+                      value={opn.ratedOperatingVoltage}
+                      opt1={"opn"}
+                      opt2={"ratedOperatingVoltage"}
+                      // value={inputState}
 
-                    //
-                  />
-                </div>
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"SwitchopnRatedOperatingVoltage"}
-                    label={"Номинальное рабочее напряжение"}
-                    inputType={"text"}
-                    value={opn.ratedOperatingVoltage}
-                    opt1={"opn"}
-                    opt2={"ratedOperatingVoltage"}
-                    // value={inputState}
+                      //
+                    />
+                  </div>
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={"SwitchopnThroughput"}
+                      label={"Пропускная способность, А"}
+                      inputType={"number"}
+                      value={opn.throughput}
+                      opt1={"opn"}
+                      opt2={"throughput"}
+                      // value={inputState}
 
-                    //
-                  />
-                </div>
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"SwitchopnThroughput"}
-                    label={"Пропускная способность, А"}
-                    inputType={"number"}
-                    value={opn.throughput}
-                    opt1={"opn"}
-                    opt2={"throughput"}
-                    // value={inputState}
+                      //
+                    />
+                  </div>
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={"SwitchopnRatedDischargeCurrent"}
+                      label={"Номинальный разрядный ток, А"}
+                      inputType={"text"}
+                      value={opn.ratedDischargeCurrent}
+                      opt1={"opn"}
+                      opt2={"ratedDischargeCurrent"}
+                      // value={inputState}
 
-                    //
-                  />
-                </div>
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={"SwitchopnRatedDischargeCurrent"}
-                    label={"Номинальный разрядный ток, А"}
-                    inputType={"text"}
-                    value={opn.ratedDischargeCurrent}
-                    opt1={"opn"}
-                    opt2={"ratedDischargeCurrent"}
-                    // value={inputState}
+                      //
+                    />
+                  </div>
+                  <div className={styles.AccordionPanelItem}>
+                    <MyInput
+                      tag={
+                        "SwitchopnMaximumContinuousPermissibleOperatingVoltage"
+                      }
+                      label={
+                        "Наибольшее длительно допустимое рабочее напряжение, кВ"
+                      }
+                      inputType={"text"}
+                      value={opn.maximumContinuousPermissibleOperatingVoltage}
+                      opt1={"opn"}
+                      opt2={"maximumContinuousPermissibleOperatingVoltage"}
+                      // value={inputState}
 
-                    //
-                  />
-                </div>
-                <div className={styles.AccordionPanelItem}>
-                  <MyInput
-                    tag={
-                      "SwitchopnMaximumContinuousPermissibleOperatingVoltage"
-                    }
-                    label={
-                      "Наибольшее длительно допустимое рабочее напряжение, кВ"
-                    }
-                    inputType={"text"}
-                    value={opn.maximumContinuousPermissibleOperatingVoltage}
-                    opt1={"opn"}
-                    opt2={"maximumContinuousPermissibleOperatingVoltage"}
-                    // value={inputState}
-
-                    //
-                  />
-                </div>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
-      </Accordion>
-    </>
+                      //
+                    />
+                  </div>
+                </AccordionPanel>
+              </>
+            )}
+          </AccordionItem>
+        </Accordion>
+      )}
+    </div>
   );
 };
 

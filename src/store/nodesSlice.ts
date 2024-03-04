@@ -1,6 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  current,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import orderItems from "./utils/orderItems";
 import { act } from "react-dom/test-utils";
+import initialProps from "./utils/initialProps";
 
 type TUpdateNodeProps = {
   id: string;
@@ -35,7 +41,8 @@ type TUpdateNodeSize = {
 // };
 
 type TCurrentNodeId = {
-  id: string;
+  currentId: { id: string };
+  tireId: string;
 };
 type TCurrentIndex = {
   index: number;
@@ -104,16 +111,20 @@ const nodeSlice = createSlice({
       // console.log(action.payload);
       state.nodes.push(action.payload);
     },
-    deleteNode(state, action: PayloadAction<TCurrentNodeId>) {
-      if (action.payload.id === "group1") return;
-      console.log(action.payload.id);
-      const filteredNodes = state.nodes.filter(
-        (node) => node.id !== action.payload.id
-      );
-      // const filteredChildren = filteredNodes.filter()
-      const tire = state.nodes.find((item) => item.id === "group1"); //🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-      state.nodes = orderItems(filteredNodes, tire);
+    deleteNode(state, action: PayloadAction<TCurrentNodeId>) {
+      // if (action.payload.id.match("group")) return;
+      console.log(action.payload);
+      const filteredNodes = state.nodes.filter(
+        (node) => node.id !== action.payload.currentId.id
+      );
+      state.nodes = filteredNodes;
+      // const filteredChildren = filteredNodes.filter()
+      const tire = state.nodes.find(
+        (item) => item.id === action.payload.tireId
+      ); //🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+      if (tire) state.nodes = orderItems(filteredNodes, tire);
     },
 
     updateNodePropSelect(state, action: PayloadAction<TUpdateNodeProps>) {
@@ -121,19 +132,6 @@ const nodeSlice = createSlice({
       // if (node) node.currentCellType = action.payload.index;
       if (node) node[action.payload.key] = action.payload.index;
     },
-    // updateCommutationType(state, action: PayloadAction<TUpdateNodeProps>) {
-    //   const node = state.nodes.find((item) => item.id === action.payload.id);
-    //   if (node) node.currentCommutationOption = action.payload.index;
-    // },
-    // updateTransformatorType(state, action: PayloadAction<TTransformator>) {
-    //   const node = state.nodes.find((item) => item.id === action.payload.id);
-    //   if (node) node.currentTransformatorOption = action.payload.index;
-    // },
-    // updateRatedCurrentOfTheMainCircuits(state, action) {
-    //   console.log(action.payload);
-    //   const node = state.nodes.find((item) => item.id === action.payload.id);
-    //   if (node) node.ratedCurrentOfTheMainCircuits = action.payload.index;
-    // },
 
     updatePropsByRow(state, action) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
@@ -162,6 +160,45 @@ const nodeSlice = createSlice({
       }
     },
 
+    setInitialProps(state, action) {
+      console.log(action.payload.props);
+      let node = state.nodes.find((item) => item.id === action.payload.id);
+      console.log(node);
+
+      if (node) {
+        // node.currentCellOption = initialProps.currentCellOption;
+        node.currentTypeOfSwitchingDevice =
+          initialProps.currentTypeOfSwitchingDevice;
+        node.switchingDeviceVV = initialProps.switchingDeviceVV;
+        node.switchingDeviceVN = initialProps.switchingDeviceVN;
+        node.switchingDeviceR = initialProps.switchingDeviceR;
+        node.thereIsACircuitBreakers = initialProps.thereIsACircuitBreakers;
+        node.circuitBreakers = initialProps.circuitBreakers;
+        node.currentTransformatorOption =
+          initialProps.currentTransformatorOption;
+        node.instrumentCurrentTransformers =
+          initialProps.instrumentCurrentTransformers;
+        node.ratedCurrentOfTheMainCircuits =
+          initialProps.ratedCurrentOfTheMainCircuits;
+        node.isThereAnOpn = initialProps.isThereAnOpn;
+        node.opn = initialProps.opn;
+        node.isThereAMicroprocessorProtectionDeviceAndAutomation =
+          initialProps.isThereAMicroprocessorProtectionDeviceAndAutomation;
+        node.microprocessorProtectionDeviceAndAutomation =
+          initialProps.microprocessorProtectionDeviceAndAutomation;
+        node.isThereAnElectromagneticLocking =
+          initialProps.isThereAnElectromagneticLocking;
+        node.electromagneticLocking = initialProps.electromagneticLocking;
+        node.isThereAVoltageTransformers =
+          initialProps.isThereAVoltageTransformers;
+
+        node.voltageTransformers = initialProps.voltageTransformers;
+        node.isThereAElectricityMeter = initialProps.isThereAElectricityMeter;
+        node.electricityMeter = initialProps.electricityMeter;
+        node.transformersForOwnNeeds = initialProps.transformersForOwnNeeds;
+      }
+    },
+
     updateCoordinats(state, action: PayloadAction<TUpdateNodeCoords>) {
       const node = state.nodes.find((item) => item.id === action.payload.id);
 
@@ -178,14 +215,7 @@ const nodeSlice = createSlice({
       if (node) node.position = action.payload.position;
     },
 
-    // updateTireSize(state, action: PayloadAction<TUpdateNodeSize>) {
-    //   const node = state.nodes.find((item) => item.id === "group1");
-    //   if (node) node.style = action.payload;
-    // },
-
     updateGroup(state, action: PayloadAction<TUpdateGroup>) {
-      let tireIndex;
-      let nodeIndex;
       const node = state.nodes.find(
         (item, index) => item.id === action.payload.nodeId
       );
@@ -227,7 +257,7 @@ export const {
   deleteNode,
   changeCurrentNode,
   changeCurrentGrid,
-
+  setInitialProps,
   updatePropsByRow,
   updateProp,
 } = nodeSlice.actions;

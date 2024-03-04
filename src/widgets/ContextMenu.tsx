@@ -17,7 +17,12 @@ export default function ContextMenu({
   const dispatch = useDispatch();
 
   const deleteItem = () => {
-    dispatch(deleteNode({id}));
+    console.log(id);
+    const idObject = {
+      currentId: { id },
+      tireId: "",
+    };
+    dispatch(deleteNode(idObject));
   };
 
   return (

@@ -2,6 +2,8 @@ import { Spinner, Table, TableContainer, Tbody } from "@chakra-ui/react";
 import TableRow from "./TableRow";
 import styles from "./MyTable.module.scss";
 import "react-virtualized/styles.css";
+import { defaultRowRenderer as DefaultRowRenderer } from "react-virtualized/dist/es/Table";
+import { defaultTableRowRenderer as DefaultTableRowRenderer } from "react-virtualized";
 import React, {
   FC,
   Suspense,
@@ -19,6 +21,7 @@ import { useAppSelector } from "../../hook";
 import Draggable from "react-draggable";
 import MyHeaderRenderer from "./resizeColumns/MyHeaderRenderer";
 import { MdDragIndicator } from "react-icons/md";
+import RowRenderer from "./RowRenderer";
 // import { DragHandleIcon} from '@chakra-ui/icons'
 interface IMyTableProps {
   data: string[][];
@@ -35,6 +38,12 @@ const testState = [1 / 4, 1 / 4, 1 / 4, 1 / 4];
 const MyTable = ({ data, isLoading, type, onClose }) => {
   const dispatch = useDispatch();
   const currentId = useAppSelector((state) => state.nodes.currentNode.id);
+  const totalPowerOfAllElectricalAppliances = useAppSelector(
+    (state) =>
+      state.nodes.nodes.find((item) => item.id === currentId)
+        ?.totalPowerOfAllElectricalAppliances
+  );
+
   const [state, setState] = useState(testState);
   const [renderData, setRenderData] = useState(null);
 
@@ -144,6 +153,18 @@ const MyTable = ({ data, isLoading, type, onClose }) => {
                         return renderData[index];
                       }}
                       onRowClick={onRowClick}
+                      rowRenderer={(props) => {
+                        console.log(Number(props.columns[3].props.title.split("/")[0]));
+                        return (
+                          <DefaultRowRenderer
+                            {...props}
+                            className={totalPowerOfAllElectricalAppliances > Number(props.columns[3].props.title.split("/")[0]) ? styles.disabledRow:styles.row}
+                            disabled
+                            // className={styles.disabledRow}
+                          ></DefaultRowRenderer>
+                        );
+                      }}
+                      // onRowsRendered={RowRenderer}
                     >
                       {renderData &&
                         data[0].map((col: string, index: number) => {
