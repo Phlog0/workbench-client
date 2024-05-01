@@ -182,86 +182,86 @@ const TireNode = ({ id }) => {
     return styles.container;
   };
 
-  // useEffect(() => {
-  //   if (vvodLength >= 2) {
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "vvodError",
-  //         value: true,
-  //       })
-  //     );
-  //   }
-  //   if (vvodLength === 0) {
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "vvodError",
-  //         value: false,
-  //       })
-  //     );
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "zeroVvodWarning",
-  //         value: true,
-  //       })
-  //     );
-  //   }
-  //   if (vvodLength === 1) {
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "vvodError",
-  //         value: false,
-  //       })
-  //     );
-  //     samoPorv({
-  //       tireId: id,
-  //       prop: "vvodError",
-  //       value: false,
-  //     });
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "zeroVvodWarning",
-  //         value: false,
-  //       })
-  //     );
-  //     samoPorv({
-  //       tireId: id,
-  //       prop: "zeroVvodWarning",
-  //       value: false,
-  //     });
-  //   }
-  //   if (ukrmLength > 1) {
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "ukrmError",
-  //         value: true,
-  //       })
-  //     );
-  //     samoPorv({
-  //       tireId: id,
-  //       prop: "ukrmError",
-  //       value: true,
-  //     });
-  //   } else {
-  //     dispatch(
-  //       changeError({
-  //         id,
-  //         prop: "ukrmError",
-  //         value: false,
-  //       })
-  //     );
-  //     samoPorv({
-  //       tireId: id,
-  //       prop: "ukrmError",
-  //       value: false,
-  //     });
-  //   }
-  // }, [ukrmLength, vvodLength, id]);
+  useEffect(() => {
+    if (vvodLength >= 2) {
+      dispatch(
+        changeError({
+          id,
+          prop: "vvodError",
+          value: true,
+        })
+      );
+    }
+    if (vvodLength === 0) {
+      dispatch(
+        changeError({
+          id,
+          prop: "vvodError",
+          value: false,
+        })
+      );
+      dispatch(
+        changeError({
+          id,
+          prop: "zeroVvodWarning",
+          value: true,
+        })
+      );
+    }
+    if (vvodLength === 1) {
+      dispatch(
+        changeError({
+          id,
+          prop: "vvodError",
+          value: false,
+        })
+      );
+      samoPorv({
+        tireId: id,
+        prop: "vvodError",
+        value: false,
+      });
+      dispatch(
+        changeError({
+          id,
+          prop: "zeroVvodWarning",
+          value: false,
+        })
+      );
+      samoPorv({
+        tireId: id,
+        prop: "zeroVvodWarning",
+        value: false,
+      });
+    }
+    if (ukrmLength > 1) {
+      dispatch(
+        changeError({
+          id,
+          prop: "ukrmError",
+          value: true,
+        })
+      );
+      samoPorv({
+        tireId: id,
+        prop: "ukrmError",
+        value: true,
+      });
+    } else {
+      dispatch(
+        changeError({
+          id,
+          prop: "ukrmError",
+          value: false,
+        })
+      );
+      samoPorv({
+        tireId: id,
+        prop: "ukrmError",
+        value: false,
+      });
+    }
+  }, [ukrmLength, vvodLength, id]);
 
   const allTokDlyaVvoda = useAppSelector((state) =>
     state.flow.nodes.filter(
