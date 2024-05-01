@@ -18,13 +18,28 @@ export const projectsApi = createApi({
             query: (url) => ({
                 url
             }),
-            providesTags: (result, error, arg) => {
-                console.log('>>>>>>>RE-FETCH');
-                const parsedResult = [...JSON.parse(result).nodes, ...JSON.parse(result).edges]
-                return parsedResult
-                    ? [...parsedResult.map(({ id }) => ({ type: 'Shkafs' as const, id })), { type: 'Shkafs' }]
-                    : [{ type: 'Shkafs' }]
-            }
+            // providesTags: (result, error, arg) => {
+            //     console.log(result)
+            //     if (result !== undefined && !error) {
+            //         const parsedResult = [...result.nodes, ...result.edges]
+
+            //         // if (parsedResult.length > 0) {
+
+            //         return parsedResult
+            //             ? [...parsedResult.map(({ id }) => ({ type: 'Shkafs' as const, id })), { type: 'Shkafs' }]
+            //             : [{ type: 'Shkafs' }]
+            //     }
+
+            // },
+            transformResponse: (response: { data: Post }, meta, arg) => response,
+            // Pick out errors and prevent nested properties in a hook or selector
+            transformErrorResponse: (
+                response: { status: string | number },
+                meta,
+                arg
+            ) => response,
+
+
         }),
 
 

@@ -272,7 +272,7 @@ const MySelect: FC<IMySelectProps> = ({
           // id={tag}
           onChange={(e) => selectChange(e)}
           isInvalid={valid}
-          disabled={[1,2].includes(auth?.roleId) ? false : true}
+          disabled={false}
           
           // value={currentCellOption}
 

@@ -28,7 +28,7 @@ import {
   deleteNode,
 } from "../store/flowSlice";
 import { Button, useToast } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import {
   useUpdateSamoproverkaMutation,
   useUpdateTireWidthAddFastenerMutation,
@@ -43,7 +43,9 @@ import { shallowEqual } from "react-redux";
 const TireNode = ({ id }) => {
   const dispatch = useAppDispatch();
 
-  const { id: projectId } = useParams();
+  // const { id: projectId } = useParams();
+  let [searchParams, setSearchParams] = useSearchParams();
+  const projectId = searchParams.get("projectId");
 
   const [updateTireAddApi, resultTireAdd] =
     useUpdateTireWidthAddFastenerMutation();

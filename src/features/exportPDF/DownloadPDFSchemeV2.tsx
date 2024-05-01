@@ -61,7 +61,7 @@ const DownloadPDFSchemeV2 = ({ flowRef }) => {
       0.5,
       2
     );
-console.log(nodesBounds, transform);
+    console.log(nodesBounds, transform);
     toPng(
       document.querySelector(".react-flow__viewport"),
 
@@ -79,7 +79,7 @@ console.log(nodesBounds, transform);
   };
 
   return (
-    <Button isDisabled={auth?.roleId === 1 ? false : true} onClick={onClick}>
+    <Button isDisabled={false} onClick={onClick}>
       СКАЧАТЬ PDF V.2
     </Button>
   );

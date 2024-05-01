@@ -60,7 +60,7 @@ import renderNodesInFlow from "./helpers/renderNodesInFlow";
 import FirstOptionsModal from "./FirstOptionsModal";
 import createScheme from "./helpers/createScheme";
 import ImageNode from "../entities/ImageNode";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import {
   useAddFastenerRelationshipMutation,
   useUpdateCoordsMutation,
@@ -94,8 +94,14 @@ const nodeTypes = {
 
 const Flow: FC = () => {
   const { id } = useParams();
+  let [searchParams, setSearchParams] = useSearchParams();
+  const params = searchParams.get("projectId");
+
+  console.log(params);
   const { data, error, isLoading } = useFetchProjectQuery(
-    `getCurrentProject/${id}`
+    `findOrCreateAndGetProject?projectId=${searchParams.get(
+      "projectId"
+    )}&tCount=${searchParams.get("tCount")}`
   );
 
   // const { data, error, isLoading } = useFetchDataQuery(
@@ -112,12 +118,16 @@ const Flow: FC = () => {
     const firstRender = async () => {
       //ПОЧЕМУ РАБОТАЕТ С ASYNC????
       // console.log(JSON.parse(data));
-      console.log(JSON.parse(data));
-      dispatch(uploadNodes(JSON.parse(data).nodes));
-      dispatch(uploadEdges(JSON.parse(data).edges));
+      if (data) {
+        // dispatch(uploadNodes(JSON.parse(data).nodes));
+        // dispatch(uploadEdges(JSON.parse(data).edges));
+        dispatch(uploadNodes(data.nodes));
+        dispatch(uploadEdges(data.edges));
+      }
     };
     firstRender();
   }, [data, dispatch]);
+  console.log(data, error, isLoading);
   const currentItemId: string = useAppSelector(
     (state) => state.flow.currentNodeId
   );
@@ -147,15 +157,6 @@ const Flow: FC = () => {
   const [tireCount, setTireCount] = useState(0);
   const [totalVoltageState, setTotalVoltageState] = useState(10);
 
-  //ПРИ СОЗДАНИИ БУДЕТ РАБОТАТЬ
-  // useEffect(() => {
-  //   // if (reduxNodes.length === 0) { //🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-  //   // const nodes = createScheme(tireCount + 1, totalVoltageState);
-  //   // dispatch(uploadNodes(nodes));
-  //   dispatch(uploadNodes(testReduxState));
-  //   // }
-  // }, [tireCount, totalVoltageState]);
-  console.log(nodes, edges);
   useEffect(() => {
     const rend = async () => {
       const res = await renderNodesInFlow(reduxNodes, currentItemId);
@@ -338,7 +339,7 @@ const Flow: FC = () => {
   //       </Alert>
   //     </div>
   //   );
-
+  let content;
   return (
     <div className={styles.mainFlow}>
       {error && <h1>{error.error}</h1>}

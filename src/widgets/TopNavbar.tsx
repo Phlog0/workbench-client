@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import MySelect from "../shared/MySelect";
 import newNode from "./helpers/newNode";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import orderItems from "../store/utils/orderItems";
 
@@ -54,6 +54,8 @@ const TopNavbar: FC = () => {
   const currentGrid = useAppSelector((state) => state.flow.currentGrid.index);
   const reduxNodes = useAppSelector((state) => state.flow.nodes);
   const { id } = useParams();
+  let [searchParams, setSearchParams] = useSearchParams();
+  const params = searchParams.get("projectId");
   const currentItemParent = useAppSelector(
     (state) =>
       state.flow.nodes.find((item) => item.id === currentNodeId)?.parentNode
@@ -75,9 +77,9 @@ const TopNavbar: FC = () => {
 
   const addFigure = (): void => {
     const newShkafId = uuidv4();
-    const node = { id: newShkafId, projectId: id, ...newNode };
+    const node = { id: newShkafId, projectId: params, ...newNode };
     dispatch(addNode(node));
-    addShkaf({ projectId: id, newShkafId });
+    addShkaf({ projectId: params, newShkafId });
     dispatch(changeCurrentNode({ currentItemNode: newShkafId }));
   };
 
@@ -120,13 +122,13 @@ const TopNavbar: FC = () => {
     reader.onload = () => {
       dispatch(uploadNodes([]));
 
-      const newItems = importNodes(JSON.parse(`${reader?.result}`), id);
+      const newItems = importNodes(JSON.parse(`${reader?.result}`), params);
 
       console.log(newItems);
       dispatch(uploadNodes(newItems.nodes));
       dispatch(uploadEdges(newItems.edges));
       importPorjectApi({
-        projectId: id,
+        projectId: params,
         newItems,
       });
     };
@@ -160,7 +162,7 @@ const TopNavbar: FC = () => {
       dispatch(addNode(node));
       addStencil({
         stencilId: newStencilId,
-        projectId: id,
+        projectId: params,
         imageFile: file,
       });
       e.target.value = null;
@@ -240,7 +242,7 @@ const TopNavbar: FC = () => {
             source: sourceShkaf?.id,
             target: targetShkaf?.id,
             type: "step",
-            projectId: id,
+            projectId: params,
           })
         );
         await addEdgeApi({
@@ -248,7 +250,7 @@ const TopNavbar: FC = () => {
           source: sourceShkaf?.id,
           target: targetShkaf?.id,
           type: "step",
-          projectId: id,
+          projectId: params,
         });
       } else {
         toast({
@@ -258,7 +260,6 @@ const TopNavbar: FC = () => {
           isClosable: true,
         });
       }
-      
     } catch (error) {
       toast({
         title: `error`,

@@ -1,3 +1,4 @@
+import React from "react";
 import { FC } from "react";
 
 import "./App.scss";
@@ -34,15 +35,7 @@ import OprosnyList from "./pages/oprosnyList/OprosnyList";
 const App: FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      {/* <Route path="/" element={<OprosnyList />} /> */}
-      <Route path="/registration" element={<Registration />} />
-
-      <Route element={<RequireAuth />}>
-        <Route path="/projects" element={<MainMenu />} />
-        <Route path="project/:id" element={<Project />} />
-        <Route path="updateProfile/:id" element={<UpdateProfile />} />
-      </Route>
+      <Route path="project/" element={<Project />} />
 
       <Route path="*" element={<Missing />} />
     </Routes>

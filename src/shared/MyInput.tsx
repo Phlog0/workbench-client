@@ -140,7 +140,7 @@ const MyInput = memo(function MyInput({
   // }, [debouncedValue]);
   return (
     <FormControl
-      isDisabled={[1, 2].includes(auth?.roleId) ? false : true}
+      isDisabled={false}
       isInvalid={propValid || false}
       className={"styles.container"}
     >
