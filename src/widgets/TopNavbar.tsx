@@ -119,7 +119,7 @@ const TopNavbar: FC = () => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsText(file);
-    reader.onload = () => {
+    reader.onload = async() => {
       dispatch(uploadNodes([]));
 
       const newItems = importNodes(JSON.parse(`${reader?.result}`), params);
@@ -127,10 +127,11 @@ const TopNavbar: FC = () => {
       console.log(newItems);
       dispatch(uploadNodes(newItems.nodes));
       dispatch(uploadEdges(newItems.edges));
-      importPorjectApi({
+      console.log(params)
+      await importPorjectApi({
         projectId: params,
         newItems,
-      });
+      })
     };
     e.target.value = null;
   };
