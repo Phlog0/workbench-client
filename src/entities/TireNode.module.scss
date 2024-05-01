@@ -1,6 +1,35 @@
-.tire{
- background-color: rgb(131, 131, 131);
- height: 1.1rem;
- min-width: 350px;
+.tire {
+  background-color: rgb(131, 131, 131);
+  height: 1.1rem;
+  //  min-width: 350px;
 }
 
+.container {
+  position: relative;
+}
+
+.containerError{
+  position: relative;
+  outline: 2px solid red;
+  box-shadow: 0 0 5px red;
+}
+
+.actionBtns {
+  position: absolute;
+  top: 30px;
+  left: -40px;
+  display: flex;
+  flex-direction: column;
+  gap:0.3rem;
+
+}
+
+.warningOutline{
+  outline: 4px dashed orange;
+  position: absolute;
+  top: -1rem;
+  bottom: -1rem;
+  left: -1rem;
+  right: -1rem;
+  z-index: 99998;
+}

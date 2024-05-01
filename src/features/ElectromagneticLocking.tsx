@@ -1,4 +1,4 @@
-import React from "react";
+// @ts-nocheck
 import React, { useRef } from "react";
 import {
   Accordion,
@@ -34,19 +34,26 @@ import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../hook";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import MySelect from "../shared/MySelect";
 const ElectromagneticLocking = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  const dispatch = useDispatch();
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const isThereAnElectromagneticLocking = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.isThereAnElectromagneticLocking
   );
-  const electromagneticLocking = currentItemProperties?.electromagneticLocking;
-  const isThereAnElectromagneticLocking =
-    currentItemProperties?.isThereAnElectromagneticLocking;
+  const manufacturer = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.electromagneticLocking.manufacturer
+  );
+  const name = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.electromagneticLocking.name
+  );
+  const type = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.electromagneticLocking.type
+  );
+
+
 
   return (
     <div className={styles.container}>
@@ -72,7 +79,7 @@ const ElectromagneticLocking = ({ id }) => {
                         tag={"ElectromagneticLockingType"}
                         label={"Тип"}
                         inputType={"text"}
-                        value={electromagneticLocking.type}
+                        value={type}
                         opt1={"electromagneticLocking"}
                         opt2={"type"}
                       />
@@ -101,7 +108,7 @@ const ElectromagneticLocking = ({ id }) => {
                       tag={"ElectromagneticLockingName"}
                       label={"Наименование"}
                       inputType={"text"}
-                      value={electromagneticLocking.name}
+                      value={name}
                       opt1={"electromagneticLocking"}
                       opt2={"name"}
                     />
@@ -111,7 +118,7 @@ const ElectromagneticLocking = ({ id }) => {
                       tag={"ElectromagneticLockingManufacturer"}
                       label={"Производитель"}
                       inputType={"text"}
-                      value={electromagneticLocking.manufacturer}
+                      value={manufacturer}
                       opt1={"electromagneticLocking"}
                       opt2={"manufacturer"}
                     />

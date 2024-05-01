@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {
   FC,
   useState,
@@ -31,6 +32,7 @@ import {
   ModalFooter,
   Divider,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 // import styles from "./Switchopn.module.scss";
@@ -40,7 +42,7 @@ import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useAppSelector } from "../hook";
 import { useDispatch } from "react-redux";
-import { getCurrentId, updateopn, updateProp } from "../store/nodesSlice";
+import { getCurrentId, updateopn, updateProp } from "../store/flowSlice";
 import styles from "./properties.module.scss";
 import MySelect from "../shared/MySelect";
 
@@ -53,35 +55,46 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
 
   const btnRef = useRef(null);
 
-  const [isPending, startTransition] = useTransition();
-
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const manufacturer = useAppSelector(
+    (state) => state.flow.nodes.find((node) => node.id === id)?.opn.manufacturer
   );
-  // const test = useAppSelector(getCurrentId);
-  // console.log(test);
-  // const currentItemProperties = useAppSelector(getCurrentId);
-
-  // console.log(currentItemProperties);
-  const opn = currentItemProperties?.opn;
-
-  const dispatch = useDispatch();
+  const maximumContinuousPermissibleOperatingVoltage = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.opn
+        .maximumContinuousPermissibleOperatingVoltage
+  );
+  const name = useAppSelector(
+    (state) => state.flow.nodes.find((node) => node.id === id)?.opn.name
+  );
+  const ratedDischargeCurrent = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.opn.ratedDischargeCurrent
+  );
+  const ratedOperatingVoltage = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.opn.ratedOperatingVoltage
+  );
+  const throughput = useAppSelector(
+    (state) => state.flow.nodes.find((node) => node.id === id)?.opn.throughput
+  );
+  const type = useAppSelector(
+    (state) => state.flow.nodes.find((node) => node.id === id)?.opn.type
+  );
 
   const isThereAnOpn = useAppSelector(
-    (state) => state.nodes.nodes.find((node) => node.id === id)?.isThereAnOpn
+    (state) => state.flow.nodes.find((node) => node.id === id)?.isThereAnOpn
   );
-
-  console.log(isThereAnOpn);
 
   return (
     <div className={styles.container}>
       <MySelect
         tag={"isThereAnOpn"}
-        label={"Есть ОПН"}
+        label={"Есть ОПН (Ограничители перенапряжения)"}
         options={["Нет", "Да"]}
         itemId={id}
         current={isThereAnOpn}
       />
+
       {isThereAnOpn !== 0 && (
         <Accordion allowToggle className="">
           <AccordionItem>
@@ -97,7 +110,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                         tag={"SwitchopnType"}
                         label={"Тип"}
                         inputType={"text"}
-                        value={opn.type}
+                        value={type}
                         opt1={"opn"}
                         opt2={"type"}
                         // value={inputState}
@@ -127,7 +140,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                       tag={"SwitchopnName"}
                       label={"Наименование"}
                       inputType={"text"}
-                      value={opn.name}
+                      value={name}
                       opt1={"opn"}
                       opt2={"name"}
                       // value={inputState}
@@ -141,7 +154,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                       tag={"SwitchopnManufacturer"}
                       label={"Производитель"}
                       inputType={"text"}
-                      value={opn.manufacturer}
+                      value={manufacturer}
                       opt1={"opn"}
                       opt2={"manufacturer"}
                       // value={inputState}
@@ -154,7 +167,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                       tag={"SwitchopnRatedOperatingVoltage"}
                       label={"Номинальное рабочее напряжение"}
                       inputType={"text"}
-                      value={opn.ratedOperatingVoltage}
+                      value={ratedOperatingVoltage}
                       opt1={"opn"}
                       opt2={"ratedOperatingVoltage"}
                       // value={inputState}
@@ -167,7 +180,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                       tag={"SwitchopnThroughput"}
                       label={"Пропускная способность, А"}
                       inputType={"number"}
-                      value={opn.throughput}
+                      value={throughput}
                       opt1={"opn"}
                       opt2={"throughput"}
                       // value={inputState}
@@ -180,7 +193,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                       tag={"SwitchopnRatedDischargeCurrent"}
                       label={"Номинальный разрядный ток, А"}
                       inputType={"text"}
-                      value={opn.ratedDischargeCurrent}
+                      value={ratedDischargeCurrent}
                       opt1={"opn"}
                       opt2={"ratedDischargeCurrent"}
                       // value={inputState}
@@ -197,7 +210,7 @@ const Switchopn: FC<ISwitchopnProps> = ({ id }) => {
                         "Наибольшее длительно допустимое рабочее напряжение, кВ"
                       }
                       inputType={"text"}
-                      value={opn.maximumContinuousPermissibleOperatingVoltage}
+                      value={maximumContinuousPermissibleOperatingVoltage}
                       opt1={"opn"}
                       opt2={"maximumContinuousPermissibleOperatingVoltage"}
                       // value={inputState}

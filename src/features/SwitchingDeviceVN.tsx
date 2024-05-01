@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef } from "react";
 import {
   Accordion,
@@ -32,33 +33,47 @@ import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import { useAppSelector } from "../hook";
 
 const SwitchingDeviceVN = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const locationOfGroundingBlades = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.locationOfGroundingBlades
   );
-  const switchingDeviceVN =
-    currentItemProperties?.switchingDeviceVN;
+  const locationOfTheGroundingBladeDrive = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.locationOfTheGroundingBladeDrive
+  );
+  const manufacturer = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.manufacturer
+  );
+  const name = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.name
+  );
+  const numberOfGroundShafts = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.numberOfGroundShafts
+  );
+  const ratedBreakingCurrent = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.ratedBreakingCurrent
+  );
+  const ratedCurrent = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.ratedCurrent
+  );
+  const ratedVoltage = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.ratedVoltage
+  );
+  const switchDriveLocation = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.switchDriveLocation
+  );
+  const type = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVN.type
+  );
 
-  const AllswitchingDeviceVN = Object.values(switchingDeviceVN);
+  
 
-  const dispatch = useDispatch();
-
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
+    
 
 
   return (
@@ -77,7 +92,7 @@ const SwitchingDeviceVN = ({ id }) => {
                       tag={"switchingDeviceVNType"}
                       label={"Тип"}
                       inputType={"text"}
-                      value={switchingDeviceVN.type}
+                      value={type}
                       opt1={"switchingDeviceVN"}
                       opt2={"type"}
 
@@ -111,7 +126,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNName"}
                     label={"Наименование"}
                     inputType={"text"}
-                    value={switchingDeviceVN.name}
+                    value={name}
                     opt1={"switchingDeviceVN"}
                     opt2={"name"}
 
@@ -122,7 +137,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    value={switchingDeviceVN.manufacturer}
+                    value={manufacturer}
                     opt1={"switchingDeviceVN"}
                     opt2={"manufacturer"}
 
@@ -133,7 +148,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNRatedCurrent"}
                     label={"Номинальный ток, А"}
                     inputType={"number"}
-                    value={switchingDeviceVN.ratedCurrent}
+                    value={ratedCurrent}
                     opt1={"switchingDeviceVN"}
                     opt2={"ratedCurrent"}
 
@@ -144,7 +159,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNRatedBreakingCurrent"}
                     label={"Номинальный ток отключения, кА"}
                     inputType={"text"}
-                    value={switchingDeviceVN.ratedBreakingCurrent}
+                    value={ratedBreakingCurrent}
                     opt1={"switchingDeviceVN"}
                     opt2={"ratedBreakingCurrent"}
 
@@ -155,7 +170,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNRatedVoltage"}
                     label={"Номинальное напряжение, кВ"}
                     inputType={"text"}
-                    value={switchingDeviceVN.ratedVoltage}
+                    value={ratedVoltage}
                     opt1={"switchingDeviceVN"}
                     opt2={"ratedVoltage"}
 
@@ -166,7 +181,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNNumberOfGroundShafts"}
                     label={"Количество валов заземления"}
                     inputType={"text"}
-                    value={switchingDeviceVN.numberOfGroundShafts}
+                    value={numberOfGroundShafts}
                     opt1={"switchingDeviceVN"}
                     opt2={"numberOfGroundShafts"}
 
@@ -177,7 +192,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNLocationOfGroundingBlades"}
                     label={"Расположение ножей заземления"}
                     inputType={"text"}
-                    value={switchingDeviceVN.locationOfGroundingBlades}
+                    value={locationOfGroundingBlades}
                     opt1={"switchingDeviceVN"}
                     opt2={"locationOfGroundingBlades"}
 
@@ -188,7 +203,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNSwitchDriveLocation"}
                     label={"Расположение привода выключателя"}
                     inputType={"text"}
-                    value={switchingDeviceVN.switchDriveLocation}
+                    value={switchDriveLocation}
                     opt1={"switchingDeviceVN"}
                     opt2={"switchDriveLocation"}
 
@@ -199,7 +214,7 @@ const SwitchingDeviceVN = ({ id }) => {
                     tag={"switchingDeviceVNLocationOfTheGroundingBladeDrive"}
                     label={"Расположение привода ножей заземления"}
                     inputType={"text"}
-                    value={switchingDeviceVN.ratedVoltage}
+                    value={locationOfTheGroundingBladeDrive}
                     opt1={"switchingDeviceVN"}
                     opt2={"locationOfTheGroundingBladeDrive"}
 

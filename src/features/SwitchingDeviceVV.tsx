@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
@@ -32,7 +33,7 @@ import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import { useAppSelector } from "../hook";
 import useDebounce from "../hooks/useDebounce";
 
@@ -40,72 +41,26 @@ const SwitchingDeviceVV = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const manufacturer = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVV.manufacturer
+  );
+  const name = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVV.name
+  );
+  const ratedBreakingCurrent = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVV.ratedBreakingCurrent
+  );
+  const ratedCurrent = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVV.ratedCurrent
+  );
+  const ratedVoltage = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVV.ratedVoltage
+  );
+  const type = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.switchingDeviceVV.type
   );
 
-  const switchingDeviceVV = currentItemProperties?.switchingDeviceVV;
 
-  const [state, setState] = useState( switchingDeviceVV );
-
-  const AllswitchingDeviceVV = Object.values(switchingDeviceVV);
-
-  const dispatch = useDispatch();
-  console.log(state);
-  let isSearching = useRef(false);
-
-  // const debouncedSearchTerm = useDebounce(state, 1000);
-
-  // const inputChange = (event) => {
-  //   console.log(event.target);
-  //   setState((prev) => ({
-  //     ...prev,
-  //     [event.target.dataset.opt2]: event.target.value,
-  //   }));
-  //   if (debouncedSearchTerm) {
-  //     isSearching.current = true;
-  //     dispatch(
-  //       updateProp({
-  //         id: id,
-  //         key1: event.target.dataset.opt1,
-  //         key2: event.target.dataset.opt2,
-  //         value: event.target.value,
-  //       })
-  //     );
-  //     isSearching.current = false;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setState({ ...switchingDeviceVV });
-  // }, [id, switchingDeviceVV]);
-
-  // useEffect(() => {
-  //   if (debouncedSearchTerm) {
-  //     isSearching.current = true;
-  //     dispatch(
-  //       updateProp({
-  //         id: id,
-  //         key1: event.target.dataset.opt1,
-  //         key2: event.target.dataset.opt2,
-  //         value: event.target.value,
-  //       })
-  //     );
-  //     isSearching.current = false;
-  //   }
-  // }, [state]);
-
-  // useEffect(() => {
-  //   if (debouncedSearchTerm) {
-  //     setIsSearching(true);
-  //     inputChange();
-
-  //   }
-
-  //   return () => {
-  //     setIsSearching(false);
-  //   };
-  // }, [debouncedSearchTerm]);
 
   return (
     <>
@@ -123,11 +78,12 @@ const SwitchingDeviceVV = ({ id }) => {
                       tag={"switchingDeviceVVType"}
                       label={"Тип"}
                       inputType={"text"}
-                      value={switchingDeviceVV.type}
+                      value={type}
                       opt1={"switchingDeviceVV"}
                       opt2={"type"}
                     />
                     <Button
+                      // id="OpenMenuDots"
                       className={styles.OpenMenuDots}
                       ref={btnRef}
                       onClick={onOpen}
@@ -153,7 +109,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVName"}
                     label={"Наименование"}
                     inputType={"text"}
-                    value={switchingDeviceVV.name}
+                    value={name}
                     opt1={"switchingDeviceVV"}
                     opt2={"name"}
                     // onChange={inputChange}
@@ -164,7 +120,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    value={switchingDeviceVV.manufacturer}
+                    value={manufacturer}
                     opt1={"switchingDeviceVV"}
                     opt2={"manufacturer"}
                     // onChange={inputChange}
@@ -175,7 +131,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVRatedCurrent"}
                     label={"Номинальный ток, А"}
                     inputType={"number"}
-                    value={switchingDeviceVV.ratedCurrent}
+                    value={ratedCurrent}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedCurrent"}
                     // onChange={inputChange}
@@ -186,7 +142,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVRatedBreakingCurrent"}
                     label={"Номинальный ток отключения, кА"}
                     inputType={"text"}
-                    value={switchingDeviceVV.ratedBreakingCurrent}
+                    value={ratedBreakingCurrent}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedBreakingCurrent"}
                     // onChange={inputChange}
@@ -197,7 +153,7 @@ const SwitchingDeviceVV = ({ id }) => {
                     tag={"switchingDeviceVVRatedVoltage"}
                     label={"Номинальное напряжение, кВ"}
                     inputType={"text"}
-                    value={switchingDeviceVV.ratedVoltage}
+                    value={ratedVoltage}
                     opt1={"switchingDeviceVV"}
                     opt2={"ratedVoltage"}
                     // onChange={inputChange}

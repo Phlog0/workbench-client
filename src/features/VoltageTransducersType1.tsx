@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef } from "react";
 import {
   Accordion,
@@ -33,7 +34,7 @@ import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import { useAppSelector } from "../hook";
 
 const VoltageTransducersType1 = ({ id }) => {

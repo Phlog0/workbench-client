@@ -1,5 +1,7 @@
+import FastenerNode from "../../entities/FastenerNode";
 import ImageShkaf from "../../entities/ImageShkaf";
 import Shkaf from "../../entities/Shkaf";
+import TireNode from "../../entities/TireNode";
 import styles from "../Flow.module.scss";
 const renderNodesInFlow = (nodes, currentItemId) => {
   const renderedNodes = nodes.map((node) => {
@@ -8,7 +10,7 @@ const renderNodesInFlow = (nodes, currentItemId) => {
         ...node,
         className: node.id === currentItemId ? styles.currentNode : "",
         data: {
-          label: <Shkaf id={node.id} />,
+          label: <Shkaf id={node.id}  />,
           // label: "1",
         },
       };
@@ -18,6 +20,24 @@ const renderNodesInFlow = (nodes, currentItemId) => {
 
         data: {
           label: <ImageShkaf id={node.id} />,
+          // label: "1",
+        },
+      };
+    if (node.type === "TireNodeType")
+      return {
+        ...node,
+
+        data: {
+          label: <TireNode id={node.id} />,
+          // label: "1",
+        },
+      };
+    if (node.type === "FastenerNodeType")
+      return {
+        ...node,
+
+        data: {
+          label: <FastenerNode id={node.id} />,
           // label: "1",
         },
       };

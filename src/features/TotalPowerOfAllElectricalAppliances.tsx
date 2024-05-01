@@ -1,22 +1,27 @@
-import React from "react";
+// @ts-nocheck
+import React, { useEffect, useState } from "react";
 import MyInput from "../shared/MyInput";
 import { useAppSelector } from "../hook";
 
 const TotalPowerOfAllElectricalAppliances = ({ id }) => {
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const totalPowerOfAllElectricalAppliances = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.totalPowerOfAllElectricalAppliances
   );
+
+
 
   return (
     <MyInput
       tag={"totalPowerOfAllElectricalAppliances"}
-      label={"Суммарная мощность всех электроприборов"}
+      label={"Суммарная мощность потребителей, подключенных к линии"}
       inputType={"number"}
-      value={currentItemProperties?.totalPowerOfAllElectricalAppliances}
+      // value={state}
+      value={totalPowerOfAllElectricalAppliances}
       opt1={"totalPowerOfAllElectricalAppliances"}
       opt2={""}
       // myId={"mainScheme"}
       //   onChange={inputChange}
+      id={id}
     />
   );
 };

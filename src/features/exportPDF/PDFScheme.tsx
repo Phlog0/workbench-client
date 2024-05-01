@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import { Document, Page, Text, Image } from "@react-pdf/renderer";
 import { Html } from "react-pdf-html";
@@ -61,7 +62,8 @@ const PDFScheme = ({ image }) => {
         {/* <Html>{html1}</Html> */}
         {/* {<Html>{html}</Html>} */}
 
-        <Image src={image} />
+        {/* <Image src={image} /> */}
+        11111111111111111
       </Page>
     </Document>
   );

@@ -4,6 +4,7 @@ import React, {
   useTransition,
   useDeferredValue,
   Suspense,
+  useEffect,
 } from "react";
 import {
   Button,
@@ -38,15 +39,20 @@ import {
 import MyTable from "../shared/ModalTable/MyTable";
 import FilterItems from "../features/FilterItems";
 const MyModal = ({ isOpen, onOpen, onClose, type, query }) => {
-  query = query || "";
+  // query = query || "";
 
-  const { data, error, isLoading } = useFetchDataQuery(`${type}/${query}`);
+  const [queryState, setQueryState] = useState("");
+  useEffect(() => {
+    if (query === undefined) return;
+    setQueryState(query);
+  }, [query]);
+  const { data, error, isLoading } = useFetchDataQuery(`${type}/${queryState}`);
   // const { data, error, isLoading } = useFetchDataQuery(`${type}`);
-
   // console.log(error);
 
   return (
     <>
+      {error && error.error}
       <Modal
         size="full"
         onClose={onClose}

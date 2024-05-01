@@ -1,5 +1,5 @@
 .shkaf {
-  min-height: 700px;
+  min-height: 725px;
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -13,38 +13,67 @@
   // }
 }
 
-.top{
+.shkafOutline {
+  min-height: 725px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  outline: 3px dashed orange;
+  box-shadow: 0 0 4px orange;
+}
+
+.top {
   position: absolute;
   top: -6.1rem;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.shkafPowerSwitch{
-position: relative;
+.shkafPowerSwitch {
+  position: relative;
 }
 
-.switchingDevice{
+.switchingDevice {
   margin-top: 1.6rem;
   position: relative;
   // left:-0.47px;
   // transform: translateX(-50%);
 }
 
-.vnImage{
+.vnImage {
   margin-top: 1.6rem;
   position: relative;
   // right: 4rem;
-
 }
 
-.transformators{
+.transformators {
   // display: flex;
   // justify-content: center;
   // margin-top: 1rem;
-  margin-left: .1rem;
-  img{
+  margin-left: 0.1rem;
+  max-width: 70%;
+  img {
     display: block;
     // max-width: 100%;
   }
+}
+
+.opn {
+  // margin-top: -3.5rem;
+  left: 50%;
+  top: 49%;
+  transform: translate(-50%, 0);
+  position: absolute;
+}
+
+.tn {
+  // margin-top: -11rem;
+  position: absolute;
+  left: 50%;
+  top: 37.5%;
+  transform: translate(-50%, 0);
 }

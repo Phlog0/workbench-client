@@ -1,59 +1,59 @@
-const orderItems = (items, tire) => {
-  let i = 0;
-  tire.style.width = 60;
-  const allTires = items.filter(
-    (item) => item.id.match("group")
-    // && item.id > tire.id
+import { position } from '@chakra-ui/react';
+import { createSlice, current } from '@reduxjs/toolkit';
+const orderItems = (items, tireId) => {
+  const curTire = items.find(
+    (item) => item.id === tireId
   );
-  const orderedItems = items.map((item, index) => {
-    // console.log(item.parentNode, tire.id);
-    if (item.parentNode === tire.id) {
-      // console.log(tire);
-      tire.style.width += 300;
-      // for (let j = 0; j < allTires.length; j++){
-      //   allTires[j].position = {
-      //     ...allTires[j].position,
-      //     x: allTires[j].style.width  * (j),
-      //   };
-      // }
-      allTires[0].position = {
-        ...allTires[0].position,
-        x: 0,
-      };
-      if (allTires[1])
-        allTires[1].position = {
-          ...allTires[1].position,
-          x: allTires[0].style.width + 325,
-        };
-        if (allTires[2])
-      allTires[2].position = {
-        ...allTires[2].position,
-        x: allTires[0].style.width + allTires[1].style.width + 325 * 2,
-      };
-      if (allTires[3])
-      allTires[3].position = {
-        ...allTires[3].position,
-        x:
-          allTires[0].style.width +
-          allTires[1].style.width +
-          allTires[2].style.width +
-          325 * 3,
-      };
 
-      // for (let i = allTires.length; i > 0; i--) {
-      //   for (let j = 0; j < allTires.length - i; j++) {
-      //     allTires[i].position = {
-      //       ...allTires[i].position,
-      //       x: allTires[j].style.width + 325 * (j + 1),
-      //     };
-      //   }
-      // }
+  let newCurTire = { ...curTire, style: { height: curTire.style.height, width: 350 } }
+  let i = 0;
+  const allTires = items.filter(
+    (item) => item.type.match("TireNodeType")
+  );
+  const allShkafs = items.filter(
+    (item) => item.type.match("ElectricalPanelsNodeType")
+  ).sort((a, b) => b.indexInGroup - a.indexInGroup);
 
+  // const allShkafsInGroup = items.filter(item => item.indexInGroup !== null).sort((a, b) => a.indexInGroup - b.indexInGroup)
+
+  // const allShkafsNotInGroup = items.filter(item => item.indexInGroup === null)
+
+  // const allShkafs = [...allShkafsInGroup, ...allShkafsNotInGroup]
+  // console.log('aaaalllshkaff>>>>>>>>>>>>>', allShkafs);
+  const mainNode = items.find(
+    (item) => item.type.match("MainSchemeType")
+  );
+  const orderedAllShkafs = allShkafs.map((item, index) => {
+    if (item.parentNode === newCurTire.id) {
+      if (i !== 0) newCurTire.style.width += 300;
+      if (item.indexInGroup === null) return { ...item, position: { y: 0, x: 300 * i++ + 30 }, indexInGroup: index };
       return { ...item, position: { y: 0, x: 300 * i++ + 30 } };
     }
     return item;
   });
-  return orderedItems;
+
+  const editedTiresWidth = allTires.map(item => {
+    if (item.id === newCurTire.id) return newCurTire
+    return item
+  })
+
+  const finalTires = [editedTiresWidth[0]]
+  for (let i = 1; i < editedTiresWidth.length; i++) {
+
+    const newEditedTire = {
+      ...editedTiresWidth[i],
+      position: {
+        x: 325 + finalTires[i - 1].position.x + finalTires[i - 1].style.width,
+        y: editedTiresWidth[i - 1].position.y
+      }
+
+    }
+    finalTires.push(newEditedTire)
+
+  }
+
+
+  return [mainNode, ...finalTires, ...orderedAllShkafs];
 };
 
 export default orderItems;

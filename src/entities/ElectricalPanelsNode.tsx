@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback, useState } from "react";
 import ReactFlow, {
   Handle,
@@ -17,14 +18,15 @@ import ReactFlow, {
 } from "reactflow";
 
 import styles from "./ElectricalPanelsNode.module.scss";
-const ElectricalPanelsNode = ({ data, isConnectable }) => {
+let ElectricalPanelsNode = ({ data, isConnectable }) => {
   const onChange = useCallback((evt) => {
     // console.log(evt.target.value);
   }, []);
-// console.log(data);
   return (
     <div className={styles.customNode}>
       <div>{data.label}</div>
+      <Handle type="target" position={Position.Bottom} />
+      <Handle type="source" position={Position.Bottom} />
     </div>
   );
 };

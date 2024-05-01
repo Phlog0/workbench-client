@@ -32,7 +32,7 @@ import styles from "./properties.module.scss";
 
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import { useAppSelector } from "../hook";
 import { useDispatch } from "react-redux";
 import MySelect from "../shared/MySelect";
@@ -41,12 +41,59 @@ const VoltageTransformers = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const isThereAVoltageTransformers = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)
+        ?.isThereAVoltageTransformers
   );
-  const voltageTransformers = currentItemProperties?.voltageTransformers;
-  const isThereAVoltageTransformers =
-    currentItemProperties?.isThereAVoltageTransformers;
+  const accuracyClassOfSecondaryReturnWires = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.accuracyClassOfSecondaryReturnWires
+  );
+  const accuracyClassOfTheFirstSecondaryWinding = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.accuracyClassOfTheFirstSecondaryWinding
+  );
+  const accuracyClassOfTheSecondSecondaryWinding = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.accuracyClassOfTheSecondSecondaryWinding
+  );
+  const manufacturer = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.manufacturer
+  );
+  const name = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers?.name
+  );
+  const ratedLineVoltageAtTheTerminalsOfThePrimaryWinding = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.ratedLineVoltageAtTheTerminalsOfThePrimaryWinding
+  );
+  const ratedThreePhasePowerOfAadditionalSecondaryWinding = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.ratedThreePhasePowerOfAadditionalSecondaryWinding
+  );
+  const ratedThreePhasePowerOfTheFirstWinding = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.ratedThreePhasePowerOfTheFirstWinding
+  );
+  const ratedThreePhasePowerOfTheSecondSecondaryWinding = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers
+        ?.ratedThreePhasePowerOfTheSecondSecondaryWinding
+  );
+  const type = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.voltageTransformers?.type
+  );
 
   return (
     <div className={styles.container}>
@@ -72,7 +119,7 @@ const VoltageTransformers = ({ id }) => {
                         tag={"VoltageTransformersType"}
                         label={"Тип"}
                         inputType={"text"}
-                        value={voltageTransformers.type}
+                        value={type}
                         opt1={"voltageTransformers"}
                         opt2={"type"}
                       />
@@ -101,7 +148,7 @@ const VoltageTransformers = ({ id }) => {
                       tag={"VoltageTransformersName"}
                       label={"Наименование"}
                       inputType={"text"}
-                      value={voltageTransformers.name}
+                      value={name}
                       opt1={"voltageTransformers"}
                       opt2={"name"}
                     />
@@ -111,7 +158,7 @@ const VoltageTransformers = ({ id }) => {
                       tag={"VoltageTransformersManufacturer"}
                       label={"Производитель"}
                       inputType={"text"}
-                      value={voltageTransformers.manufacturer}
+                      value={manufacturer}
                       opt1={"voltageTransformers"}
                       opt2={"manufacturer"}
                     />
@@ -123,9 +170,7 @@ const VoltageTransformers = ({ id }) => {
                       }
                       label={"Номинальная трехфазная мощность первой обмотки"}
                       inputType={"text"}
-                      value={
-                        voltageTransformers.ratedThreePhasePowerOfTheFirstWinding
-                      }
+                      value={ratedThreePhasePowerOfTheFirstWinding}
                       opt1={"voltageTransformers"}
                       opt2={"ratedThreePhasePowerOfTheFirstWinding"}
                     />
@@ -137,9 +182,7 @@ const VoltageTransformers = ({ id }) => {
                       }
                       label={"Класс точности первой вторичной обмотки"}
                       inputType={"text"}
-                      value={
-                        voltageTransformers.accuracyClassOfTheFirstSecondaryWinding
-                      }
+                      value={accuracyClassOfTheFirstSecondaryWinding}
                       opt1={"voltageTransformers"}
                       opt2={"accuracyClassOfTheFirstSecondaryWinding"}
                     />
@@ -153,9 +196,7 @@ const VoltageTransformers = ({ id }) => {
                         "Номинальная трехфазная мощность второй вторичной обмотки"
                       }
                       inputType={"text"}
-                      value={
-                        voltageTransformers.ratedThreePhasePowerOfTheSecondSecondaryWinding
-                      }
+                      value={ratedThreePhasePowerOfTheSecondSecondaryWinding}
                       opt1={"voltageTransformers"}
                       opt2={"ratedThreePhasePowerOfTheSecondSecondaryWinding"}
                     />
@@ -167,9 +208,7 @@ const VoltageTransformers = ({ id }) => {
                       }
                       label={"Класс точности второй вторичной обмотки"}
                       inputType={"text"}
-                      value={
-                        voltageTransformers?.accuracyClassOfTheSecondSecondaryWinding
-                      }
+                      value={accuracyClassOfTheSecondSecondaryWinding}
                       opt1={"voltageTransformers"}
                       opt2={"accuracyClassOfTheSecondSecondaryWinding"}
                     />
@@ -183,9 +222,7 @@ const VoltageTransformers = ({ id }) => {
                         "Номинальная трехфазная мощность дополнительной вторичной обмотки"
                       }
                       inputType={"text"}
-                      value={
-                        voltageTransformers.ratedThreePhasePowerOfAadditionalSecondaryWinding
-                      }
+                      value={ratedThreePhasePowerOfAadditionalSecondaryWinding}
                       opt1={"voltageTransformers"}
                       opt2={"ratedThreePhasePowerOfAadditionalSecondaryWinding"}
                     />
@@ -197,9 +234,7 @@ const VoltageTransformers = ({ id }) => {
                       }
                       label={"Класс точности дополнительной вторичной обмотки"}
                       inputType={"text"}
-                      value={
-                        voltageTransformers.accuracyClassOfSecondaryReturnWires
-                      }
+                      value={accuracyClassOfSecondaryReturnWires}
                       opt1={"voltageTransformers"}
                       opt2={"accuracyClassOfSecondaryReturnWires"}
                     />
@@ -213,9 +248,7 @@ const VoltageTransformers = ({ id }) => {
                         "Номинальное линейное напряжение на выводах первичной обмотки"
                       }
                       inputType={"text"}
-                      value={
-                        voltageTransformers.ratedLineVoltageAtTheTerminalsOfThePrimaryWinding
-                      }
+                      value={ratedLineVoltageAtTheTerminalsOfThePrimaryWinding}
                       opt1={"voltageTransformers"}
                       opt2={"ratedLineVoltageAtTheTerminalsOfThePrimaryWinding"}
                     />

@@ -2,7 +2,7 @@ import React from "react";
 import { NodeResizeControl, NodeResizer } from "reactflow";
 import myScheme from "./схема 10-0.4.png";
 import styles from "./ImageNode.module.scss";
-import { updateSizeOnResizeEnd } from "../store/nodesSlice";
+import { updateSizeOnResizeEnd } from "../store/flowSlice";
 import { useDispatch } from "react-redux";
 import "./ImageNode.module.scss";
 import { IoMdResize } from "react-icons/io";

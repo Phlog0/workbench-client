@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef } from "react";
 import {
   Accordion,
@@ -33,7 +34,7 @@ import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useAppSelector } from "../hook";
 import { useDispatch } from "react-redux";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 
 const CircuitBreakers = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,22 +44,25 @@ const CircuitBreakers = ({ id }) => {
 
   const { data, error, isLoading } = useFetchDataQuery("CircuitBreakers");
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const manufacturer = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.circuitBreakers
+        .manufacturer
   );
-  const circuitBreakers = currentItemProperties?.circuitBreakers;
+  const name = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.circuitBreakers.name
+  );
+  const ratedCurrentOfFuseLink = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.circuitBreakers
+        .ratedCurrentOfFuseLink
+  );
+  const type = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.circuitBreakers.type
+  );
 
-  const allCircuitBreakers = Object.values(circuitBreakers);
-  const inputChange = (event) => {
-    dispatch(
-      updateProp({
-        id: id,
-        key1: event.target.dataset.opt1,
-        key2: event.target.dataset.opt2,
-        value: event.target.value,
-      })
-    );
-  };
   return (
     <>
       <Accordion allowToggle className="">
@@ -75,7 +79,7 @@ const CircuitBreakers = ({ id }) => {
                       tag={"circuitBreakersType"}
                       label={"Тип"}
                       inputType={"text"}
-                      value={circuitBreakers.type}
+                      value={type}
                       opt1={"circuitBreakers"}
                       opt2={"type"}
                     />
@@ -107,7 +111,7 @@ const CircuitBreakers = ({ id }) => {
                     tag={"circuitBreakersName"}
                     label={"Наименование"}
                     inputType={"text"}
-                    value={circuitBreakers.name}
+                    value={name}
                     opt1={"circuitBreakers"}
                     opt2={"name"}
                   />
@@ -117,7 +121,7 @@ const CircuitBreakers = ({ id }) => {
                     tag={"circuitBreakersManufacturer"}
                     label={"Производитель"}
                     inputType={"text"}
-                    value={circuitBreakers.manufacturer}
+                    value={manufacturer}
                     opt1={"circuitBreakers"}
                     opt2={"manufacturer"}
                   />
@@ -127,7 +131,7 @@ const CircuitBreakers = ({ id }) => {
                     tag={"circuitBreakersRatedCurrentOfFuseLink"}
                     label={"Номинальный ток плавкой вставки (А)"}
                     inputType={"number"}
-                    value={circuitBreakers.ratedCurrentOfFuseLink}
+                    value={ratedCurrentOfFuseLink}
                     opt1={"circuitBreakers"}
                     opt2={"ratedCurrentOfFuseLink"}
                   />

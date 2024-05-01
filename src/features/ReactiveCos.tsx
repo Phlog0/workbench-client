@@ -1,19 +1,21 @@
+// @ts-nocheck
 import React from "react";
 import MyInput from "../shared/MyInput";
 import { useAppSelector } from "../hook";
 import MyNumberInput from "../shared/MyNumberInput";
 const ReactiveCos = ({ id }) => {
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const reactiveCos = useAppSelector((state) =>
+    state.flow.nodes.find((node) => node.id === id)?.reactiveCos
   );
-
+console.log(reactiveCos);
   return (
     <MyNumberInput
       tag={"reactiveCos"}
-      label={"Cos p"}
+      label={"Cos φ"}
       inputType={"number"}
       max={1}
-      value={currentItemProperties?.reactiveCos}
+      min={0}
+      value={reactiveCos}
       opt1={"reactiveCos"}
       opt2={""}
     />

@@ -16,14 +16,15 @@ import React, {
   useTransition,
 } from "react";
 import { useDispatch } from "react-redux";
-import { updateOPNProp, updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import { useAppSelector } from "../hook";
-import useDebounce from "../hooks/useDebounce";
-
+import { memo } from "react";
 import debounce from "debounce";
-
+import { useUpdateCurrentPropMutation } from "../services/projectService";
+import { useDebounce } from "use-debounce";
+import useAuth from "../hooks/useAuth";
 // import styles from "./MyInputModal.module.scss";
-const MyInput = ({
+const MyInput = memo(function MyInput({
   tag,
   label,
   inputType,
@@ -33,137 +34,136 @@ const MyInput = ({
   opt2,
   myId,
   max,
-}) => {
+  propValid,
+  id,
+}) {
   const dispatch = useDispatch();
 
-  const currentId = useAppSelector((state) => state.nodes.currentNode.id);
+  // console.log(`>>>>>>>>>>>>>>>>>>>>${opt1}-${opt2}<<<<<<<<<<<<<<<<<<<<<<<<<`);
 
-  const redValue = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === currentId)
+  const currentId = useAppSelector((state) => state.flow.currentNodeId);
+
+  const reactiveCos = useAppSelector(
+    (state) => state.flow.nodes.find((item) => item.id)?.reactiveCos
   );
-  const [localInputState, setLocalInputState] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+
+  const [state, setState] = useState("");
+  const [inputValue, setInputValue] = React.useState();
+  const [debouncedValue] = useDebounce(inputValue, 1000);
+
+  const { auth } = useAuth();
+
+  // const redValue = useAppSelector((state) =>
+  //   state.flow.nodes.find((node) => node.id === currentId)
+  // );
+
   // const debouncedSearchTerm = useDebounce(localInputState, 500);
   // useEffect(() => {
   //   setLocalInputState(redValue[opt1][opt2]);
   // }, [currentId]);
 
+  const totalVoltageForAll = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((item) => item.type === "MainSchemeType")
+        ?.totalVoltageForAll
+  );
+
+  const [updateCurrentPropApi, resultUpdateCurrentProp] =
+    useUpdateCurrentPropMutation();
+
+  const inputRef = useRef(null);
   useEffect(() => {
-    inputValue.current.value = value;
+    inputRef.current.value = value;
   }, [currentId, value]);
 
-  const inputValue = useRef(null);
-  const handleChange = (e) => {
-    console.log("debounce inside");
-    dispatch(
-      updateProp({
+  // const [state, setState] = useState(value);
+
+  // useEffect(() => {
+  //   console.log("id changed");
+  //   setInputValue(value);
+  // }, [currentId, value]);
+
+  const handleChange = async (e) => {
+    const updatedProp = {
+      id: myId || currentId,
+      key1: opt1,
+      key2: opt2,
+      // value: e.target.value,
+      value:
+        inputType === "number"
+          ? +inputRef?.current?.value
+          : inputRef?.current?.value,
+    };
+
+    dispatch(updateProp(updatedProp));
+    await updateCurrentPropApi(updatedProp);
+
+    if (opt1 === "totalPowerOfAllElectricalAppliances") {
+      console.log(+inputRef?.current?.value);
+      const updatedCurrent = {
         id: myId || currentId,
-        key1: opt1,
-        key2: opt2,
-        value: e.target.value,
-      })
-    );
+        key1: "currentOL",
+        key2: "",
+        // value: e.target.value,
+        value: +inputRef?.current?.value / totalVoltageForAll / 3 ** (1 / 2),
+      };
+      dispatch(updateProp(updatedCurrent));
+      await updateCurrentPropApi({
+        id: myId || currentId,
+        key1: "currentOL",
+        key2: "",
+        // value: e.target.value,
+        value: +inputRef?.current?.value / totalVoltageForAll / 3 ** (1 / 2),
+      });
+    }
   };
 
   const debouncedHandleChange = debounce(handleChange, 1000);
 
-  // useEffect(() => {
-  //  debounce(handleChange, 500);
-  // console.log("debuncing");
-  // console.log(answer);
-  // }, [localInputState]);
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setInputValue(value);
+  };
 
   // useEffect(() => {
-  //   if (debouncedSearchTerm) {
-  //     setIsSearching((prev) => true);
-  //     dispatch(
-  //       updateProp({
-  //         id: currentId,
-  //         key1: opt1,
-  //         key2: opt2,
-  //         value: localInputState,
-  //       })
-  //     );
-  //     // setIsSearching((prev) => false);
-  //   }
-  // }, [debouncedSearchTerm, localInputState]);
+  //   const updatedProp = {
+  //     id: myId || currentId,
+  //     key1: opt1,
+  //     key2: opt2,
+  //     // value: e.target.value,
+  //     value: debouncedValue,
+  //   };
+  //   console.log(debouncedValue);
+  //   dispatch(updateProp(updatedProp));
 
-  // const handleChange = (event) => {
-  //   setLocalInputState(event.target.value);
-
-  // ==========================🕐🕐🕐ТАЙМЕР ========================== (если быстро переключить то может забаговать)
-
-  // setTimeout(() => {
-  //   console.log("new timeout");
-  //   console.log(event.target.dataset.opt1, event.target.dataset.opt2);
-  //   dispatch(
-  //     updateProp({
-  //       id: currentId,
-  //       key1: event.target.dataset.opt1,
-  //       key2: event.target.dataset.opt2,
-  //       value: event.target.value,
-  //     })
-  //   );
-  // }, 1000);
-
-  // ========================== ПРОСТО МЕДЛЕННО ==========================
-
-  // dispatch(
-  //   updateProp({
-  //     id: currentId,
-  //     key1: event.target.dataset.opt1,
-  //     key2: event.target.dataset.opt2,
-  //     value: event.target.value,
-  //   })
-  // );
-
-  // };
-
-  // useEffect(() => {
-  //   setLocalInputState(value);
-  // }, [value]);
-
-  // useEffect(() => {
-  //   if (localInputState !== deferredInput)
-  //     dispatch(
-  //       updateProp({
-  //         id: currentId,
-  //         key1: opt1,
-  //         key2: opt2,
-  //         value: deferredInput,
-  //       })
-  //     );
-  // }, [deferredInput]);
-
+  //   updateCurrentPropApi(updatedProp);
+  // }, [debouncedValue]);
   return (
-    <FormControl className={"styles.container"}>
-      <Box position={"relative"}>
-        <label htmlFor={tag}>{label}</label>
-      </Box>
-      {inputValue !== null && (
-        <Input
-          type={inputType}
-          name={tag}
-          id={tag}
-          // value={localInputState}
-          // ПРЯМО С РЕДАКСА
-          // data-opt1={redValue[opt1]}
-          // data-opt2={redValue[opt2]}
-          data-opt1={opt1}
-          data-opt2={opt2}
-          // ref={inputValue}
-          // onChange={(e) => (inputValue.current.value = e.target.value)}
-          // onChange={onChange}
-          // onChange={handleChange}
-          ref={inputValue}
-          // onChange={(e) => setLocalInputState(e.target.value)}
-          onChange={debouncedHandleChange}
-          max={max || null}
-        />
-      )}
+    <FormControl
+      isDisabled={[1, 2].includes(auth?.roleId) ? false : true}
+      isInvalid={propValid || false}
+      className={"styles.container"}
+    >
+      {/* <FormLabel position={"relative"}> */}
+      <FormLabel position={"relative"}>
+        {/* <label htmlFor={tag}>{label}</label> */}
+        {label}
+      </FormLabel>
+
+      <Input
+        ref={inputRef}
+        type={inputType}
+        name={tag}
+        data-opt1={opt1}
+        data-opt2={opt2}
+        // value={inputValue}
+        // onChange={handleInputChange}
+        onChange={debouncedHandleChange}
+      />
+
       <Divider marginBlock={"1rem"} />
     </FormControl>
   );
-};
+});
 
 export default MyInput;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef } from "react";
 import {
   Accordion,
@@ -33,7 +34,7 @@ import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useAppSelector } from "../hook";
 import { useDispatch } from "react-redux";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import MySelect from "../shared/MySelect";
 
 const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
@@ -42,13 +43,26 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
 
   const dispatch = useDispatch();
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const isThereAMicroprocessorProtectionDeviceAndAutomation = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)
+        ?.isThereAMicroprocessorProtectionDeviceAndAutomation
   );
-  const microprocessorProtectionDeviceAndAutomation =
-    currentItemProperties?.microprocessorProtectionDeviceAndAutomation;
-  const isThereAMicroprocessorProtectionDeviceAndAutomation =
-    currentItemProperties?.isThereAMicroprocessorProtectionDeviceAndAutomation;
+  const manufacturer = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)
+        ?.microprocessorProtectionDeviceAndAutomation.manufacturer
+  );
+  const name = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)
+        ?.microprocessorProtectionDeviceAndAutomation.name
+  );
+  const type = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)
+        ?.microprocessorProtectionDeviceAndAutomation.type
+  );
 
   return (
     <div className={styles.container}>
@@ -76,7 +90,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                         tag={"MicroprocessorProtectionDeviceAndAutomationType"}
                         label={"Тип"}
                         inputType={"text"}
-                        value={microprocessorProtectionDeviceAndAutomation.type}
+                        value={type}
                         opt1={"microprocessorProtectionDeviceAndAutomation"}
                         opt2={"type"}
                       />
@@ -106,7 +120,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                       tag={"MicroprocessorProtectionDeviceAndAutomationName"}
                       label={"Наименование"}
                       inputType={"text"}
-                      value={microprocessorProtectionDeviceAndAutomation.name}
+                      value={name}
                       opt1={"microprocessorProtectionDeviceAndAutomation"}
                       opt2={"name"}
                     />
@@ -118,9 +132,7 @@ const MicroprocessorProtectionDeviceAndAutomation = ({ id }) => {
                       }
                       label={"Производитель"}
                       inputType={"text"}
-                      value={
-                        microprocessorProtectionDeviceAndAutomation.manufacturer
-                      }
+                      value={manufacturer}
                       opt1={"microprocessorProtectionDeviceAndAutomation"}
                       opt2={"manufacturer"}
                     />

@@ -131,8 +131,8 @@ function DownloadButton({ myRef }) {
       console.log(flow);
       toPng(flow, {
         backgroundColor: "#fff",
-        width: imageWidth,
-        height: imageHeight,
+        width: imageWidth+1000,
+        height: imageHeight+1000,
         style: {
           width: `${imageWidth}`,
           height: `${imageHeight}`,

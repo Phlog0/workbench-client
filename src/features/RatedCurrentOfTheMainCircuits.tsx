@@ -1,51 +1,85 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import MySelect from "../shared/MySelect";
 import { useAppSelector } from "../hook";
 import { useFetchDataQuery } from "../services/dictService";
 import TotalPowerOfAllElectricalAppliances from "./TotalPowerOfAllElectricalAppliances";
+import { shallowEqual } from "react-redux";
 
 const RatedCurrentOfTheMainCircuits = ({ id }) => {
-  const currentItemId: string = useAppSelector(
-    (state) => state.nodes.currentNode.id
-  );
+  const currentItemId = useAppSelector((state) => state.flow.currentNodeId);
   const totalVoltageForAll = useAppSelector(
+    //10 kV
     (state) =>
-      state.nodes.nodes.find((item) => item.id === "mainScheme")
+      state.flow.nodes.find((item) => item.id === "mainScheme")
         ?.totalVoltageForAll
   );
   const reactiveCos = useAppSelector(
-    (state) => state.nodes.nodes.find((item) => item.id === id)?.reactiveCos
+    //0 - 0.99
+    (state) => state.flow.nodes.find((item) => item.id === id)?.reactiveCos
   );
   const totalPowerOfAllElectricalAppliances = useAppSelector(
+    //4000 Вт
     (state) =>
-      state.nodes.nodes.find((item) => item.id === id)
+      state.flow.nodes.find((item) => item.id === id)
         ?.totalPowerOfAllElectricalAppliances
   );
 
-  const [formula, setFormula] = useState(0);
+  const currentCellOption = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((item) => item.id === id)?.currentCellOption
+  );
 
-  useEffect(() => {
-    console.log(
-      reactiveCos,
-      totalPowerOfAllElectricalAppliances,
-      totalVoltageForAll
-    );
-    setFormula(
-      totalPowerOfAllElectricalAppliances /
-        (totalVoltageForAll * (3 ** (1 / 2)) * reactiveCos)
-    );
-  }, [totalPowerOfAllElectricalAppliances, reactiveCos]);
+  // const [formula, setFormula] = useState(0);
 
-  console.log(formula);
+  // useEffect(() => {
+
+  //   setFormula(
+  //     totalPowerOfAllElectricalAppliances /
+  //       (totalVoltageForAll * (3 ** (1 / 2)) * reactiveCos)
+  //   );
+  // }, [totalPowerOfAllElectricalAppliances, reactiveCos]);
+
   const { data, error, isLoading } = useFetchDataQuery(
     "RatedCurrentOfTheMainCircuits"
   );
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
+  const ratedCurrentOfTheMainCircuits = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)
+        ?.ratedCurrentOfTheMainCircuits
   );
-  const ratedCurrentOfTheMainCircuits =
-    currentItemProperties?.ratedCurrentOfTheMainCircuits;
+
+  const currentProps = useAppSelector(
+    (state) => state.flow.nodes.find((item) => item.id === currentItemId),
+    shallowEqual
+  );
+  const curFastener = useAppSelector((state) =>
+    state.flow.nodes.find(
+      (item) =>
+        item.type === "FastenerNodeType" && currentProps?.parentNode === item.id
+    )
+  );
+  const tireCurrentOLAll = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((item) => item.id === curFastener?.parentNode)
+        ?.tireCurrentOLAll
+  );
+  const [tokVvod, setTokVvod] = useState();
+
+  const [disOpts, setDisOpts] = useState([]);
+  //
+  // const disOpts = [];
+  useEffect(() => {
+    setDisOpts([])
+    const gostTok = [630, 1000, 1250, 1600, 2000, 2500, 3150, 4000];
+
+    gostTok.map((item, index) => {
+      if (item < tireCurrentOLAll) setDisOpts((prev) => [...prev, index]);
+      // disOpts.push(index);
+    });
+    gostTok;
+  }, [tireCurrentOLAll, currentItemId]);
 
   return (
     <>
@@ -55,6 +89,9 @@ const RatedCurrentOfTheMainCircuits = ({ id }) => {
         options={data}
         itemId={currentItemId}
         current={ratedCurrentOfTheMainCircuits}
+        disabledOpts={
+          currentCellOption !== 5 ? [0, 1, 2, 3, 4, 5, 6, 7] : [...disOpts]
+        }
       />
     </>
   );

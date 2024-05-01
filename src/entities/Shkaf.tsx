@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC, useEffect, useState } from "react";
 import styles from "./Skkaf.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
@@ -37,7 +38,12 @@ import vykl8 from "../SvgModels/vykl_svg/AnyConv.com__vykl_8.svg";
 import vykl9 from "../SvgModels/vykl_svg/AnyConv.com__vykl_9.svg";
 import vykl10 from "../SvgModels/vykl_svg/AnyConv.com__vykl_10.svg";
 import vykl11 from "../SvgModels/vykl_svg/AnyConv.com__vykl_11.svg";
-
+import OPN from "../SvgModels/OPN.svg";
+import TN from "../SvgModels/TN.svg";
+import TSN from "../SvgModels/TSN 1.svg";
+import UKRM from "../SvgModels/UKRM 1.svg";
+import tail_2 from "../SvgModels/tail_2.svg";
+import { shallowEqual } from "react-redux";
 const currentTypeOfSwitchingDeviceImgs = [
   NO_TRANS,
   TT_2_A_C,
@@ -48,27 +54,21 @@ const currentTypeOfSwitchingDeviceImgs = [
   TT_4_A_B_C,
 ];
 
+const currentCellOptionImgs = { 0: TSN, 7: UKRM };
+
 const vyklVariants = [vyklNo, vykl3, vykl4, vykl2];
-// select,select,select, select, select-string, string, string
 const vyklVNVariantsImgs = [vykl4, vykl5, vykl6];
 
-// const powerSwitchImgs = [str_nold, str_2];
-
 const Shkaf: FC<IShkafProps> = ({ id }) => {
-  // const vyklVariants = {
-  //   vykl4: "Со стороны шарнирных контактов (предохранителей)",
-  //   vykl5: "Со стороны разъемных контактов",
-  //   vykl6: "С двух сторон"
-  // }
-
   const vyklVNVariants = [
     "Со стороны шарнирных контактов (предохранителей)",
     "Со стороны разъемных контактов",
     "С двух сторон",
   ];
 
-  const item = useAppSelector((state) => state.nodes.nodes).find(
-    (item) => item.id === id
+  const item = useAppSelector((state) => state.flow.nodes).find(
+    (item) => item.id === id,
+    shallowEqual
   );
 
   const [
@@ -82,11 +82,15 @@ const Shkaf: FC<IShkafProps> = ({ id }) => {
   const currentTransformatorOption = item?.currentTransformatorOption;
 
   const currentTypeOfSwitchingDevice = item?.currentTypeOfSwitchingDevice; // ВН-ВР-Р-НЕТ
+  const currentCellOption = item?.currentCellOption;
   // const locationOfGroundingBladesValue =
   // item?.switchingDeviceVN?.locationOfGroundingBlades ||
   // "Со стороны шарнирных контактов (предохранителей)"; //ВН-Варианты
   let locationOfGroundingBladesValue =
     item?.switchingDeviceVN?.locationOfGroundingBlades || null; //ВН-Варианты
+
+  const isThereAnOpn = item?.isThereAnOpn; // ЕСТЬ ЛИ ОПН
+  const isThereAVoltageTransformers = item?.isThereAVoltageTransformers; // ЕСТЬ ЛИ ОПН
 
   const checkVN = () => {
     return Math.abs(
@@ -100,21 +104,22 @@ const Shkaf: FC<IShkafProps> = ({ id }) => {
     setCurrentTypeOfSwitchingDevicePictureVN(checkVN);
   }, [locationOfGroundingBladesValue]);
 
-  // console.log(currentTypeOfSwitchingDevicePictureVN);
-
-  // if (currentTypeOfSwitchingDevice === 2) {
-  //   const locationOfGroundingBladesValue = item?.switchingDeviceVN?.locationOfGroundingBlades || "Со стороны шарнирных контактов (предохранителей)";
-
-  //   console.log(locationOfGroundingBladesValue)
-  //   setCurrentTypeOfSwitchingDevicePictureVN(0)
-
-  // }
-
-  // console.log('SHKAF.TSX RENDER>>>');
-  // console.log(currentTypeOfSwitchingDevicePictureVN)
+  const microprocessorProtectionDeviceAndAutomation =
+    item?.microprocessorProtectionDeviceAndAutomation;
+  const outline = () => {
+    if (
+      currentTypeOfSwitchingDevice === 1 &&
+      (currentTransformatorOption === 0 ||
+        microprocessorProtectionDeviceAndAutomation?.type === "")
+    ) {
+      return styles.shkafOutline;
+    } else {
+      return styles.shkaf;
+    }
+  };
 
   return (
-    <div className={styles.shkaf}>
+    <div className={outline()}>
       <img src={horiz} alt="" className={styles.top} />
 
       {/*========================= ВЫКЛЮЧАТЕЛИ (ВН,ВР...) ========================= */}
@@ -146,6 +151,16 @@ const Shkaf: FC<IShkafProps> = ({ id }) => {
           }
           alt="#"
         />
+        {isThereAnOpn !== 0 && <img src={OPN} alt="" className={styles.opn} />}
+        {isThereAVoltageTransformers !== 0 && (
+          <img src={TN} alt="" className={styles.tn} />
+        )}
+        {[0, 7].includes(currentCellOption) ? (
+          <img src={currentCellOptionImgs[currentCellOption]} alt="#" />
+        ) : (
+          <img src={NO_TRANS} alt="#" />
+        )}
+        {![0, 7].includes(currentCellOption) && <img src={tail_2} alt="#" />}
       </div>
     </div>
   );

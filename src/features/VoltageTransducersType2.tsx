@@ -33,7 +33,7 @@ import styles from "./properties.module.scss";
 import MyInputModal from "../shared/MyInputModal";
 import { useFetchDataQuery } from "../services/dictService";
 import { useDispatch } from "react-redux";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import { useAppSelector } from "../hook";
 
 const VoltageTransducersType2 = ({ id }) => {

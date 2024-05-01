@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from "react";
+import { FC } from "react";
 
 import "./App.scss";
 
@@ -20,23 +20,32 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { Route, Routes } from "react-router-dom";
+import Project from "./pages/Project";
+import MainMenu from "./pages/MainMenu";
+import RequireAuth from "./pages/RequireAuth";
+import Login from "./pages/Login";
+import Missing from "./pages/Missing";
+import AuthProvider from "./context/AuthProvider";
+import UpdateProfile from "./pages/UpdateProfile";
+import Registration from "./pages/Registration";
+import OprosnyList from "./pages/oprosnyList/OprosnyList";
+
 const App: FC = () => {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // useEffect(() => {
-  //   onOpen();
-  // }, []);
-
   return (
-    <div className="app">
-      <TopNavbar />
+    <Routes>
+      <Route path="/" element={<Login />} />
+      {/* <Route path="/" element={<OprosnyList />} /> */}
+      <Route path="/registration" element={<Registration />} />
 
-      <ReactFlowProvider>
-        <Flow />
-      </ReactFlowProvider>
+      <Route element={<RequireAuth />}>
+        <Route path="/projects" element={<MainMenu />} />
+        <Route path="project/:id" element={<Project />} />
+        <Route path="updateProfile/:id" element={<UpdateProfile />} />
+      </Route>
 
-      <RightSidebar />
-    </div>
+      <Route path="*" element={<Missing />} />
+    </Routes>
   );
 };
 

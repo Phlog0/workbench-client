@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import MySelect from "../shared/MySelect";
 import { useAppSelector } from "../hook";
@@ -10,7 +11,7 @@ const TypeOfCell = ({ id }) => {
 
   const currentCellOption = useAppSelector(
     (state) =>
-      state.nodes.nodes.find((node) => node.id === id)?.currentCellOption
+      state.flow.nodes.find((node) => node.id === id)?.currentCellOption
   );
   return (
     <>

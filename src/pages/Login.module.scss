@@ -1,0 +1,33 @@
+.header {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  background-color: #1c385e;
+}
+
+.link {
+  text-decoration: underline;
+}
+
+.formContainer {
+  max-width: 81rem;
+  margin-inline: auto;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.loginBtn {
+  cursor: pointer;
+  background-color: #fff;
+  color: #1c385e;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: #1c385e;
+    color: #fff;
+  }
+}
+

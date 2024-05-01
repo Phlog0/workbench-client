@@ -1,0 +1,23 @@
+.container{
+    position: relative;
+    margin-left: 3rem;
+}
+
+
+.btn{
+    padding: 0.5rem;
+}
+
+.errorsCount{
+    position: absolute;
+    top: 0.3rem;
+    right:0.3rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}

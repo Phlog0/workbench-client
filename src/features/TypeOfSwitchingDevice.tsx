@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import MySelect from "../shared/MySelect";
 import { useAppSelector } from "../hook";
@@ -10,25 +11,24 @@ import { current } from "@reduxjs/toolkit";
 import MicroprocessorProtectionDeviceAndAutomation from "./MicroprocessorProtectionDeviceAndAutomation";
 import CircuitBreakers from "./CircuitBreakers";
 
-const TypeOfSwitchingDevice = ({ id }) => {
-  const { data, error, isLoading } = useFetchDataQuery("typeOfSwitchingDevice");
+const TypeOfSwitchingDevice = ({ id, data }) => {
+  // const { data, error, isLoading } = useFetchDataQuery("typeOfSwitchingDevice");
 
   const currentTypeOfSwitchingDevice = useAppSelector(
     (state) =>
-      state.nodes.nodes.find((node) => node.id === id)
+      state.flow.nodes.find((node) => node.id === id)
         ?.currentTypeOfSwitchingDevice
   );
-
   const thereIsACircuitBreakers = useAppSelector(
     (state) =>
-      state.nodes.nodes.find((node) => node.id === id)?.thereIsACircuitBreakers
+      state.flow.nodes.find((node) => node.id === id)?.thereIsACircuitBreakers
   );
 
   // console.log(thereIsAFuseCurrent)
   // console.log(currentTypeOfSwitchingDevice);
   const currentCellOption = useAppSelector(
     (state) =>
-      state.nodes.nodes.find((node) => node.id === id)?.currentCellOption
+      state.flow.nodes.find((node) => node.id === id)?.currentCellOption
   );
 
   const [disabledOptions, setDisabledOptions] = useState([]);
@@ -45,44 +45,40 @@ const TypeOfSwitchingDevice = ({ id }) => {
         setDisabledOptions([]);
         break;
     }
-  }, [currentCellOption]);
+  }, [currentCellOption, id]);
   return (
     <div>
-      {isLoading ? (
-        <MySpinner />
-      ) : (
-        <>
-          <MySelect
-            tag={"currentTypeOfSwitchingDevice"}
-            label={"Тип коммутационного аппарата"}
-            options={data}
-            itemId={id}
-            current={currentTypeOfSwitchingDevice}
-            disabledOpts={disabledOptions}
-          />
-          {currentTypeOfSwitchingDevice === 1 && (
-            <>
-              <SwitchingDeviceVV id={id} />
-              <MicroprocessorProtectionDeviceAndAutomation id={id} />
-            </>
-          )}
-          {currentTypeOfSwitchingDevice === 2 && (
-            <>
-              <SwitchingDeviceVN id={id} />
-              <MySelect
-                tag={"thereIsACircuitBreakers"}
-                label={"есть предохранитель"}
-                options={["Нет", "Да"]}
-                itemId={id}
-                current={thereIsACircuitBreakers}
-              />
-            </>
-          )}
-          {thereIsACircuitBreakers === 1 ? <CircuitBreakers id={id} /> : null}
+      <>
+        <MySelect
+          tag={"currentTypeOfSwitchingDevice"}
+          label={"Тип коммутационного аппарата"}
+          options={data}
+          itemId={id}
+          current={currentTypeOfSwitchingDevice}
+          disabledOpts={disabledOptions}
+        />
+        {currentTypeOfSwitchingDevice === 1 && (
+          <>
+            <SwitchingDeviceVV id={id} />
+            <MicroprocessorProtectionDeviceAndAutomation id={id} />
+          </>
+        )}
+        {currentTypeOfSwitchingDevice === 2 && (
+          <>
+            <SwitchingDeviceVN id={id} />
+            <MySelect
+              tag={"thereIsACircuitBreakers"}
+              label={"есть предохранитель"}
+              options={["Нет", "Да"]}
+              itemId={id}
+              current={thereIsACircuitBreakers}
+            />
+          </>
+        )}
+        {thereIsACircuitBreakers === 1 ? <CircuitBreakers id={id} /> : null}
 
-          {currentTypeOfSwitchingDevice === 3 && <SwitchingDeviceR id={id} />}
-        </>
-      )}
+        {currentTypeOfSwitchingDevice === 3 && <SwitchingDeviceR id={id} />}
+      </>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef } from "react";
 import styles from "./properties.module.scss";
 import {
@@ -33,19 +34,39 @@ import MyInputModal from "../shared/MyInputModal";
 import { useAppSelector } from "../hook";
 import { useDispatch } from "react-redux";
 import { useFetchDataQuery } from "../services/dictService";
-import { updateProp } from "../store/nodesSlice";
+import { updateProp } from "../store/flowSlice";
 import MySelect from "../shared/MySelect";
+import newNode from "../widgets/helpers/newNode";
 const ElectricityMeter = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const currentItemProperties = useAppSelector((state) =>
-    state.nodes.nodes.find((node) => node.id === id)
-  );
-  const electricityMeter = currentItemProperties?.electricityMeter;
 
-  const isThereAElectricityMeter =
-    currentItemProperties?.isThereAElectricityMeter;
+
+
+  const isThereAElectricityMeter =useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.isThereAElectricityMeter
+  );
+
+  const type = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.electricityMeter.type
+  );
+  const name = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.electricityMeter.name
+  );
+  const manufacturer = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.electricityMeter.manufacturer
+  );
+  const accuracyClass = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((node) => node.id === id)?.electricityMeter.accuracyClass
+  );
+
+ 
 
   return (
     <div className={styles.container}>
@@ -73,7 +94,7 @@ const ElectricityMeter = ({ id }) => {
                         inputType={"text"}
                         opt1={"electricityMeter"}
                         opt2={"type"}
-                        value={electricityMeter?.type}
+                        value={type}
                       />
                       <Button
                         className={styles.OpenMenuDots}
@@ -102,7 +123,7 @@ const ElectricityMeter = ({ id }) => {
                       inputType={"text"}
                       opt1={"electricityMeter"}
                       opt2={"name"}
-                      value={electricityMeter?.name}
+                      value={name}
                     />
                   </div>
                   <div className={styles.inputContainer}>
@@ -112,7 +133,7 @@ const ElectricityMeter = ({ id }) => {
                       inputType={"text"}
                       opt1={"electricityMeter"}
                       opt2={"manufacturer"}
-                      value={electricityMeter?.manufacturer}
+                      value={manufacturer}
                     />
                   </div>
                   <div className={styles.inputContainer}>
@@ -122,7 +143,7 @@ const ElectricityMeter = ({ id }) => {
                       inputType={"text"}
                       opt1={"electricityMeter"}
                       opt2={"accuracyClass"}
-                      value={electricityMeter?.accuracyClass}
+                      value={accuracyClass}
                     />
                   </div>
                 </AccordionPanel>

@@ -7,14 +7,14 @@
 }
 
 body{
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 .app{
  display: grid;
  grid-template-columns: 1fr 35svw;
  grid-template-rows: 10svh 90svh;
- overflow-y: hidden ;
+//  overflow-y: hidden ;
   
  /* grid-template-rows: 10vh 90vh; */
 

@@ -1,13 +1,13 @@
 import React, { FC, useCallback, useState, useEffect, useRef } from "react";
 import styles from "./Flow.module.scss";
 import { useAppDispatch, useAppSelector } from "../hook";
-import { updateProperties } from "../store/rightSidebarSlice";
-import RightSidebar from "./RightSidebar";
 import {
   changeCurrentNode,
+  updateFastenerShkaf,
   updateGroup,
+  uploadEdges,
   uploadNodes,
-} from "../store/nodesSlice";
+} from "../store/flowSlice";
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -26,9 +26,9 @@ import ReactFlow, {
 } from "reactflow";
 
 import "reactflow/dist/style.css";
-import Shkaf from "../entities/Shkaf";
 
-import { updateCoordinats } from "../store/nodesSlice";
+import Shkaf from "../entities/Shkaf";
+import { updateCoordinats } from "../store/flowSlice";
 import ElectricalPanelsNode from "../entities/ElectricalPanelsNode";
 import TireNode from "../entities/TireNode";
 import axios from "axios";
@@ -37,6 +37,7 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Box,
   Button,
   Modal,
   ModalBody,
@@ -59,160 +60,258 @@ import renderNodesInFlow from "./helpers/renderNodesInFlow";
 import FirstOptionsModal from "./FirstOptionsModal";
 import createScheme from "./helpers/createScheme";
 import ImageNode from "../entities/ImageNode";
-import ContextMenu from "./ContextMenu";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  useAddFastenerRelationshipMutation,
+  useUpdateCoordsMutation,
+  useUpdateGroupMutation,
+} from "../services/projectService";
+import orderItems from "../store/utils/orderItems";
+import orderItemsForApi from "../store/utils/orderItemsForApi";
+import debounce from "debounce";
+import { useFetchProjectQuery } from "../services/projectService";
+import FastenerNode from "../entities/FastenerNode";
+import ImageContextMenu from "./ImageContextMenu";
+import ShkafContextMenu from "./ShkafContextMenu";
+import FileSaver from "file-saver";
+import { shallowEqual } from "react-redux";
+import AlertButton from "./samoproverki/AlertButton";
+import jsPDF from "jspdf";
+import DownloadPDFSchemeV2 from "../features/exportPDF/DownloadPDFSchemeV2";
+import DownloadQuestionnaireTable from "../features/exportPDF/DownloadQuestionnaireTable";
+import WarningBtn from "./samoproverki/WarningBtn";
+import EdgeContextMenu from "./edgeContextMenu/EdgeContextMenu";
 
 const nodeTypes = {
   ElectricalPanelsNodeType: ElectricalPanelsNode,
   TireNodeType: TireNode,
   MainSchemeType: MainSchemeNode,
   ImageNodeType: ImageNode,
+  FastenerNodeType: FastenerNode,
 };
 
 // =====================НАЧАЛО КОМПОНЕНТА=========================
 
 const Flow: FC = () => {
-  // const { data, error, isLoading } = useFetchDataQuery(`myapp`);
-  const dispatch = useAppDispatch();
-
-  const btnRef = useRef(null);
-  const [menu, setMenu] = useState(null);
-  // useEffect(() => {
-  //   const firstRender = async () => {
-  //     //ПОЧЕМУ РАБОТАЕТ С ASYNC????
-  //     dispatch(uploadNodes(JSON.parse(data)));
-  //   };
-  //   firstRender();
-  // }, [data, dispatch]);
-  const currentItemId: string = useAppSelector(
-    (state) => state.nodes.currentNode.id
+  const { id } = useParams();
+  const { data, error, isLoading } = useFetchProjectQuery(
+    `getCurrentProject/${id}`
   );
-  let reduxNodes = useAppSelector((state) => state.nodes.nodes);
-  // let renderNodes;
-  const [renderNodes, setRenderNodes] = useState([]);
 
-  // let renderNodes = reduxNodes.map((node) => {
-  //   if (node.type === "ElectricalPanelsNodeType")
-  //     return {
-  //       ...node,
-  //       className: node.id === currentItemId ? styles.currentNode : "",
-  //       data: {
-  //         label: <Shkaf id={node.id} />,
-  //       },
-  //     };
-  //   return {
-  //     ...node,
-  //     data: {
-  //       label: "GROUP NODE!",
-  //     },
-  //   };
-  // });
-
-  const flowRef = useRef();
-  // console.log("REDUX STATE>>>>>>>>>>>>", renderNodes);
-  const [nodes, setNodes, onNodesChange] = useNodesState(renderNodes); //НОВЫЕ НОДЫ
-  // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  // const onConnect = useCallback(
-  //   (params) => setEdges((eds) => addEdge(params, eds)),
-  //   [setEdges]
+  // const { data, error, isLoading } = useFetchDataQuery(
+  //   `getCurrentProject/${id}`
   // );
+  // console.log(data);
+  const dispatch = useAppDispatch();
+  const [triggerCoords, setTriggerCoords] = useState(false);
+  const btnRef = useRef(null);
+  const [menuImage, setMenuImage] = useState(null);
+  const [menuShkaf, setMenuShkaf] = useState(null);
+  const [menuEdge, setMenuEdge] = useState(null);
+  useEffect(() => {
+    const firstRender = async () => {
+      //ПОЧЕМУ РАБОТАЕТ С ASYNC????
+      // console.log(JSON.parse(data));
+      console.log(JSON.parse(data));
+      dispatch(uploadNodes(JSON.parse(data).nodes));
+      dispatch(uploadEdges(JSON.parse(data).edges));
+    };
+    firstRender();
+  }, [data, dispatch]);
+  const currentItemId: string = useAppSelector(
+    (state) => state.flow.currentNodeId
+  );
+  const reduxNodes = useAppSelector((state) => state.flow.nodes);
+  const reduxEdges = useAppSelector((state) => state.flow.edges);
+  // console.log(reduxNodes);
+  const flowRef = useRef(null);
 
+  const [nodes, setNodes, onNodesChange] = useNodesState([]); //НОВЫЕ НОДЫ
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
+  const [updateCoordsApi, resultCoords] = useUpdateCoordsMutation();
+  const [updateGroupApi, resultGroup] = useUpdateGroupMutation();
   const { getIntersectingNodes } = useReactFlow();
 
-  const currentGrid = useAppSelector((state) => state.nodes.currentGrid.index);
+  const currentGrid = useAppSelector((state) => state.flow.currentGrid.index);
   const snapGrid = useAppSelector((state) =>
-    state.nodes.snapGrid.find((item, index) => index === currentGrid)
+    state.flow.snapGrid.find((item, index) => index === currentGrid)
   );
 
-  // console.log(snapGrid)
+  const [addFastenerRelationship, resultRelationship] =
+    useAddFastenerRelationshipMutation();
 
   const [tireCount, setTireCount] = useState(0);
   const [totalVoltageState, setTotalVoltageState] = useState(10);
 
-  useEffect(() => {
-    // if (reduxNodes.length === 0) { //🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-    // const nodes = createScheme(tireCount + 1, totalVoltageState);
-    // dispatch(uploadNodes(nodes));
-    dispatch(uploadNodes(testReduxState));
-    // }
-  }, [tireCount, totalVoltageState]);
-
+  //ПРИ СОЗДАНИИ БУДЕТ РАБОТАТЬ
+  // useEffect(() => {
+  //   // if (reduxNodes.length === 0) { //🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  //   // const nodes = createScheme(tireCount + 1, totalVoltageState);
+  //   // dispatch(uploadNodes(nodes));
+  //   dispatch(uploadNodes(testReduxState));
+  //   // }
+  // }, [tireCount, totalVoltageState]);
+  console.log(nodes, edges);
   useEffect(() => {
     const rend = async () => {
       const res = await renderNodesInFlow(reduxNodes, currentItemId);
-      setRenderNodes(res);
+      setNodes(res);
+      setEdges(
+        reduxEdges.map((edge) => ({
+          ...edge,
+          style: { strokeWidth: 2, stroke: "#000" },
+        }))
+      );
     };
     rend();
-  }, [reduxNodes, currentItemId]);
+  }, [reduxNodes, reduxEdges]);
+
   // useEffect(() => {
-  //   setRenderNodes(renderNodesInFlow(reduxNodes, currentItemId));
-  // }, [reduxNodes, currentItemId]);
+  //   setNodes(renderNodes);
+  // }, [reduxNodes, renderNodes]);
 
-  useEffect(() => {
-    setNodes(renderNodes);
-  }, [reduxNodes, renderNodes]);
+  // const onSave = (event) => {
+  //   const data = JSON.stringify(reduxNodes);
+  //   const blob = new Blob([data], { type: "application/json" });
+  //   event.target.href = URL.createObjectURL(blob);
+  // };
 
-  const onSave = (event) => {
-    const data = JSON.stringify(reduxNodes);
-    const blob = new Blob([data], { type: "application/json" });
-    event.target.href = URL.createObjectURL(blob);
-  };
+  const [rfInstance, setRfInstance] = useState(null);
+
+  const onJsonSave = useCallback(
+    (event) => {
+      const flow = rfInstance.toObject();
+      console.log(flow);
+      const blob = new Blob([JSON.stringify(flow)], {
+        type: "application/json",
+      });
+      FileSaver.saveAs(blob, "hi.json");
+    },
+    [rfInstance]
+  );
 
   const onNodeClick = (event, node) => {
-    console.log(node.id);
-    if (
-      node.id.includes("group") ||
-      node.id.includes("mainScheme") ||
-      node.id.includes("img")
-    )
-      return;
+    console.log(node);
+    if (!(node.type === "ElectricalPanelsNodeType")) return;
     setNodes((ns) =>
       ns.map((n) => ({
         ...n,
         className: node.id === n.id ? styles.currentNode : "",
       }))
     );
-    if (node !== null) dispatch(changeCurrentNode({ id: node.id }));
+    if (node !== null)
+      dispatch(changeCurrentNode({ currentItemNode: node.id }));
     // console.log(node.id);
   };
 
-  const onNodeDrag = useCallback((_: MouseEvent, node: Node) => {
-    // const intersectTire = getIntersectingNodes(node).find(
-    //   (n) => n.id === "group1"
-    const intersectTire = getIntersectingNodes(node).find((n) =>
-      n.id.includes("group")
+  const onNodeDrag = useCallback((_: MouseEvent, node) => {
+    const intersectNode = getIntersectingNodes(node).find(
+      (n) => n.type === "FastenerNodeType"
     );
+    // const intersectShkaf = getIntersectingNodes(node).find(
+    //   (n) => n.type === "ElectricalPanelsNodeType"
+    // );
+
+    console.log(intersectNode?.id);
+
+    // const intersectTire = getIntersectingNodes(node)
+    if (node?.type === "ImageNodeType") return;
     setNodes((ns) =>
       ns.map((n) => ({
         ...n,
-        className: intersectTire?.id === n.id ? styles.highlight : "",
+        className: intersectNode?.id === n.id ? styles.highlight : "",
       }))
     );
   }, []);
 
-  const handleCoords = (event, node: Node) => {
-    event.preventDefault();
-    dispatch(updateCoordinats({ id: node.id, position: node.position }));
-    // const intersectTire = getIntersectingNodes(node).find(
-    //   (n) => n.id === "group1"
-    const intersectTire = getIntersectingNodes(node).find((n) =>
-      n.id.includes("group")
+  const handleCoords = async (event, node: Node) => {
+    // event.preventDefault();
+
+    const fastener = getIntersectingNodes(node).find(
+      (n) => n.type === "FastenerNodeType"
     );
-    // console.log(intersectTire.id);
-    if (intersectTire && !node.id.includes("img")) {
-      dispatch(updateGroup({ nodeId: node.id, tireId: intersectTire.id }));
+    const childShkaf = reduxNodes.find(
+      (item) => item.parentNode === fastener?.id
+    );
+    if (fastener?.id && !(node.type === "ImageNodeType") && !childShkaf?.id) {
+      // console.log(childShkaf);
+      // if (childShkaf?.id) return;
+      // const addedToGroup = `${Date.now()}`;
+      console.log(fastener);
+
+      const updatedShkafProps = {
+        parentNode: fastener.id,
+        position: { x: -147, y: 0 },
+        draggable: false,
+      };
+
+      dispatch(
+        updateFastenerShkaf({
+          shkafId: node.id,
+          updatedShkafProps,
+        })
+      );
+
+      await addFastenerRelationship({
+        id: node.id,
+        updatedShkafProps,
+      });
+    } else if (
+      ["ImageNodeType", "MainSchemeType", "ElectricalPanelsNodeType"].includes(
+        node?.type
+      )
+    ) {
+      dispatch(updateCoordinats({ id: node.id, position: node.position }));
+      await updateCoordsApi({
+        id: node?.id,
+        position: node.position,
+        type: node.type,
+      });
     }
   };
 
   const onNodeContextMenu = useCallback(
-    (event, node:Node) => {
-      // Prevent native context menu from showing
+    (event, node: Node) => {
       event.preventDefault();
-      if (!node.id.includes('img')) return;
-      // Calculate position of the context menu. We want to make sure it
-      // doesn't get positioned off-screen.
+      if (!["ImageNodeType", "ElectricalPanelsNodeType"].includes(node.type))
+        return;
+
+      const pane = flowRef?.current?.getBoundingClientRect();
+      if (node.type === "ImageNodeType") {
+        setMenuImage({
+          id: node.id,
+          top: event.clientY < pane.height - 200 && event.clientY,
+          left: event.clientX < pane.width - 200 && event.clientX,
+          right:
+            event.clientX >= pane.width - 200 && pane.width - event.clientX,
+          bottom:
+            event.clientY >= pane.height - 200 && pane.height - event.clientY,
+        });
+      }
+      if (node.type === "ElectricalPanelsNodeType") {
+        setMenuShkaf({
+          id: node.id,
+          top: event.clientY < pane.height - 200 && event.clientY,
+          left: event.clientX < pane.width - 200 && event.clientX,
+          right:
+            event.clientX >= pane.width - 200 && pane.width - event.clientX,
+          bottom:
+            event.clientY >= pane.height - 200 && pane.height - event.clientY,
+        });
+      }
+    },
+    [setMenuImage, setMenuShkaf]
+  );
+  const onEdgeContextMenu = useCallback(
+    (event, edge) => {
+      event.preventDefault();
       const pane = flowRef.current.getBoundingClientRect();
-      setMenu({
-        id: node.id,
+      setMenuEdge({
+        id: edge.id,
         top: event.clientY < pane.height - 200 && event.clientY,
         left: event.clientX < pane.width - 200 && event.clientX,
         right: event.clientX >= pane.width - 200 && pane.width - event.clientX,
@@ -220,10 +319,14 @@ const Flow: FC = () => {
           event.clientY >= pane.height - 200 && pane.height - event.clientY,
       });
     },
-    [setMenu]
+    [setMenuEdge]
   );
 
-  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+  const onPaneClick = useCallback(() => {
+    setMenuImage(null);
+    setMenuShkaf(null);
+    setMenuEdge(null);
+  }, [setMenuImage, setMenuShkaf]);
 
   // if (error)
   //   return (
@@ -235,21 +338,18 @@ const Flow: FC = () => {
   //       </Alert>
   //     </div>
   //   );
+
   return (
     <div className={styles.mainFlow}>
-      {reduxNodes.length === 0 && (
-        <FirstOptionsModal
-          tireCount={tireCount}
-          setTireCount={setTireCount}
-          setTotalVoltageState={setTotalVoltageState}
-        />
-      )}
+      {error && <h1>{error.error}</h1>}
       <ReactFlow
         ref={flowRef}
         style={{ width: "100%", height: "100dvh" }}
         nodes={nodes}
+        edges={edges}
         // edges={edges}
         onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
         // onEdgesChange={onEdgesChange}
         // onConnect={onConnect}
         snapToGrid={true}
@@ -260,8 +360,11 @@ const Flow: FC = () => {
         onNodeDragStop={handleCoords}
         onNodeDrag={onNodeDrag}
         onNodeContextMenu={onNodeContextMenu}
-      fitView
-      onPaneClick={onPaneClick}
+        onEdgeContextMenu={onEdgeContextMenu}
+        // fitView
+        onConnect={onConnect}
+        onPaneClick={onPaneClick}
+        onInit={setRfInstance}
       >
         <Background
           id="1"
@@ -278,7 +381,7 @@ const Flow: FC = () => {
         />
         <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Panel position="top-right">
-          <Button colorScheme="green" p="0">
+          {/* <Button colorScheme="green" p="0">
             <a
               download={`${Date.now()}.json`}
               href="#"
@@ -287,10 +390,20 @@ const Flow: FC = () => {
             >
               Скачать JSON
             </a>
+          </Button> */}
+          <Button
+            colorScheme="green"
+            p="0"
+            onClick={onJsonSave}
+            className={styles.downloadJSON}
+          >
+            Скачать JSON
           </Button>
         </Panel>
-        <DownloadButton myRef={flowRef} />
+        {/* <DownloadButton myRef={flowRef} /> */}
         <Panel position="top-left">
+          <DownloadPDFSchemeV2 flowRef={flowRef} />
+          {/* <DownloadQuestionnaireTable /> */}
           {/* <PDFDownloadLink
             document={<PDFScheme myRef={flowRef} />}
             fileName="Scheme"
@@ -300,8 +413,21 @@ const Flow: FC = () => {
             }
           </PDFDownloadLink> */}
         </Panel>
+        <Panel position="bottom-left">
+          {/* {resultCoords && (
+            <Box color={"black"}>КООРДИНАТЫ:{resultCoords.status}</Box>
+          )}
+          {resultGroup && (
+            <Box color={"green"}>ДОБАВЛЕНО В ГРУППУ:{resultGroup.status}</Box>
+          )} */}
+
+          <AlertButton tip={"error"} />
+          <WarningBtn />
+        </Panel>
         <Controls />
-        {menu && <ContextMenu onClick={onPaneClick} {...menu} />}
+        {menuImage && <ImageContextMenu onClick={onPaneClick} {...menuImage} />}
+        {menuShkaf && <ShkafContextMenu onClick={onPaneClick} {...menuShkaf} />}
+        {menuEdge && <EdgeContextMenu onClick={onPaneClick} {...menuEdge} />}
       </ReactFlow>
     </div>
   );

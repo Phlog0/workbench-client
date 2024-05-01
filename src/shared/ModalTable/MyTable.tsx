@@ -15,14 +15,19 @@ import { Column, Table as VirtTable } from "react-virtualized";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import { List } from "react-virtualized";
 import { useFetchAllOPNQuery } from "../../services/dictService";
-import { useDispatch } from "react-redux";
-import { updatePropsByRow } from "../../store/nodesSlice";
+import { shallowEqual, useDispatch } from "react-redux";
+import { updatePropsByRow } from "../../store/flowSlice";
+import { useUpdatePropsByRowMutation } from "../../services/projectService";
 import { useAppSelector } from "../../hook";
 import Draggable from "react-draggable";
 import MyHeaderRenderer from "./resizeColumns/MyHeaderRenderer";
 import { MdDragIndicator } from "react-icons/md";
 import RowRenderer from "./RowRenderer";
+import { updateProps } from "../../services/propsService";
 // import { DragHandleIcon} from '@chakra-ui/icons'
+
+import { propsinAlphabet } from "./utils/propsInAlphabet";
+import { propsOnRowFromExcel } from "./utils/propsOnRowFromExcel";
 interface IMyTableProps {
   data: string[][];
 }
@@ -35,13 +40,32 @@ interface IMyTableProps {
 // };
 const testState = [1 / 4, 1 / 4, 1 / 4, 1 / 4];
 
-const MyTable = ({ data, isLoading, type, onClose }) => {
+interface IMyTableProps {
+  isLoading: boolean;
+  type: string;
+  rowData: string[][];
+}
+
+const MyTable: FC<IMyTableProps> = ({ data, isLoading, type, onClose }) => {
   const dispatch = useDispatch();
-  const currentId = useAppSelector((state) => state.nodes.currentNode.id);
+
+  const [updatePropsByRowApi, result] = useUpdatePropsByRowMutation();
+
+  const currentId = useAppSelector((state) => state.flow.currentNodeId);
   const totalPowerOfAllElectricalAppliances = useAppSelector(
     (state) =>
-      state.nodes.nodes.find((item) => item.id === currentId)
+      state.flow.nodes.find((item) => item.id === currentId)
         ?.totalPowerOfAllElectricalAppliances
+  );
+  const currentCellOption = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((item) => item.id === currentId)?.currentCellOption
+  );
+
+  const totalVoltageForAll = useAppSelector(
+    (state) =>
+      state.flow.nodes.find((item) => item.type === "MainSchemeType")
+        ?.totalVoltageForAll
   );
 
   const [state, setState] = useState(testState);
@@ -60,15 +84,57 @@ const MyTable = ({ data, isLoading, type, onClose }) => {
   }, [data]);
   console.log(data);
   console.log(renderData);
+  const currentOL = useAppSelector(
+    (state) => state.flow.nodes.find((item) => item.id === currentId),
+    shallowEqual
+  )?.currentOL;
+  const disabledRowHandle = (props) => {
+    if (type !== "instrumentCurrentTransformers" || currentCellOption !== 6)
+      return styles.row;
+
+    const gostTT = [
+      5, 10, 15, 20, 25, 30, 40, 50, 75, 80, 100, 150, 200, 300, 400, 500, 600,
+      750, 800, 1000, 1200, 1500, 2000, 2500, 3000, 4000,
+    ];
+
+    const acceptedGost = gostTT.find((item) => item > currentOL);
+    console.log(currentOL, acceptedGost);
+    if (acceptedGost === Number(props.columns[3].props.title.split("/")[0])) {
+      return styles.row;
+    } else {
+      return styles.disabledRow;
+    }
+    // return acceptedGost === Number(props.columns[3].props.title.split("/")[0])
+    //   ?
+    //   :
+
+    // Number(totalPowerOfAllElectricalAppliances) /
+    //   Number(totalVoltageForAll) /
+    //   1 /
+    //   3 ** (1 / 2) >
+    // Number(props.columns[3].props.title.split("/")[0])
+    //   ? styles.disabledRow
+    //   : styles.row;
+  };
 
   const onRowClick = ({ _, index, rowData }) => {
+    // console.log(rowData);
+
+    const updatedProps = propsinAlphabet(type, rowData, propsOnRowFromExcel);
     dispatch(
       updatePropsByRow({
         id: currentId,
         type,
-        rowData,
+        // rowData,
+        updatedProps,
       })
     );
+
+    updatePropsByRowApi({
+      shkafId: currentId,
+      type,
+      updatedProps,
+    });
 
     onClose();
   };
@@ -77,7 +143,6 @@ const MyTable = ({ data, isLoading, type, onClose }) => {
     const prevWidths = state;
     const percentDelta = deltaX / 1596;
     console.log(percentDelta);
-    // This is me being lazy :)
     const nextDataKey = +dataKey + 1;
 
     setState({
@@ -154,13 +219,11 @@ const MyTable = ({ data, isLoading, type, onClose }) => {
                       }}
                       onRowClick={onRowClick}
                       rowRenderer={(props) => {
-                        console.log(Number(props.columns[3].props.title.split("/")[0]));
                         return (
                           <DefaultRowRenderer
                             {...props}
-                            className={totalPowerOfAllElectricalAppliances > Number(props.columns[3].props.title.split("/")[0]) ? styles.disabledRow:styles.row}
+                            className={disabledRowHandle(props)}
                             disabled
-                            // className={styles.disabledRow}
                           ></DefaultRowRenderer>
                         );
                       }}

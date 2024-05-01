@@ -5,7 +5,7 @@ import {
   updateCellType,
   updateCommutationType,
   updateTransformatorType,
-} from "../store/nodesSlice";
+} from "../store/flowSlice";
 
 import { Select } from "@chakra-ui/react";
 import SwitchOPN from "../features/SwitchOPN";
@@ -33,20 +33,25 @@ import TypeOfSwitchingDevice from "../features/TypeOfSwitchingDevice";
 import ZeroSequenceCurrentTransformers from "../features/ZeroSequenceCurrentTransformers";
 import TotalPowerOfAllElectricalAppliances from "../features/TotalPowerOfAllElectricalAppliances";
 import ReactiveCos from "../features/ReactiveCos";
+import { useFetchDataQuery } from "../services/dictService";
 
 const RightSidebar: FC = () => {
+  const { data, error, isLoading } = useFetchDataQuery("typeOfSwitchingDevice");
+  const {
+    data: currentTransformatorOptionData,
+    error: currentTransformatorOptionError,
+    isLoading: currentTransformatorOptionIsLoading,
+  } = useFetchDataQuery("currentTransformatorOption");
+
   const currentItemId: string = useAppSelector(
-    (state) => state.nodes.currentNode.id
+    (state) => state.flow.currentNodeId
   );
 
   const currentCellOption = useAppSelector(
     (state) =>
-      state.nodes.nodes.find((node) => node.id === currentItemId)
+      state.flow.nodes.find((node) => node.id === currentItemId)
         ?.currentCellOption
   );
-
-  // console.log('RIGHT SB RENDER>>>');
-  console.log(currentCellOption);
   return (
     <div className={styles.wrapper}>
       {currentItemId && <TypeOfCell id={currentItemId} />}
@@ -59,11 +64,18 @@ const RightSidebar: FC = () => {
           {currentItemId && [6].includes(currentCellOption) && (
             <ReactiveCos id={currentItemId} />
           )}
-          {currentItemId && <TypeOfSwitchingDevice id={currentItemId} />}
-
-          {currentItemId && ![3].includes(currentCellOption) && (
-            <CurrentTransformers id={currentItemId} />
+          {data && currentItemId && (
+            <TypeOfSwitchingDevice data={data} id={currentItemId} />
           )}
+
+          {currentTransformatorOptionData &&
+            currentItemId &&
+            ![3].includes(currentCellOption) && (
+              <CurrentTransformers
+                data={currentTransformatorOptionData}
+                id={currentItemId}
+              />
+            )}
           {currentItemId && ![3].includes(currentCellOption) && (
             <RatedCurrentOfTheMainCircuits id={currentItemId} />
           )}
