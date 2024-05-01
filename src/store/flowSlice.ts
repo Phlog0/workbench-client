@@ -264,7 +264,7 @@ const flowSlice = createSlice({
     changeError(state, action) {
       const { id, prop, value } = action.payload
       const node = state.nodes.find(item => item.id === id)
-      node[prop] = value || false;
+      if (prop) node[prop] = value || false;
     },
 
 

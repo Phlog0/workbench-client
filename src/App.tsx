@@ -1,5 +1,5 @@
 import { FC } from "react";
-
+import React from "react";
 import "./App.scss";
 
 import TopNavbar from "./widgets/TopNavbar";
