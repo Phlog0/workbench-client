@@ -42,6 +42,8 @@ const WarningsModal = ({ isOpen, onClose }) => {
     shallowEqual
   )?.microprocessorProtectionDeviceAndAutomation;
 
+
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"}>

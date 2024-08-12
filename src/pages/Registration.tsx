@@ -13,6 +13,7 @@ import {
 import styles from "./UpdateProfile.module.scss";
 import { useRegistrationMutation } from "../services/authService";
 import { Link } from "react-router-dom";
+
 const Registration = () => {
   const [resgistation, resultReg] = useRegistrationMutation();
 
@@ -98,11 +99,9 @@ const Registration = () => {
   };
 
   return (
-    <div>
-      {/* {resultLogin && <h1>{resultLogin.error?.message}</h1>} */}
-      {/* {resultLogin && <h1>{resultLogin.data}</h1>} */}
+    <div className={styles.regPage}>
       <FormControl>
-        <h1>Регистрация</h1>
+        <h1 className={styles.regPageTitle}>Регистрация</h1>
         <Box className={styles.modalItem}>
           <FormControl isRequired={true} isInvalid={isFirstnameError}>
             <FormLabel>Имя</FormLabel>
@@ -176,18 +175,22 @@ const Registration = () => {
           </FormControl>
           <FormControl isRequired={true} isInvalid={isPasswordError}>
             <FormLabel>Роль</FormLabel>
-            <Select defaultValue={formState?.roleId} name="roleId" onChange={handleChange}>
+            <Select
+              defaultValue={formState?.roleId}
+              name="roleId"
+              onChange={handleChange}
+            >
               <option value="1">Начальник</option>
               <option value="2">Инженер</option>
               <option value="3">Наблюдатель</option>
             </Select>
           </FormControl>
-          <Button colorScheme="green" onClick={handleSubmit}>
+          <Button w={'100%'} mt={'1rem' }colorScheme="green" onClick={handleSubmit}>
             Регистрация
           </Button>
         </Box>
       </FormControl>
-      <Link to={'/'}>Есть аккаунт? Войдите</Link>
+      <Link to={"/"}>Есть аккаунт? Войдите</Link>
     </div>
   );
 };

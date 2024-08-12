@@ -76,7 +76,7 @@ const RightSidebar: FC = () => {
                 id={currentItemId}
               />
             )}
-          {currentItemId && ![3].includes(currentCellOption) && (
+          {currentItemId && ![0,1,2,3,4,6,7,8].includes(currentCellOption) && (
             <RatedCurrentOfTheMainCircuits id={currentItemId} />
           )}
 

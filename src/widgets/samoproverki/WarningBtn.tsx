@@ -37,13 +37,16 @@ const WarningBtn = () => {
     shallowEqual
   ).map((item) => item.zeroVvodWarning);
 
+
+
+  // const [dis, setDis] = useState<boolean>(true)
   // useEffect(() => {
-  //     if (allZeroVvodWarning.includes(true)) {
-  //       setErrorsCount(2);
-  //       return;
+  //     if (allZeroVvodWarning.includes(true) || vvodLength === 0) {
+  //       setDis(false)
   //     }
 
-  //   }, [allZeroVvodWarning]);
+  //   }, [allZeroVvodWarning, vvodLength]);
+
 
   const handleClick = () => {
     warningOnOpen();
@@ -54,6 +57,7 @@ const WarningBtn = () => {
       className={styles.container}
       onClick={handleClick}
       colorScheme="yellow"
+
     >
       <div className={styles.btn}>⚠️</div>
       {warningIsOpen && (

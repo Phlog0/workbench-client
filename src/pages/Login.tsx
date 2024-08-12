@@ -4,7 +4,6 @@ import { useLoginMutation } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import styles from "./Login.module.scss";
-import MySlider from "./DZ/MySlider";
 import DZModal from "./DZ/DZModal";
 const Login = () => {
   const [login, { data }] = useLoginMutation();
@@ -92,9 +91,7 @@ const Login = () => {
         />
       </Box>
 
-      {/* ==============================================🏠 ДЗ 🏠============================================== */}
-      <MySlider />
-      {/* ==============================================🏠 ДЗ 🏠============================================== */}
+  
     </div>
   );
 };

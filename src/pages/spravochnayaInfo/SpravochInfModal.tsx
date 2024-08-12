@@ -47,7 +47,7 @@ const SpravochInfModal = ({ onClose, isOpen }) => {
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="red" onClick={onClose}>
-            Close
+            Закрыть
           </Button>
         </ModalFooter>
       </ModalContent>

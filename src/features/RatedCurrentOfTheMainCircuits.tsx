@@ -5,6 +5,7 @@ import { useAppSelector } from "../hook";
 import { useFetchDataQuery } from "../services/dictService";
 import TotalPowerOfAllElectricalAppliances from "./TotalPowerOfAllElectricalAppliances";
 import { shallowEqual } from "react-redux";
+import { useToast } from "@chakra-ui/react";
 
 const RatedCurrentOfTheMainCircuits = ({ id }) => {
   const currentItemId = useAppSelector((state) => state.flow.currentNodeId);
@@ -44,6 +45,8 @@ const RatedCurrentOfTheMainCircuits = ({ id }) => {
     "RatedCurrentOfTheMainCircuits"
   );
 
+  const toast = useToast();
+
   const ratedCurrentOfTheMainCircuits = useAppSelector(
     (state) =>
       state.flow.nodes.find((node) => node.id === id)
@@ -71,7 +74,7 @@ const RatedCurrentOfTheMainCircuits = ({ id }) => {
   //
   // const disOpts = [];
   useEffect(() => {
-    setDisOpts([])
+    setDisOpts([]);
     const gostTok = [630, 1000, 1250, 1600, 2000, 2500, 3150, 4000];
 
     gostTok.map((item, index) => {
@@ -79,8 +82,20 @@ const RatedCurrentOfTheMainCircuits = ({ id }) => {
       // disOpts.push(index);
     });
     gostTok;
+    console.log(data);
   }, [tireCurrentOLAll, currentItemId]);
 
+  useEffect(() => {
+    console.log("AAAAAAA????", data, tireCurrentOLAll);
+    if (+data?.[ratedCurrentOfTheMainCircuits] < tireCurrentOLAll) {
+      toast({
+        title: `Ошибка! Выберите другое значение номинального тока главных цепей`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [data, ratedCurrentOfTheMainCircuits, tireCurrentOLAll, toast]);
   return (
     <>
       <MySelect

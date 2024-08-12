@@ -18,23 +18,26 @@ import {
   opn,
   electromagneticLocking,
 } from "./utils";
-const OprosnyList = ({myRef}) => {
-
+const OprosnyList = ({ myRef }) => {
   const allShkafs = useAppSelector(
     (state) => state.flow.nodes,
     shallowEqual
   )?.filter((item) => item.type === "ElectricalPanelsNodeType");
   console.log(allShkafs);
-
+  const orderedShkafs = allShkafs.sort(
+    (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)
+  );
+  const orderedData = allShkafs.map((item) => Date.parse(item.createdAt));
+  console.log(orderedData);
   return (
-    <div  className={styles.container}>
+    <div className={styles.container}>
       <table ref={myRef}>
         <tbody>
           <tr>
             <td colSpan={2}>Номинальное напряжение главных цепей, кВ</td>
             <td>6</td>
-            {allShkafs &&
-              allShkafs.map((item) => (
+            {orderedShkafs &&
+              orderedShkafs.map((item) => (
                 <td rowSpan={5} colSpan={1} className={styles.shkaf}>
                   <Shkaf id={item.id} />
                 </td>
@@ -134,14 +137,12 @@ const OprosnyList = ({myRef}) => {
                 <td>{voltageTransformersAccuracyClass2(item)}</td>
               ))}
           </tr>
-         
+
           <tr>
             <td colSpan={3}>Счётчик элекртоэнергии, тип</td>
 
             {allShkafs &&
-              allShkafs.map((item, index) => (
-                <td>{electircityMeter(item)}</td>
-              ))}
+              allShkafs.map((item, index) => <td>{electircityMeter(item)}</td>)}
           </tr>
           <tr>
             <td colSpan={3}>
@@ -149,18 +150,12 @@ const OprosnyList = ({myRef}) => {
             </td>
 
             {allShkafs &&
-              allShkafs.map((item, index) => (
-                <td>{microProc(item)}</td>
-              ))}
-            
+              allShkafs.map((item, index) => <td>{microProc(item)}</td>)}
           </tr>
           <tr>
             <td colSpan={3}>Ограничитель перенапряжения</td>
 
-            {allShkafs &&
-              allShkafs.map((item, index) => (
-                <td>{opn(item)}</td>
-              ))}
+            {allShkafs && allShkafs.map((item, index) => <td>{opn(item)}</td>)}
           </tr>
           <tr>
             <td colSpan={3}>Электромагнитные блокировки</td>
@@ -169,7 +164,6 @@ const OprosnyList = ({myRef}) => {
                 <td>{electromagneticLocking(item)}</td>
               ))}
           </tr>
-          
         </tbody>
       </table>
     </div>

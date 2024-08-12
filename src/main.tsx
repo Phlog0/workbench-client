@@ -9,15 +9,13 @@ import { AuthProvider } from "./context/AuthProvider.tsx";
 import Login from "./pages/Login.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <ReduxProvider store={store}>
-          <ChakraProvider>
-            <App />
-          </ChakraProvider>
-        </ReduxProvider>
-      </BrowserRouter>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <BrowserRouter>
+      <ReduxProvider store={store}>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </ReduxProvider>
+    </BrowserRouter>
+  </AuthProvider>
 );

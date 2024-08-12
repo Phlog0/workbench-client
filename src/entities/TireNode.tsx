@@ -191,6 +191,11 @@ const TireNode = ({ id }) => {
           value: true,
         })
       );
+      samoPorv({
+        tireId: id,
+        prop: "vvodError",
+        value: true,
+      });
     }
     if (vvodLength === 0) {
       dispatch(
